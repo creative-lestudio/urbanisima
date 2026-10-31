@@ -284,7 +284,6 @@ label.check a{color:var(--blue-mid)}
 .progress span{display:block;height:100%;width:100%;background:var(--yellow);transform:scaleX(0);transform-origin:left}
 
 /* Hero: brillo y titular animado */
-.hero::after{content:"";position:absolute;left:-10%;bottom:-30%;width:60%;aspect-ratio:1;background:radial-gradient(circle,rgba(0,105,190,.55),transparent 65%);pointer-events:none}
 .hero h1{font-size:clamp(2.5rem,6.6vw,4.6rem);line-height:1.04}
 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
 .w>span{display:inline-block}
