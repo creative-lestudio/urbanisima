@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.skip{position:absolute;left:-999px;top:8px}</style>
-<link rel="stylesheet" href="styles.css?v=10">
+<link rel="stylesheet" href="styles.css?v=11">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"RoofingContractor","name":"Grupo Urbanísima","telephone":"+34722115251","email":"info@grupo-urbanisima.com","address":{"@type":"PostalAddress","streetAddress":"Jacinto Labaila 8b","postalCode":"45007","addressLocality":"Valencia","addressCountry":"ES"},"areaServed":"Provincia de Valencia","url":"https://grupo-urbanisima.com/"}
 </script>
@@ -337,31 +337,61 @@
 </section>
 </main>
 
-<footer class="footer">
-  <div class="wrap foot-grid">
-    <div>
+<footer class="site-foot">
+  <div class="wrap foot-top">
+    <div class="foot-brand">
       <img src="assets/logo-blanco.png" alt="Grupo Urbanísima" width="260" height="51" loading="lazy">
-      <p>Empresa especializada en servicios para particulares, comunidades de vecinos y profesionales.</p>
+      <p>Reparación de tejados, impermeabilización de terrazas y cubiertas, canalones y fachadas para particulares, comunidades de vecinos y empresas.</p>
+      <div class="foot-cta">
+        <a href="tel:+34722115251" class="btn btn-sm"><svg class="i"><use href="#i-phone"/></svg> Llamar</a>
+        <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-sm btn-wa" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg> WhatsApp</a>
+      </div>
     </div>
-    <div>
-      <h4>Servicios</h4>
-      <a href="#servicios">Reparación de tejados</a>
-      <a href="#servicios">Impermeabilizaciones</a>
-      <a href="#servicios">Limpieza de canalones</a>
-      <a href="#servicios">Terrazas y cubiertas</a>
-    </div>
-    <div>
+
+    <nav class="foot-col" aria-label="Servicios por cliente">
+      <h4>Según quién seas</h4>
+      <a href="#servicios" data-cat="particulares">Particulares</a>
+      <a href="#servicios" data-cat="comunidades">Comunidades de vecinos</a>
+      <a href="#servicios" data-cat="empresas">Empresas y naves industriales</a>
+      <a href="#servicios" data-cat="all">Ver los 14 servicios</a>
+    </nav>
+
+    <nav class="foot-col" aria-label="Servicios principales">
+      <h4>Más solicitados</h4>
+      <a href="#contacto" data-service="Reparación de tejados" data-title="Reparación de tejados y cubiertas">Reparación de tejados</a>
+      <a href="#contacto" data-service="Impermeabilización de terrazas y cubiertas" data-title="Impermeabilización de terrazas y cubiertas">Impermeabilización</a>
+      <a href="#contacto" data-service="Limpieza y montaje de canalones" data-title="Montaje y limpieza de canalones">Limpieza de canalones</a>
+      <a href="#contacto" data-service="Pintura de fachadas" data-title="Pintura y rehabilitación de fachadas">Fachadas</a>
+    </nav>
+
+    <div class="foot-col">
       <h4>Contacto</h4>
-      <a href="tel:+34722115251">+34 722 115 251</a>
-      <a href="mailto:info@grupo-urbanisima.com">info@grupo-urbanisima.com</a>
-      <span>Jacinto Labaila 8b, 45007 Valencia</span>
+      <a href="tel:+34722115251"><svg class="i"><use href="#i-phone"/></svg>+34 722 115 251</a>
+      <a href="mailto:info@grupo-urbanisima.com"><svg class="i"><use href="#i-mail"/></svg>info@grupo-urbanisima.com</a>
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=Jacinto+Labaila+8b+Valencia+45007" target="_blank" rel="noopener"><svg class="i"><use href="#i-pin"/></svg>Jacinto Labaila 8b, 45007 Valencia</a>
+      <span class="foot-note"><svg class="i"><use href="#i-check"/></svg>Servicio en toda la provincia de Valencia</span>
     </div>
   </div>
-  <div class="wrap legal">
-    <span>© 2018 Grupo Urbanísima</span>
-    <a href="https://grupo-urbanisima.com/aviso-ley-cookies/">Ley de Cookies</a>
-    <a href="https://grupo-urbanisima.com/aviso-legal/">Aviso Legal</a>
-    <a href="https://grupo-urbanisima.com/ley-proteccion-datos/">Política de Privacidad</a>
+
+  <div class="wrap foot-legal">
+    <span>© <span id="year">2026</span> Grupo Urbanísima. Todos los derechos reservados.</span>
+    <nav aria-label="Legal">
+      <a href="https://grupo-urbanisima.com/aviso-legal/">Aviso legal</a>
+      <a href="https://grupo-urbanisima.com/ley-proteccion-datos/">Privacidad</a>
+      <a href="https://grupo-urbanisima.com/aviso-ley-cookies/">Cookies</a>
+    </nav>
+    <button type="button" class="to-top" id="to-top" aria-label="Volver arriba"><svg class="i" style="transform:rotate(-90deg)"><use href="#i-arrow"/></svg>Arriba</button>
+  </div>
+
+  <div class="wrap foot-sign">
+    <a class="sign" href="https://lestudio-crea.com" target="_blank" rel="noopener" aria-label="Diseño y desarrollo web por Le Studio">
+      <img src="assets/lestudio-logo.png" alt="" width="900" height="392" loading="lazy">
+      <span>Diseño y desarrollo web por <b>LE STUDIO</b></span>
+    </a>
+    <span class="sign-links">
+      <a href="https://www.instagram.com/lestudio_crea/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:creative.lestudio@gmail.com">creative.lestudio@gmail.com</a>
+    </span>
   </div>
 </footer>
 
@@ -374,6 +404,6 @@
   <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg> WhatsApp</a>
 </div>
 
-<script src="main.js?v=10" defer></script>
+<script src="main.js?v=11" defer></script>
 </body>
 </html>

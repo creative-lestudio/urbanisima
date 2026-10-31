@@ -105,7 +105,7 @@
     }
   }
   tabs.forEach(function (t) { t.addEventListener('click', function () { applyCategory(t.dataset.filter); }); });
-  document.querySelectorAll('.cat').forEach(function (a) {
+  document.querySelectorAll('a[data-cat]').forEach(function (a) {
     a.addEventListener('click', function () { applyCategory(a.dataset.cat); });
   });
 
@@ -337,4 +337,9 @@
       if (vis && !running) { running = true; loop(); } else if (!vis) running = false;
     }, { threshold: .15 }).observe(cv);
   })();
+
+  /* ---------- Pie: año actual y volver arriba ---------- */
+  var yr = document.getElementById('year'); if (yr) yr.textContent = new Date().getFullYear();
+  var toTop = document.getElementById('to-top');
+  if (toTop) toTop.addEventListener('click', function () { scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
 })();
