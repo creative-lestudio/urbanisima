@@ -28,6 +28,7 @@
   function setMenu(open) {
     menu.classList.toggle('open', open);
     header.classList.toggle('menu-open', open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
     burger.setAttribute('aria-expanded', String(open));
     burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
   }
@@ -190,6 +191,7 @@
       applyCategory(b.dataset.cat);
       buildChips(b.dataset.cat);
       heroGo(2);
+      if (mobileMq.matches) { var r = hero.getBoundingClientRect(); if (r.top < 70 || r.bottom > innerHeight - 70) scrollTo({ top: scrollY + r.top - 76, behavior: reduce ? 'auto' : 'smooth' }); }
     });
   });
   document.getElementById('hf-back').addEventListener('click', function () { heroGo(1); });
