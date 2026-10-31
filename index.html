@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.skip{position:absolute;left:-999px;top:8px}</style>
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=6">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"RoofingContractor","name":"Grupo Urbanísima","telephone":"+34722115251","email":"info@grupo-urbanisima.com","address":{"@type":"PostalAddress","streetAddress":"Jacinto Labaila 8b","postalCode":"45007","addressLocality":"Valencia","addressCountry":"ES"},"areaServed":"Provincia de Valencia","url":"https://grupo-urbanisima.com/"}
 </script>
@@ -50,6 +50,7 @@
 </svg>
 
 <a class="skip" href="#contenido">Saltar al contenido</a>
+<div class="progress" aria-hidden="true"><span></span></div>
 
 <header class="header" id="top">
   <div class="wrap nav">
@@ -125,6 +126,14 @@
     </div>
   </div>
 </section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Reparación de tejados</span><i></i><span>Impermeabilización de terrazas</span><i></i><span>Limpieza de canalones</span><i></i><span>Panel sandwich</span><i></i><span>Fachadas</span><i></i><span>Pavimentos epoxi</span><i></i><span>Trabajos en altura</span><i></i><span>Reformas</span><i></i>
+    <span>Reparación de tejados</span><i></i><span>Impermeabilización de terrazas</span><i></i><span>Limpieza de canalones</span><i></i><span>Panel sandwich</span><i></i><span>Fachadas</span><i></i><span>Pavimentos epoxi</span><i></i><span>Trabajos en altura</span><i></i><span>Reformas</span><i></i>
+  </div>
+</div>
 
 <!-- SERVICIOS -->
 <section class="section" id="servicios">
@@ -211,6 +220,34 @@
     </div>
 
     <p class="more">También: canalización de agua, instalación de Velux y azoteas, y todo tipo de reformas.</p>
+  </div>
+</section>
+
+<!-- DEMO LLUVIA -->
+<section class="section dark demo" id="proteccion">
+  <div class="wrap demo-grid">
+    <div class="demo-copy">
+      <p class="eyebrow">La diferencia</p>
+      <h2>Así entra el agua. Y así se queda fuera.</h2>
+      <p class="sub-d">Una pequeña grieta en la cubierta es suficiente para que aparezcan manchas, humedad y goteras. Cambia de vista y compruébalo.</p>
+      <div class="switch" role="group" aria-label="Estado de la cubierta">
+        <button type="button" class="sw is-bad is-on" data-mode="leak" aria-pressed="true">Sin protección</button>
+        <button type="button" class="sw is-good" data-mode="safe" aria-pressed="false">Con Grupo Urbanísima</button>
+      </div>
+      <ul class="demo-list">
+        <li><svg class="i"><use href="#i-shield"/></svg> Impermeabilización de cubiertas, tejados y terrazas</li>
+        <li><svg class="i"><use href="#i-drop"/></svg> Solución definitiva a goteras, humedades y filtraciones</li>
+        <li><svg class="i"><use href="#i-award"/></svg> Mejores marcas y materiales</li>
+      </ul>
+      <a href="#contacto" class="btn btn-lg">Quiero acabar con mis goteras <svg class="i"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="stage">
+      <canvas id="rain" aria-label="Animación: lluvia sobre una vivienda con y sin impermeabilización" role="img"></canvas>
+      <div class="stage-hud">
+        <span class="chip bad" id="stage-chip">Goteras activas</span>
+        <span class="count" id="stage-count">0 filtraciones</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -319,28 +356,21 @@
         <li><span class="row"><span class="ico"><svg class="i"><use href="#i-pin"/></svg></span><span><small>Oficina</small>Jacinto Labaila 8b, CP 45007, Valencia</span></span></li>
       </ul>
     </div>
-    <form class="card" id="contact-form" novalidate>
-      <div class="card-head"><h2>Pide tu presupuesto gratis</h2><p>Sin compromiso. Respondemos por WhatsApp.</p></div>
-      <div class="field"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" type="text" autocomplete="name" required></div>
-      <div class="field"><label for="c-tel">Teléfono</label><input id="c-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" required></div>
-      <div class="field"><label for="servicio-select">Servicio</label>
-        <select id="servicio-select" name="servicio">
-          <option value="">Selecciona un servicio</option>
-          <option>Reparación de tejados</option>
-          <option>Impermeabilización de terrazas y cubiertas</option>
-          <option>Limpieza y montaje de canalones</option>
-          <option>Panel sandwich</option>
-          <option>Pintura de fachadas</option>
-          <option>Pavimento continuo / epoxi</option>
-          <option>Deshollinado de chimeneas</option>
-          <option>Jardinería</option>
-          <option>Reformas</option>
-          <option>Otro</option>
-        </select>
-      </div>
-      <div class="field"><label for="c-msg">Cuéntanos qué necesitas <small>(opcional)</small></label><textarea id="c-msg" name="mensaje" rows="3"></textarea></div>
-      <label class="check"><input type="checkbox" name="privacidad" required> <span>Acepto la <a href="https://grupo-urbanisima.com/ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
-      <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
+    <form class="card stepper" id="contact-form" novalidate>
+      <div class="card-head"><h2>Pide tu presupuesto gratis</h2><p>3 pasos rápidos. Sin compromiso.</p></div>
+      <div class="bar"><span id="bar-fill"></span></div>
+      <p class="step-label" id="step-label">Paso 1 de 3</p>
+
+      <fieldset class="step is-on" data-step="1"><legend>¿Qué necesitas?</legend><div class="opts"><label class="opt"><input type="radio" name="servicio" value="Reparación de tejados"><span>Reparar mi tejado</span></label><label class="opt"><input type="radio" name="servicio" value="Impermeabilización de terrazas y cubiertas"><span>Impermeabilizar terraza o cubierta</span></label><label class="opt"><input type="radio" name="servicio" value="Limpieza y montaje de canalones"><span>Canalones</span></label><label class="opt"><input type="radio" name="servicio" value="Pintura de fachadas"><span>Fachada o pintura</span></label><label class="opt"><input type="radio" name="servicio" value="Panel sandwich"><span>Panel sandwich</span></label><label class="opt"><input type="radio" name="servicio" value="Pavimento continuo / epoxi"><span>Pavimento epoxi</span></label><label class="opt"><input type="radio" name="servicio" value="Reformas"><span>Reformas</span></label><label class="opt"><input type="radio" name="servicio" value="Otro"><span>Otra cosa</span></label></div></fieldset>
+      <fieldset class="step" data-step="2"><legend>¿Para quién es?</legend><div class="opts one"><label class="opt big"><input type="radio" name="cliente" value="Mi vivienda"><span><svg class="i"><use href="#i-home"/></svg>Mi vivienda</span></label><label class="opt big"><input type="radio" name="cliente" value="Comunidad de vecinos"><span><svg class="i"><use href="#i-building"/></svg>Comunidad de vecinos</span></label><label class="opt big"><input type="radio" name="cliente" value="Empresa o nave"><span><svg class="i"><use href="#i-factory"/></svg>Empresa o nave</span></label></div></fieldset>
+      <fieldset class="step" data-step="3"><legend>¿Cómo te contactamos?</legend>
+        <div class="field"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="c-tel">Teléfono</label><input id="c-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6XX XXX XXX" required></div>
+        <div class="field"><label for="c-msg">Cuéntanos más <small>(opcional)</small></label><textarea id="c-msg" name="mensaje" rows="2"></textarea></div>
+        <label class="check"><input type="checkbox" name="privacidad" required> <span>Acepto la <a href="https://grupo-urbanisima.com/ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
+        <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
+      </fieldset>
+      <div class="step-nav"><button type="button" class="back" id="btn-back" hidden>← Atrás</button></div>
       <p class="form-msg" role="status" aria-live="polite"></p>
     </form>
   </div>
@@ -384,6 +414,6 @@
   <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg> WhatsApp</a>
 </div>
 
-<script src="main.js?v=4" defer></script>
+<script src="main.js?v=6" defer></script>
 </body>
 </html>
