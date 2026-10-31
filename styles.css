@@ -358,3 +358,22 @@ fieldset.step.is-on{display:block;animation:fade .35s}
 html,body{overflow-x:clip}
 .hero h1{font-size:clamp(2.4rem,5.4vw,4.1rem)}
 .hero{padding-top:calc(var(--head) + 40px)}
+
+/* ======== v7: correcciones ======== */
+.split>*,.hero-grid>*,.demo-grid>*,.foot-grid>*{min-width:0}
+h1,h2,h3{overflow-wrap:break-word}
+.link{min-height:44px;padding:.5em 0}
+.footer a{padding:.45em 0;margin-bottom:0}
+.legal a{padding:.6em 0}
+.menu a:not(.btn){min-height:40px}
+.header{transition:background .25s,box-shadow .25s,transform .3s}
+@media (max-width:760px){
+  :root{--head:58px}
+  .brand img{height:36px}
+  .header.hide:not(.menu-open){transform:translateY(-100%)}
+  .hero{padding-top:calc(var(--head) + 24px)}
+  .tabs{scroll-snap-type:x proximity}
+  .tab{scroll-snap-align:start}
+}
+.team{max-width:min(340px,100%)}
+.footer a{padding:.6em 0}

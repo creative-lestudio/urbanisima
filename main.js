@@ -8,8 +8,16 @@
   if (!reduce) document.documentElement.classList.add('js');
 
   /* ---------- Scroll: cabecera + barra de progreso ---------- */
+  if ('scrollRestoration' in history && !location.hash) history.scrollRestoration = 'manual';
+  var lastY = scrollY, mobileMq = matchMedia('(max-width: 760px)');
   function onScroll() {
     header.classList.toggle('solid', window.scrollY > 24);
+    // En móvil la cabecera se oculta al bajar y reaparece al subir, para no tapar el contenido
+    var dy = scrollY - lastY;
+    if (mobileMq.matches && Math.abs(dy) > 6) {
+      header.classList.toggle('hide', dy > 0 && scrollY > 30);
+      lastY = scrollY;
+    } else if (!mobileMq.matches) header.classList.remove('hide');
     var h = document.documentElement.scrollHeight - innerHeight;
     if (bar && h > 0) bar.style.transform = 'scaleX(' + Math.min(scrollY / h, 1) + ')';
   }
