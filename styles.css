@@ -288,15 +288,11 @@ h1,h2,h3{overflow-wrap:break-word}
 .foot-legal a:hover{color:var(--yellow)}
 .to-top{display:inline-flex;align-items:center;gap:.4em;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;font:700 .8rem Montserrat,sans-serif;padding:.6em 1.1em;border-radius:999px;cursor:pointer;min-height:40px;transition:.15s}
 .to-top:hover{background:var(--yellow);color:var(--blue-deep);border-color:var(--yellow)}
-.foot-sign{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px;margin-top:22px;padding:16px 20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-sm);width:min(1180px,100% - 32px)}
 .sign{display:inline-flex;align-items:center;gap:14px;text-decoration:none;color:#c9d6e3;font-size:.85rem;transition:color .15s}
 .sign img{height:24px;width:auto;opacity:.9}
 .sign b{color:#fff;letter-spacing:.08em;font-weight:800}
 .sign:hover{color:#fff}
 .sign:hover b{color:var(--yellow)}
-.sign-links{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:.82rem}
-.sign-links a{color:#8da2b8;text-decoration:none;padding:.4em 0}
-.sign-links a:hover{color:var(--yellow)}
 @media (max-width:1020px){.foot-top{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
 @media (max-width:760px){.site-foot{padding-top:48px}.foot-top{grid-template-columns:1fr;gap:28px}.foot-legal{flex-direction:column;align-items:flex-start}.sign{flex-wrap:wrap}}
 
@@ -325,3 +321,17 @@ h1,h2,h3{overflow-wrap:break-word}
 .hf-legal a{color:var(--blue-mid)}
 .back{display:block;margin:8px auto 0;background:none;border:0;color:var(--blue-mid);font:800 .85rem Montserrat,sans-serif;cursor:pointer;padding:10px}
 @media (max-width:760px){.hero-form{padding:18px;min-height:0}.hf-fields{grid-template-columns:1fr}.hf-pane h2{font-size:1.35rem}}
+
+
+/* ======== v13: firma Le Studio (como en Repite) ======== */
+.foot-legal{align-items:center}
+.legal-left{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}
+.legal-left nav{display:flex;flex-wrap:wrap;align-items:center;gap:4px 20px}
+.to-top{background:none;border:0;padding:.5em 0;min-height:0;border-radius:0;color:#b4c3d3;font:inherit;font-size:.85rem}
+.to-top:hover{background:none;color:var(--yellow)}
+.sign{display:inline-flex;align-items:center;gap:12px;padding:0;background:none;border:0;border-radius:0;color:#b4c3d3;font-size:.85rem;text-decoration:none;transition:color .15s}
+.sign img{height:38px;width:auto;opacity:.95;transition:opacity .15s,transform .15s}
+.sign:hover{color:#fff}
+.sign:hover img{opacity:1;transform:translateY(-1px)}
+@media (max-width:760px){.sign{margin-top:4px}}
+@media (max-width:760px){.foot-legal{align-items:flex-start}}
