@@ -58,23 +58,59 @@
     wrap(h1);
   })();
 
-  /* ---------- Filtro de servicios ---------- */
+  /* ---------- Servicios ordenados por tipo de cliente ---------- */
+  var grid = document.getElementById('service-grid');
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.svc'));
+  var divider = document.getElementById('svc-divider');
+  var status = document.getElementById('svc-status');
   var tabs = document.querySelectorAll('.tab');
-  var cards = document.querySelectorAll('#service-grid .svc');
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      var f = tab.dataset.filter;
-      tabs.forEach(function (t) {
-        var on = t === tab;
-        t.classList.toggle('is-on', on);
-        t.setAttribute('aria-selected', String(on));
-      });
-      cards.forEach(function (c) { c.hidden = f !== 'all' && c.dataset.for.split(' ').indexOf(f) === -1; });
+  var CLIENT = { particulares: 'Mi vivienda', comunidades: 'Comunidad de vecinos', empresas: 'Empresa o nave' };
+  var NAMES = { particulares: 'particulares', comunidades: 'comunidades de vecinos', empresas: 'empresas y naves industriales' };
+  var currentCat = 'all';
+
+  function applyCategory(cat) {
+    var before = cards.map(function (c) { return c.getBoundingClientRect(); });
+    currentCat = cat;
+    grid.dataset.cat = cat;
+    tabs.forEach(function (t) {
+      var on = t.dataset.filter === cat;
+      t.classList.toggle('is-on', on); t.setAttribute('aria-selected', String(on));
     });
+    if (cat === 'all') {
+      cards.forEach(function (c, i) { c.style.order = i + 1; c.classList.remove('is-top', 'is-other'); });
+      divider.hidden = true;
+      status.textContent = 'Mostrando todos los servicios';
+    } else {
+      var rel = cards.filter(function (c) { return c.dataset[cat]; })
+        .sort(function (a, b) { return a.dataset[cat] - b.dataset[cat]; });
+      var rest = cards.filter(function (c) { return !c.dataset[cat]; });
+      rel.forEach(function (c, i) { c.style.order = i + 1; c.classList.toggle('is-top', i < 3); c.classList.remove('is-other'); });
+      divider.style.order = rel.length + 1; divider.hidden = !rest.length;
+      rest.forEach(function (c, i) { c.style.order = rel.length + 2 + i; c.classList.remove('is-top'); c.classList.add('is-other'); });
+      status.textContent = rel.length + ' servicios ordenados para ' + NAMES[cat] + ', y ' + rest.length + ' más disponibles';
+      // el formulario ya sabe quién eres
+      var radio = form.querySelector('input[name="cliente"][value="' + CLIENT[cat] + '"]');
+      if (radio) radio.checked = true;
+    }
+    if (!reduce) { // animación FLIP: las tarjetas se deslizan a su nueva posición
+      cards.forEach(function (c, i) {
+        var a = c.getBoundingClientRect(), dx = before[i].left - a.left, dy = before[i].top - a.top;
+        if (!dx && !dy) return;
+        c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        requestAnimationFrame(function () {
+          c.style.transition = 'transform .5s cubic-bezier(.2,.8,.2,1), opacity .3s, box-shadow .2s, border-color .2s';
+          c.style.transform = '';
+        });
+      });
+    }
+  }
+  tabs.forEach(function (t) { t.addEventListener('click', function () { applyCategory(t.dataset.filter); }); });
+  document.querySelectorAll('.cat').forEach(function (a) {
+    a.addEventListener('click', function () { applyCategory(a.dataset.cat); });
   });
 
   /* ---------- Foco de luz que sigue al ratón ---------- */
-  document.querySelectorAll('.svc, .benefits li, .steps li').forEach(function (el) {
+  document.querySelectorAll('.svc, .benefits li, .cat').forEach(function (el) {
     el.classList.add('spot');
     el.addEventListener('pointermove', function (e) {
       var r = el.getBoundingClientRect();
@@ -102,19 +138,6 @@
     var m = form.querySelector('.form-msg');
     m.className = 'form-msg ok'; m.textContent = 'Abriendo WhatsApp con tu mensaje…';
   }
-
-  // Formulario rápido del hero
-  var quick = document.getElementById('quick-form');
-  quick.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
-  quick.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var d = new FormData(quick), v = validContact(quick, d);
-    if (!v) return;
-    var text = 'Hola, soy ' + v.nombre + '. Mi teléfono es ' + v.tel + '.' +
-      (d.get('servicio') ? ' Necesito: ' + d.get('servicio') + '.' : '') + ' Quiero un presupuesto gratuito.';
-    sent(quick);
-    window.open(waLink(text), '_blank', 'noopener');
-  });
 
   /* ---------- Formulario por pasos ---------- */
   var form = document.getElementById('contact-form');
@@ -150,17 +173,18 @@
     window.open(waLink(text), '_blank', 'noopener');
   });
 
-  // "Pedir presupuesto" en una tarjeta: preselecciona el servicio y salta al paso 2
+  // "Pedir presupuesto" en una tarjeta: preselecciona el servicio (y salta pasos ya conocidos)
   document.querySelectorAll('[data-service]').forEach(function (a) {
     a.addEventListener('click', function () {
       var val = a.getAttribute('data-service');
       var radio = form.querySelector('input[name="servicio"][value="' + val.replace(/"/g, '') + '"]');
-      if (!radio) {
+      form.mensaje.value = '';
+      if (!radio || val === 'Otro') {
         radio = form.querySelector('input[name="servicio"][value="Otro"]');
-        form.mensaje.value = 'Me interesa: ' + val + '.';
+        form.mensaje.value = 'Me interesa: ' + a.getAttribute('data-title') + '.';
       }
       radio.checked = true;
-      go(2);
+      go(currentCat !== 'all' ? 3 : 2);
     });
   });
 
@@ -184,7 +208,7 @@
 
   /* ---------- Entrada suave al hacer scroll ---------- */
   if ('IntersectionObserver' in window && !reduce) {
-    var targets = document.querySelectorAll('.head, .svc, .shot, .steps li, .benefits li, .faq details, .contact-copy, .demo-copy');
+    var targets = document.querySelectorAll('.head, .benefits li, .contact-copy, .demo-copy, .cat-panel');
     var ro = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add('in'); ro.unobserve(en.target); }
