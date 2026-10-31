@@ -1,0 +1,9 @@
+{
+  "name": "grupo-urbanisima-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing de Grupo Urbanísima",
+  "scripts": {
+    "start": "npx --yes serve . -l 8080"
+  }
+}
