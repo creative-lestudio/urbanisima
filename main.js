@@ -1,15 +1,41 @@
 (function () {
   var WA = '34722115251';
-
-  // Menú móvil
+  var header = document.querySelector('.header');
   var burger = document.querySelector('.burger');
   var menu = document.getElementById('menu');
-  function closeMenu() { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
-  burger.addEventListener('click', function () {
-    var open = menu.classList.toggle('open');
+
+  // Cabecera: transparente sobre el hero, sólida al hacer scroll
+  function onScroll() { header.classList.toggle('solid', window.scrollY > 24); }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Menú móvil
+  function setMenu(open) {
+    menu.classList.toggle('open', open);
+    header.classList.toggle('menu-open', open);
     burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  }
+  burger.addEventListener('click', function () { setMenu(!menu.classList.contains('open')); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
+  // Filtro de servicios por tipo de cliente
+  var tabs = document.querySelectorAll('.tab');
+  var cards = document.querySelectorAll('#service-grid .svc');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var f = tab.dataset.filter;
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.classList.toggle('is-on', on);
+        t.setAttribute('aria-selected', String(on));
+      });
+      cards.forEach(function (c) {
+        c.hidden = f !== 'all' && c.dataset.for.split(' ').indexOf(f) === -1;
+      });
+    });
   });
-  menu.addEventListener('click', function (e) { if (e.target.tagName === 'A') closeMenu(); });
 
   // Preseleccionar servicio al pulsar "Pedir presupuesto" en una tarjeta
   var select = document.getElementById('servicio-select');
@@ -17,35 +43,37 @@
     a.addEventListener('click', function () { select.value = a.getAttribute('data-service'); });
   });
 
-  // Formularios -> WhatsApp (sin necesidad de backend)
+  // Formularios -> WhatsApp (no necesita backend)
+  function fail(form, msg, field) {
+    var m = form.querySelector('.form-msg');
+    m.className = 'form-msg';
+    m.textContent = msg;
+    if (field) { field.classList.add('is-invalid'); field.focus(); }
+  }
   function handle(form) {
+    form.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var msg = form.querySelector('.form-msg');
       var d = new FormData(form);
       var nombre = (d.get('nombre') || '').trim();
       var tel = (d.get('telefono') || '').trim();
-      msg.className = 'form-msg';
-      if (!nombre || tel.replace(/\D/g, '').length < 9) {
-        msg.textContent = 'Indica tu nombre y un teléfono válido.';
-        return;
-      }
-      if (form.privacidad && !form.privacidad.checked) {
-        msg.textContent = 'Debes aceptar la política de privacidad.';
-        return;
-      }
-      var text = 'Hola, soy ' + nombre + '. Teléfono: ' + tel + '.' +
+      form.querySelectorAll('.is-invalid').forEach(function (el) { el.classList.remove('is-invalid'); });
+      if (!nombre) return fail(form, 'Escribe tu nombre.', form.nombre);
+      if (tel.replace(/\D/g, '').length < 9) return fail(form, 'Escribe un teléfono válido de 9 cifras.', form.telefono);
+      if (form.privacidad && !form.privacidad.checked) return fail(form, 'Acepta la política de privacidad para continuar.');
+      var text = 'Hola, soy ' + nombre + '. Mi teléfono es ' + tel + '.' +
         (d.get('servicio') ? ' Necesito: ' + d.get('servicio') + '.' : '') +
         (d.get('mensaje') ? ' ' + d.get('mensaje').trim() : '') +
         ' Quiero un presupuesto gratuito.';
-      msg.textContent = 'Abriendo WhatsApp…';
-      msg.className = 'form-msg ok';
+      var m = form.querySelector('.form-msg');
+      m.className = 'form-msg ok';
+      m.textContent = 'Abriendo WhatsApp con tu mensaje…';
       window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
     });
   }
   document.querySelectorAll('form').forEach(handle);
 
-  // Contadores
+  // Contadores (el valor final ya está en el HTML; la animación es opcional)
   var els = document.querySelectorAll('[data-count]');
   if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var io = new IntersectionObserver(function (entries) {

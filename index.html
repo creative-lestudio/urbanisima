@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grupo Urbanísima | Reparación de tejados, terrazas y cubiertas en Valencia</title>
 <meta name="description" content="Reparación de tejados, impermeabilización de cubiertas y terrazas, canalones y fachadas en toda la provincia de Valencia. Presupuesto gratuito y sin compromiso.">
-<meta name="theme-color" content="#01477f">
+<meta name="theme-color" content="#01335a">
 <link rel="icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"RoofingContractor","name":"Grupo Urbanísima","telephone":"+34722115251","email":"info@grupo-urbanisima.com","address":{"@type":"PostalAddress","streetAddress":"Jacinto Labaila 8b","postalCode":"45007","addressLocality":"Valencia","addressCountry":"ES"},"areaServed":"Provincia de Valencia","url":"https://grupo-urbanisima.com/"}
@@ -17,52 +17,86 @@
 </head>
 <body>
 
+<!-- Iconos -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
+    <symbol id="i-roof" viewBox="0 0 24 24"><path d="M2 12 12 3l10 9M5 10v11h14V10M10 21v-6h4v6"/></symbol>
+    <symbol id="i-gutter" viewBox="0 0 24 24"><path d="M2 6h20v4H2zM5 10v7a3 3 0 0 0 3 3h1M17 14v2M17 19v.01"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
+    <symbol id="i-brush" viewBox="0 0 24 24"><path d="M18.4 2.6 14 7l-1.6-1.6a2 2 0 0 0-2.8 0L8 7l9 9 1.6-1.6a2 2 0 0 0 0-2.8L17 10l4.4-4.4a2.1 2.1 0 1 0-3-3zM9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7M14.5 17.5l-10-2.5"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4.1 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-floor" viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 12h18M12 3v9M8 12v9M16 12v9"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10zM2 21c0-3 1.9-5.4 5.1-6 2.4-.5 4.9-2 5.9-3"/></symbol>
+    <symbol id="i-tools" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="m15.5 12.9 1.5 9.1-5-3-5 3 1.5-9.1"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 15l2 2 4-4"/></symbol>
+    <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9zM11 3 8 9l4 13 4-13-3-6M2 9h20"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 1 10-10c0 3-2 4-4 4h-2a2 2 0 0 0-1 3.7c.7.5.5 2.3-3 2.3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16.5" cy="10" r="1"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18zM6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4"/></symbol>
+    <symbol id="i-factory" viewBox="0 0 24 24"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
 <header class="header" id="top">
-  <div class="topbar">
-    <div class="wrap">
-      <span>📍 Toda la provincia de Valencia</span>
-      <a href="tel:+34722115251">📞 722 115 251</a>
-    </div>
-  </div>
   <div class="wrap nav">
-    <a href="#top" class="brand"><img src="assets/logo.png" alt="Grupo Urbanísima" width="268" height="55"></a>
-    <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
-    <nav id="menu" class="menu">
+    <a href="#top" class="brand" aria-label="Grupo Urbanísima, inicio">
+      <img class="logo-color" src="assets/logo.png" alt="" width="268" height="55">
+      <img class="logo-white" src="assets/logo-blanco.png" alt="" width="260" height="51">
+    </a>
+    <nav id="menu" class="menu" aria-label="Principal">
       <a href="#servicios">Servicios</a>
-      <a href="#clientes">Para quién</a>
-      <a href="#ventajas">Por qué elegirnos</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#proceso">Cómo trabajamos</a>
+      <a href="#ventajas">Garantías</a>
+      <a href="#faq">Preguntas</a>
+      <a href="tel:+34722115251" class="menu-phone"><svg class="i"><use href="#i-phone"/></svg>722 115 251</a>
       <a href="#contacto" class="btn btn-sm">Pedir presupuesto</a>
     </nav>
+    <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
   </div>
 </header>
 
-<main>
+<main id="contenido">
+
 <!-- HERO -->
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">Especialistas en Valencia</p>
-      <h1>Acabamos con tus <span>goteras y humedades</span> de forma definitiva</h1>
-      <p class="lead">Reparación e impermeabilización de tejados, terrazas y cubiertas en toda la provincia de Valencia. Vamos a tu domicilio, vemos el trabajo y te damos presupuesto <strong>gratis y sin compromiso</strong>.</p>
+      <p class="pill"><svg class="i"><use href="#i-pin"/></svg> Toda la provincia de Valencia</p>
+      <h1>Goteras y humedades <em>resueltas</em> de forma definitiva</h1>
+      <p class="lead">Reparamos e impermeabilizamos tejados, terrazas y cubiertas. Vamos a tu domicilio, vemos el trabajo y te damos presupuesto <strong>gratis y sin compromiso</strong>.</p>
       <div class="cta-row">
-        <a href="#contacto" class="btn">Pedir presupuesto gratis</a>
-        <a href="tel:+34722115251" class="btn btn-ghost">📞 Llamar ahora</a>
+        <a href="#contacto" class="btn btn-lg">Pedir presupuesto gratis <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="tel:+34722115251" class="btn btn-ghost btn-lg"><svg class="i"><use href="#i-phone"/></svg> 722 115 251</a>
       </div>
-      <ul class="checks">
-        <li>+10 años de experiencia</li>
-        <li>Garantía profesional</li>
-        <li>Trabajos en altura</li>
+      <ul class="trust">
+        <li><svg class="i"><use href="#i-check"/></svg> Más de 10 años de experiencia</li>
+        <li><svg class="i"><use href="#i-check"/></svg> Trabajos en altura, con o sin andamio</li>
+        <li><svg class="i"><use href="#i-check"/></svg> Visita a domicilio sin coste</li>
       </ul>
     </div>
 
     <form class="card quick" id="quick-form" novalidate>
-      <h2>Presupuesto en 1 minuto</h2>
-      <p class="muted">Te respondemos por WhatsApp o teléfono.</p>
-      <label>Nombre<input name="nombre" type="text" autocomplete="name" required></label>
-      <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" inputmode="tel" required></label>
-      <label>¿Qué necesitas?
-        <select name="servicio" required>
+      <div class="card-head">
+        <h2>Presupuesto gratis</h2>
+        <p>Cuéntanos qué necesitas y te respondemos por WhatsApp.</p>
+      </div>
+      <div class="field"><label for="q-nombre">Nombre</label><input id="q-nombre" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre" required></div>
+      <div class="field"><label for="q-tel">Teléfono</label><input id="q-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6XX XXX XXX" required></div>
+      <div class="field"><label for="q-serv">¿Qué necesitas?</label>
+        <select id="q-serv" name="servicio">
           <option value="">Selecciona un servicio</option>
           <option>Reparación de tejados</option>
           <option>Impermeabilización de terrazas y cubiertas</option>
@@ -74,20 +108,19 @@
           <option>Jardinería</option>
           <option>Reformas</option>
         </select>
-      </label>
-      <button type="submit" class="btn btn-block">Enviar por WhatsApp</button>
+      </div>
+      <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
       <p class="form-msg" role="status" aria-live="polite"></p>
     </form>
   </div>
-</section>
 
-<!-- TRUST BAR -->
-<section class="stats" aria-label="Cifras">
-  <div class="wrap stats-grid">
-    <div><strong data-count="1200">1200</strong><span>Presupuestos realizados</span></div>
-    <div><strong data-count="2120">2120</strong><span>Clientes satisfechos</span></div>
-    <div><strong data-count="351">351</strong><span>Proyectos realizados</span></div>
-    <div><strong data-count="98">98</strong><span>Localidades visitadas</span></div>
+  <div class="wrap">
+    <div class="stats" aria-label="Grupo Urbanísima en cifras">
+      <div><strong><span data-count="1200">1200</span>+</strong><span>Presupuestos realizados</span></div>
+      <div><strong><span data-count="2120">2120</span></strong><span>Clientes satisfechos</span></div>
+      <div><strong><span data-count="351">351</span></strong><span>Proyectos realizados</span></div>
+      <div><strong><span data-count="98">98</span></strong><span>Localidades visitadas</span></div>
+    </div>
   </div>
 </section>
 
@@ -95,111 +128,156 @@
 <section class="section" id="servicios">
   <div class="wrap">
     <div class="head">
-      <p class="eyebrow">Servicios principales</p>
-      <h2>Soluciones para tu tejado, terraza y fachada</h2>
+      <p class="eyebrow">Servicios</p>
+      <h2>Todo lo que tu tejado, terraza y fachada necesitan</h2>
+      <p class="sub">Elige quién eres y te mostramos lo que hacemos para ti.</p>
     </div>
-    <div class="grid cards">
-      <article class="service">
-        <img src="assets/grupo.urbanisima.reparacion.tejados.jpg" alt="Reparación de tejados en Valencia" loading="lazy" width="475" height="301">
-        <div class="body">
+
+    <div class="tabs" role="tablist" aria-label="Tipo de cliente">
+      <button class="tab is-on" role="tab" aria-selected="true" data-filter="all">Todos</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="particulares"><svg class="i"><use href="#i-home"/></svg>Particulares</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="comunidades"><svg class="i"><use href="#i-building"/></svg>Comunidades</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="empresas"><svg class="i"><use href="#i-factory"/></svg>Empresas y naves</button>
+    </div>
+
+    <div class="bento" id="service-grid">
+      <article class="svc featured" data-for="particulares comunidades empresas">
+        <img src="assets/grupo.urbanisima.reparacion.tejados.jpg" alt="Reparación de tejado con tejas nuevas" loading="lazy" width="475" height="301">
+        <div class="svc-body">
+          <span class="ico"><svg class="i"><use href="#i-roof"/></svg></span>
           <h3>Reparación de tejados y cubiertas</h3>
-          <p>Cambio de tejas de pizarra o mixta, sustitución de tejas o uralita en tejados con humedades.</p>
-          <a href="#contacto" class="link" data-service="Reparación de tejados">Pedir presupuesto →</a>
+          <p>Cambio de tejas de pizarra o mixta y sustitución de tejas o uralita en tejados con humedades.</p>
+          <a href="#contacto" class="link" data-service="Reparación de tejados">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
         </div>
       </article>
-      <article class="service">
-        <img src="assets/rehabilitacion.tejado.valencia.00044.jpg" alt="Impermeabilización de terrazas y cubiertas" loading="lazy" width="475" height="301">
-        <div class="body">
-          <h3>Impermeabilización de terrazas y cubiertas</h3>
-          <p>Soluciones para tejados, cubiertas, terrazas, azoteas y terrados. Fin de goteras y filtraciones.</p>
-          <a href="#contacto" class="link" data-service="Impermeabilización de terrazas y cubiertas">Pedir presupuesto →</a>
-        </div>
+
+      <article class="svc" data-for="particulares comunidades empresas">
+        <span class="ico"><svg class="i"><use href="#i-drop"/></svg></span>
+        <h3>Impermeabilización de terrazas y cubiertas</h3>
+        <p>Terrazas, azoteas y terrados: acabamos con goteras y filtraciones.</p>
+        <a href="#contacto" class="link" data-service="Impermeabilización de terrazas y cubiertas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
-      <article class="service">
-        <img src="assets/grupo.urbanisima.limpieza.canalones.jpg" alt="Limpieza y montaje de canalones" loading="lazy" width="475" height="301">
-        <div class="body">
-          <h3>Montaje y limpieza de canalones</h3>
-          <p>Mantenimiento, limpieza y montaje o cambio total de canalones, canaletas y bajantes.</p>
-          <a href="#contacto" class="link" data-service="Limpieza y montaje de canalones">Pedir presupuesto →</a>
-        </div>
+
+      <article class="svc" data-for="particulares comunidades empresas">
+        <span class="ico"><svg class="i"><use href="#i-gutter"/></svg></span>
+        <h3>Montaje y limpieza de canalones</h3>
+        <p>Mantenimiento, limpieza y cambio total de canalones, canaletas y bajantes.</p>
+        <a href="#contacto" class="link" data-service="Limpieza y montaje de canalones">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
-      <article class="service">
-        <img src="assets/grupo.urbanisima.reformas.tejados.jpg" alt="Instalación de panel sandwich" loading="lazy" width="475" height="301">
-        <div class="body">
-          <h3>Instalación de panel sandwich</h3>
-          <p>Aislante térmico y acústico, impermeabilizante. Capaz de satisfacer a los más exigentes.</p>
-          <a href="#contacto" class="link" data-service="Panel sandwich">Pedir presupuesto →</a>
-        </div>
+
+      <article class="svc" data-for="comunidades empresas">
+        <span class="ico"><svg class="i"><use href="#i-layers"/></svg></span>
+        <h3>Panel sandwich</h3>
+        <p>Aislante térmico y acústico, impermeabilizante. Para los más exigentes.</p>
+        <a href="#contacto" class="link" data-service="Panel sandwich">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+      </article>
+
+      <article class="svc" data-for="particulares comunidades">
+        <span class="ico"><svg class="i"><use href="#i-brush"/></svg></span>
+        <h3>Pintura y rehabilitación de fachadas</h3>
+        <p>Fachadas, patios interiores, garajes y parkings, casas y chalets. Trabajos verticales o con andamios.</p>
+        <a href="#contacto" class="link" data-service="Pintura de fachadas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+      </article>
+
+            <article class="svc" data-for="particulares">
+        <span class="ico"><svg class="i"><use href="#i-flame"/></svg></span>
+        <h3>Deshollinado de chimeneas</h3>
+        <p>Limpieza y deshollinación de chimeneas para tu vivienda.</p>
+        <a href="#contacto" class="link" data-service="Deshollinado de chimeneas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+      </article>
+
+      <article class="svc" data-for="empresas">
+        <span class="ico"><svg class="i"><use href="#i-floor"/></svg></span>
+        <h3>Pavimentos continuos y epoxi</h3>
+        <p>Pintura epoxi en pavimento continuo para naves, locales y cocinas industriales.</p>
+        <a href="#contacto" class="link" data-service="Pavimento continuo / epoxi">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+      </article>
+
+      <article class="svc" data-for="empresas">
+        <span class="ico"><svg class="i"><use href="#i-tools"/></svg></span>
+        <h3>Reformas integrales de locales</h3>
+        <p>Reformas de locales y comercios, además de mantenimiento de cocinas industriales.</p>
+        <a href="#contacto" class="link" data-service="Reformas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+      </article>
+
+      <article class="svc" data-for="particulares">
+        <span class="ico"><svg class="i"><use href="#i-leaf"/></svg></span>
+        <h3>Diseño de jardines</h3>
+        <p>Diseño y mantenimiento de jardines, y mantenimiento de piscinas.</p>
+        <a href="#contacto" class="link" data-service="Jardinería">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
     </div>
 
-    <h3 class="sub">Y además…</h3>
-    <ul class="chips">
-      <li>Rehabilitación de fachadas</li>
-      <li>Pintura exterior de fachadas</li>
-      <li>Deshollinado de chimeneas</li>
-      <li>Pavimentos continuos / epoxi</li>
-      <li>Canalización de agua</li>
-      <li>Instalación de Velux y azoteas</li>
-      <li>Diseño de jardines</li>
-      <li>Reformas integrales de locales</li>
-      <li>Todo tipo de reformas</li>
-    </ul>
+    <p class="more">También: canalización de agua, instalación de Velux y azoteas, y todo tipo de reformas.</p>
   </div>
 </section>
 
-<!-- PARA QUIEN -->
-<section class="section alt" id="clientes">
+<!-- PROCESO -->
+<section class="section dark" id="proceso">
   <div class="wrap">
     <div class="head">
-      <p class="eyebrow">Para quién trabajamos</p>
-      <h2>Una solución para cada cliente</h2>
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2>De la primera llamada al trabajo terminado</h2>
     </div>
-    <div class="grid three">
-      <article class="audience">
-        <div class="ico">🏠</div>
-        <h3>Casas particulares</h3>
-        <p>Impermeabilización de goteras en tejados y cubiertas, limpieza y deshollinado de chimeneas, canalones, mantenimiento de piscinas.</p>
-        <a href="#contacto" class="link">Pedir presupuesto →</a>
-      </article>
-      <article class="audience">
-        <div class="ico">🏢</div>
-        <h3>Comunidades de vecinos</h3>
-        <p>Rehabilitación de fachadas, pintura y restauración de patios interiores, trabajos verticales o con andamios, pintado de garajes y parkings.</p>
-        <a href="#contacto" class="link">Pedir presupuesto →</a>
-      </article>
-      <article class="audience">
-        <div class="ico">🏭</div>
-        <h3>Empresas y naves industriales</h3>
-        <p>Reparación de cubiertas de naves, pavimentos continuos, mantenimiento de cocinas industriales y reformas de locales.</p>
-        <a href="#contacto" class="link">Pedir presupuesto →</a>
-      </article>
-    </div>
+    <ol class="steps">
+      <li>
+        <span class="step-n">1</span>
+        <h3>Visita sin coste</h3>
+        <p>Nos desplazamos a tu domicilio para ver el trabajo a realizar. Sin ningún coste.</p>
+      </li>
+      <li>
+        <span class="step-n">2</span>
+        <h3>Presupuesto sin compromiso</h3>
+        <p>Te presentamos el presupuesto y el plan de trabajo y de seguridad.</p>
+      </li>
+      <li>
+        <span class="step-n">3</span>
+        <h3>Ejecución y garantía</h3>
+        <p>Trabajamos con las mejores marcas y gestionamos las licencias de obra si se necesitan.</p>
+      </li>
+    </ol>
+    <div class="center"><a href="#contacto" class="btn btn-lg">Empezar ahora <svg class="i"><use href="#i-arrow"/></svg></a></div>
   </div>
 </section>
 
 <!-- VENTAJAS -->
 <section class="section" id="ventajas">
   <div class="wrap split">
-    <div>
+    <div class="why">
       <p class="eyebrow">Por qué Grupo Urbanísima</p>
-      <h2>Soluciones definitivas a goteras, humedades y filtraciones</h2>
-      <p class="lead dark">Estamos especializados también en trabajos verticales y en altura, con o sin andamios, en toda la provincia de Valencia.</p>
+      <h2>Soluciones definitivas, con garantías</h2>
+      <p class="sub left">Especializados también en trabajos verticales y en altura, con o sin andamios, en toda la provincia de Valencia.</p>
       <img class="team" src="assets/equipo.jpg" alt="Equipo de Grupo Urbanísima" loading="lazy" width="450" height="463">
     </div>
     <ul class="benefits">
-      <li><strong>Presupuesto gratuito</strong><span>Sin compromiso. Nos desplazamos a tu domicilio sin ningún coste.</span></li>
-      <li><strong>Los mejores materiales</strong><span>Trabajamos con las mejores marcas para un acabado perfecto.</span></li>
-      <li><strong>Garantía profesional</strong><span>Plan de trabajo y de seguridad, y documentación laboral y legal de nuestros trabajadores.</span></li>
-      <li><strong>Más de 10 años de experiencia</strong><span>Profesionales en impermeabilización, reformas y decoración.</span></li>
-      <li><strong>Licencia de obra</strong><span>Obtenemos y presentamos las licencias necesarias para tu proyecto.</span></li>
-      <li><strong>Asesoramiento en decoración</strong><span>Diseñador de interior experto en decoración y pintura.</span></li>
-      <li><strong>Amplia cobertura</strong><span>Servicio en todas las localidades de la provincia de Valencia.</span></li>
+      <li><span class="ico"><svg class="i"><use href="#i-gem"/></svg></span><div><strong>Los mejores materiales</strong><span>Trabajamos con las mejores marcas para un acabado perfecto.</span></div></li>
+      <li><span class="ico"><svg class="i"><use href="#i-shield"/></svg></span><div><strong>Garantía profesional</strong><span>Plan de trabajo y de seguridad, y documentación laboral y legal de nuestros trabajadores.</span></div></li>
+      <li><span class="ico"><svg class="i"><use href="#i-award"/></svg></span><div><strong>Más de 10 años de experiencia</strong><span>Profesionales en impermeabilización, reformas y decoración.</span></div></li>
+      <li><span class="ico"><svg class="i"><use href="#i-file"/></svg></span><div><strong>Licencia de obra</strong><span>Obtenemos y presentamos las licencias necesarias para tu proyecto.</span></div></li>
+      <li><span class="ico"><svg class="i"><use href="#i-palette"/></svg></span><div><strong>Asesoramiento en decoración</strong><span>Diseñador de interior experto en decoración y pintura.</span></div></li>
+      <li><span class="ico"><svg class="i"><use href="#i-pin"/></svg></span><div><strong>Amplia cobertura</strong><span>Servicio en todas las localidades de la provincia de Valencia.</span></div></li>
     </ul>
   </div>
 </section>
 
-<!-- CTA + CONTACTO -->
+<!-- FAQ -->
+<section class="section alt" id="faq">
+  <div class="wrap narrow">
+    <div class="head">
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h2>Lo que suelen preguntarnos</h2>
+    </div>
+    <div class="faq">
+      <details open><summary>¿El presupuesto tiene algún coste?<svg class="i"><use href="#i-chev"/></svg></summary><p>No. El presupuesto es gratuito y sin compromiso. Nos desplazamos a tu domicilio para ver el trabajo sin ningún coste.</p></details>
+      <details><summary>¿En qué zonas trabajáis?<svg class="i"><use href="#i-chev"/></svg></summary><p>En todas las localidades de la provincia de Valencia. Hemos visitado ya 98 localidades.</p></details>
+      <details><summary>¿Hacéis trabajos en altura o con andamios?<svg class="i"><use href="#i-chev"/></svg></summary><p>Sí. Somos especialistas en trabajos verticales y en altura, con o sin andamios.</p></details>
+      <details><summary>¿Os encargáis de las licencias de obra?<svg class="i"><use href="#i-chev"/></svg></summary><p>Sí. Obtenemos y presentamos las licencias de obra oportunas cuando el proyecto las necesita.</p></details>
+      <details><summary>¿Trabajáis para comunidades de vecinos y empresas?<svg class="i"><use href="#i-chev"/></svg></summary><p>Sí. Atendemos a particulares, comunidades de vecinos (fachadas, patios, garajes) y a empresas y naves industriales (cubiertas, pavimentos continuos).</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
 <section class="section contact" id="contacto">
   <div class="wrap split">
     <div class="contact-copy">
@@ -207,18 +285,18 @@
       <h2>¿Necesitas un presupuesto personalizado?</h2>
       <p class="lead">Confía en una empresa con garantías. Cuéntanos tu caso y te respondemos lo antes posible.</p>
       <ul class="contact-list">
-        <li><a href="tel:+34722115251">📞 +34 722 115 251</a></li>
-        <li><a href="https://wa.me/34722115251" target="_blank" rel="noopener">💬 WhatsApp</a></li>
-        <li><a href="mailto:info@grupo-urbanisima.com">✉️ info@grupo-urbanisima.com</a></li>
-        <li>📍 Jacinto Labaila 8b, CP 45007, Valencia</li>
+        <li><a href="tel:+34722115251"><span class="ico"><svg class="i"><use href="#i-phone"/></svg></span><span><small>Llámanos</small>+34 722 115 251</span></a></li>
+        <li><a href="https://wa.me/34722115251" target="_blank" rel="noopener"><span class="ico"><svg class="i"><use href="#i-chat"/></svg></span><span><small>WhatsApp</small>Escríbenos ahora</span></a></li>
+        <li><a href="mailto:info@grupo-urbanisima.com"><span class="ico"><svg class="i"><use href="#i-mail"/></svg></span><span><small>Email</small>info@grupo-urbanisima.com</span></a></li>
+        <li><span class="row"><span class="ico"><svg class="i"><use href="#i-pin"/></svg></span><span><small>Oficina</small>Jacinto Labaila 8b, CP 45007, Valencia</span></span></li>
       </ul>
     </div>
     <form class="card" id="contact-form" novalidate>
-      <h2>Pide tu presupuesto gratis</h2>
-      <label>Nombre<input name="nombre" type="text" autocomplete="name" required></label>
-      <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" inputmode="tel" required></label>
-      <label>Servicio
-        <select name="servicio" id="servicio-select">
+      <div class="card-head"><h2>Pide tu presupuesto gratis</h2><p>Sin compromiso. Respondemos por WhatsApp.</p></div>
+      <div class="field"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" type="text" autocomplete="name" required></div>
+      <div class="field"><label for="c-tel">Teléfono</label><input id="c-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" required></div>
+      <div class="field"><label for="servicio-select">Servicio</label>
+        <select id="servicio-select" name="servicio">
           <option value="">Selecciona un servicio</option>
           <option>Reparación de tejados</option>
           <option>Impermeabilización de terrazas y cubiertas</option>
@@ -231,10 +309,10 @@
           <option>Reformas</option>
           <option>Otro</option>
         </select>
-      </label>
-      <label>Cuéntanos qué necesitas<textarea name="mensaje" rows="3"></textarea></label>
-      <label class="check"><input type="checkbox" name="privacidad" required> Acepto la <a href="https://grupo-urbanisima.com/ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></label>
-      <button type="submit" class="btn btn-block">Enviar por WhatsApp</button>
+      </div>
+      <div class="field"><label for="c-msg">Cuéntanos qué necesitas <small>(opcional)</small></label><textarea id="c-msg" name="mensaje" rows="3"></textarea></div>
+      <label class="check"><input type="checkbox" name="privacidad" required> <span>Acepto la <a href="https://grupo-urbanisima.com/ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
+      <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
       <p class="form-msg" role="status" aria-live="polite"></p>
     </form>
   </div>
@@ -269,10 +347,13 @@
   </div>
 </footer>
 
-<!-- Barra fija de conversión en móvil -->
+<!-- Botón flotante (escritorio) -->
+<a class="fab" href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><svg class="i"><use href="#i-chat"/></svg><span>WhatsApp</span></a>
+
+<!-- Barra fija de conversión (móvil) -->
 <div class="sticky-cta">
-  <a href="tel:+34722115251" class="btn btn-ghost-dark">📞 Llamar</a>
-  <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener">💬 WhatsApp</a>
+  <a href="tel:+34722115251" class="btn btn-ghost-dark"><svg class="i"><use href="#i-phone"/></svg> Llamar</a>
+  <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg> WhatsApp</a>
 </div>
 
 <script src="main.js" defer></script>
