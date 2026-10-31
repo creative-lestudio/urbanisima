@@ -88,9 +88,6 @@
       divider.style.order = rel.length + 1; divider.hidden = !rest.length;
       rest.forEach(function (c, i) { c.style.order = rel.length + 2 + i; c.classList.remove('is-top'); c.classList.add('is-other'); });
       status.textContent = rel.length + ' servicios ordenados para ' + NAMES[cat] + ', y ' + rest.length + ' más disponibles';
-      // el formulario ya sabe quién eres
-      var radio = form.querySelector('input[name="cliente"][value="' + CLIENT[cat] + '"]');
-      if (radio) radio.checked = true;
     }
     if (!reduce) { // animación FLIP: las tarjetas se deslizan a su nueva posición
       cards.forEach(function (c, i) {
@@ -110,7 +107,7 @@
   });
 
   /* ---------- Foco de luz que sigue al ratón ---------- */
-  document.querySelectorAll('.svc, .benefits li, .cat').forEach(function (el) {
+  document.querySelectorAll('.svc, .benefits li').forEach(function (el) {
     el.classList.add('spot');
     el.addEventListener('pointermove', function (e) {
       var r = el.getBoundingClientRect();
@@ -119,7 +116,7 @@
     });
   });
 
-  /* ---------- Envío a WhatsApp ---------- */
+  /* ---------- Formularios -> WhatsApp ---------- */
   function waLink(text) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
   function fail(form, msg, field) {
     var m = form.querySelector('.form-msg');
@@ -138,54 +135,74 @@
     var m = form.querySelector('.form-msg');
     m.className = 'form-msg ok'; m.textContent = 'Abriendo WhatsApp con tu mensaje…';
   }
+  var WHO = { particulares: 'particular', comunidades: 'una comunidad de vecinos', empresas: 'una empresa / nave' };
 
-  /* ---------- Formulario por pasos ---------- */
-  var form = document.getElementById('contact-form');
-  var steps = form.querySelectorAll('.step');
-  var label = document.getElementById('step-label');
-  var fill = document.getElementById('bar-fill');
-  var back = document.getElementById('btn-back');
-  var cur = 1;
-  function go(n) {
-    cur = n;
-    steps.forEach(function (s) { s.classList.toggle('is-on', +s.dataset.step === n); });
-    label.textContent = 'Paso ' + n + ' de 3';
-    fill.style.width = (n / 3 * 100) + '%';
-    back.hidden = n === 1;
-    form.querySelector('.form-msg').textContent = '';
-  }
-  form.addEventListener('change', function (e) {
-    if (e.target.type !== 'radio') return;
-    var n = +e.target.closest('.step').dataset.step;
-    if (n < 3) setTimeout(function () { go(n + 1); }, 220);
-  });
-  back.addEventListener('click', function () { go(Math.max(1, cur - 1)); });
-  form.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
-  form.addEventListener('submit', function (e) {
+  /* Formulario de contacto (abajo): rápido, como antes */
+  var contact = document.getElementById('contact-form');
+  contact.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
+  contact.addEventListener('submit', function (e) {
     e.preventDefault();
-    var d = new FormData(form), v = validContact(form, d);
+    var d = new FormData(contact), v = validContact(contact, d);
     if (!v) return;
     var text = 'Hola, soy ' + v.nombre + '. Mi teléfono es ' + v.tel + '.' +
-      (d.get('servicio') ? ' Necesito: ' + d.get('servicio') + '.' : '') +
-      (d.get('cliente') ? ' Es para: ' + d.get('cliente') + '.' : '') +
-      (d.get('mensaje') ? ' ' + d.get('mensaje').trim() : '') + ' Quiero un presupuesto gratuito.';
-    sent(form);
+      (d.get('servicio') ? ' Necesito: ' + d.get('servicio') + '.' : '') + ' Quiero un presupuesto gratuito.';
+    sent(contact);
     window.open(waLink(text), '_blank', 'noopener');
   });
 
-  // "Pedir presupuesto" en una tarjeta: preselecciona el servicio (y salta pasos ya conocidos)
-  document.querySelectorAll('[data-service]').forEach(function (a) {
+  // "Pedir presupuesto" en una tarjeta o en el pie: elige el servicio en el formulario de contacto
+  var sel = document.getElementById('servicio-select');
+  document.querySelectorAll('[data-title]').forEach(function (a) {
     a.addEventListener('click', function () {
-      var val = a.getAttribute('data-service');
-      var radio = form.querySelector('input[name="servicio"][value="' + val.replace(/"/g, '') + '"]');
-      form.mensaje.value = '';
-      if (!radio || val === 'Otro') {
-        radio = form.querySelector('input[name="servicio"][value="Otro"]');
-        form.mensaje.value = 'Me interesa: ' + a.getAttribute('data-title') + '.';
-      }
-      radio.checked = true;
-      go(currentCat !== 'all' ? 3 : 2);
+      var t = a.getAttribute('data-title'), ok = false;
+      Array.prototype.forEach.call(sel.options, function (o) { if (o.value === t || o.text === t) ok = true; });
+      sel.value = ok ? t : 'Otro';
     });
+  });
+
+  /* Formulario interactivo del hero (arriba): 2 pasos, opciones según el perfil */
+  var hero = document.getElementById('hero-form');
+  var panes = hero.querySelectorAll('.hf-pane');
+  var hfStep = document.getElementById('hf-step'), hfFill = document.getElementById('hf-fill');
+  var chips = document.getElementById('hf-chips'), hfSub = document.getElementById('hf-sub2');
+  function heroGo(n) {
+    panes.forEach(function (p) { p.classList.toggle('is-on', +p.dataset.pane === n); });
+    hfStep.textContent = 'Paso ' + n + ' de 2';
+    hfFill.style.width = (n * 50) + '%';
+    hero.querySelector('.form-msg').textContent = '';
+  }
+  function buildChips(cat) {
+    var top = cards.filter(function (c) { return c.dataset[cat]; })
+      .sort(function (a, b) { return a.dataset[cat] - b.dataset[cat]; }).slice(0, 5)
+      .map(function (c) { return c.querySelector('h3').textContent; });
+    top.push('Otro');
+    chips.innerHTML = '';
+    top.forEach(function (t, i) {
+      var l = document.createElement('label'); l.className = 'hf-chip';
+      var inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'servicio'; inp.value = t; inp.checked = i === 0;
+      var sp = document.createElement('span'); sp.textContent = t;
+      l.appendChild(inp); l.appendChild(sp); chips.appendChild(l);
+    });
+    hfSub.textContent = 'Lo más pedido por ' + NAMES[cat] + '. Elige uno.';
+  }
+  hero.querySelectorAll('.cat').forEach(function (b) {
+    b.addEventListener('click', function () {
+      applyCategory(b.dataset.cat);
+      buildChips(b.dataset.cat);
+      heroGo(2);
+    });
+  });
+  document.getElementById('hf-back').addEventListener('click', function () { heroGo(1); });
+  hero.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
+  hero.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = new FormData(hero), v = validContact(hero, d);
+    if (!v) return;
+    var text = 'Hola, soy ' + v.nombre + (currentCat !== 'all' ? ' (' + WHO[currentCat] + ')' : '') +
+      '. Mi teléfono es ' + v.tel + '.' + (d.get('servicio') ? ' Necesito: ' + d.get('servicio') + '.' : '') +
+      ' Quiero un presupuesto gratuito.';
+    sent(hero);
+    window.open(waLink(text), '_blank', 'noopener');
   });
 
   /* ---------- Contadores ---------- */
@@ -208,7 +225,7 @@
 
   /* ---------- Entrada suave al hacer scroll ---------- */
   if ('IntersectionObserver' in window && !reduce) {
-    var targets = document.querySelectorAll('.head, .benefits li, .contact-copy, .demo-copy, .cat-panel');
+    var targets = document.querySelectorAll('.head, .benefits li, .contact-copy, .demo-copy');
     var ro = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add('in'); ro.unobserve(en.target); }

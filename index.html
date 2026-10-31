@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.skip{position:absolute;left:-999px;top:8px}</style>
-<link rel="stylesheet" href="styles.css?v=11">
+<link rel="stylesheet" href="styles.css?v=12">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"RoofingContractor","name":"Grupo Urbanísima","telephone":"+34722115251","email":"info@grupo-urbanisima.com","address":{"@type":"PostalAddress","streetAddress":"Jacinto Labaila 8b","postalCode":"45007","addressLocality":"Valencia","addressCountry":"ES"},"areaServed":"Provincia de Valencia","url":"https://grupo-urbanisima.com/"}
 </script>
@@ -90,24 +90,45 @@
       </ul>
     </div>
 
-    <div class="cat-panel" aria-labelledby="cat-title">
-      <h2 id="cat-title">¿Quién eres? <small>Te mostramos lo más útil para ti</small></h2>
-      <a href="#servicios" class="cat" data-cat="particulares">
-        <span class="ico"><svg class="i"><use href="#i-home"/></svg></span>
-        <span class="cat-t"><strong>Particulares</strong><small>Tejados, terrazas, canalones, fachadas, chimeneas, jardines y piscinas</small></span>
-        <svg class="i go"><use href="#i-arrow"/></svg>
-      </a>
-      <a href="#servicios" class="cat" data-cat="comunidades">
-        <span class="ico"><svg class="i"><use href="#i-building"/></svg></span>
-        <span class="cat-t"><strong>Comunidades de vecinos</strong><small>Cubiertas, fachadas y patios, garajes y parkings, trabajos verticales</small></span>
-        <svg class="i go"><use href="#i-arrow"/></svg>
-      </a>
-      <a href="#servicios" class="cat" data-cat="empresas">
-        <span class="ico"><svg class="i"><use href="#i-factory"/></svg></span>
-        <span class="cat-t"><strong>Empresas y naves industriales</strong><small>Cubiertas de naves, panel sandwich, pavimentos epoxi, locales y cocinas</small></span>
-        <svg class="i go"><use href="#i-arrow"/></svg>
-      </a>
-    </div>
+    <form class="hero-form" id="hero-form" novalidate>
+      <div class="hf-top"><span class="hf-step" id="hf-step">Paso 1 de 2</span><span class="hf-bar"><i id="hf-fill"></i></span></div>
+
+      <div class="hf-pane is-on" data-pane="1">
+        <h2>¿Quién eres?</h2>
+        <p class="hf-sub">Te mostramos lo más útil para ti.</p>
+        <div class="hf-cats">
+          <button type="button" class="cat" data-cat="particulares">
+            <span class="ico"><svg class="i"><use href="#i-home"/></svg></span>
+            <span class="cat-t"><strong>Particulares</strong><small>Casa, chalet o piso</small></span>
+            <svg class="i go"><use href="#i-arrow"/></svg>
+          </button>
+          <button type="button" class="cat" data-cat="comunidades">
+            <span class="ico"><svg class="i"><use href="#i-building"/></svg></span>
+            <span class="cat-t"><strong>Comunidades de vecinos</strong><small>Edificios, garajes y patios</small></span>
+            <svg class="i go"><use href="#i-arrow"/></svg>
+          </button>
+          <button type="button" class="cat" data-cat="empresas">
+            <span class="ico"><svg class="i"><use href="#i-factory"/></svg></span>
+            <span class="cat-t"><strong>Empresas y naves</strong><small>Naves, locales y comercios</small></span>
+            <svg class="i go"><use href="#i-arrow"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="hf-pane" data-pane="2">
+        <h2>¿Qué necesitas?</h2>
+        <p class="hf-sub" id="hf-sub2">Elige un servicio.</p>
+        <div class="hf-chips" id="hf-chips" role="radiogroup" aria-label="Servicio"></div>
+        <div class="hf-fields">
+          <div class="field"><label for="h-nombre">Nombre</label><input id="h-nombre" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre"></div>
+          <div class="field"><label for="h-tel">Teléfono</label><input id="h-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6XX XXX XXX"></div>
+        </div>
+        <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Pedir presupuesto por WhatsApp</button>
+        <p class="hf-legal">Gratis y sin compromiso. Al enviar aceptas la <a href="https://grupo-urbanisima.com/ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a>.</p>
+        <button type="button" class="back" id="hf-back">← Cambiar perfil</button>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </div>
+    </form>
   </div>
 
   <div class="wrap">
@@ -144,7 +165,7 @@
         <h3>Reparación de tejados y cubiertas</h3>
         <p>Cambio de tejas de pizarra o mixta y sustitución de tejas o uralita en tejados con humedades.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li><li class="c-c">Comunidades</li><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Reparación de tejados" data-title="Reparación de tejados y cubiertas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Reparación de tejados y cubiertas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="2" data-comunidades="1" data-empresas="1">
         <span class="tag">Recomendado</span>
@@ -152,7 +173,7 @@
         <h3>Impermeabilización de terrazas y cubiertas</h3>
         <p>Terrazas, azoteas, terrados, tejados y cubiertas. Fin de goteras y filtraciones.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li><li class="c-c">Comunidades</li><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Impermeabilización de terrazas y cubiertas" data-title="Impermeabilización de terrazas y cubiertas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Impermeabilización de terrazas y cubiertas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="3" data-comunidades="5" data-empresas="5">
         <span class="tag">Recomendado</span>
@@ -160,7 +181,7 @@
         <h3>Montaje y limpieza de canalones</h3>
         <p>Limpieza, mantenimiento y cambio total de canalones, canaletas y bajantes.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li><li class="c-c">Comunidades</li><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Limpieza y montaje de canalones" data-title="Montaje y limpieza de canalones">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Montaje y limpieza de canalones">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="4" data-comunidades="2">
         <span class="tag">Recomendado</span>
@@ -168,7 +189,7 @@
         <h3>Pintura y rehabilitación de fachadas</h3>
         <p>Fachadas, patios interiores, casas y chalets. Pintura exterior.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li><li class="c-c">Comunidades</li></ul>
-        <a href="#contacto" class="link" data-service="Pintura de fachadas" data-title="Pintura y rehabilitación de fachadas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Pintura y rehabilitación de fachadas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="8" data-comunidades="4" data-empresas="4">
         <span class="tag">Recomendado</span>
@@ -176,7 +197,7 @@
         <h3>Trabajos verticales y en altura</h3>
         <p>Con o sin andamios, en toda la provincia de Valencia.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li><li class="c-c">Comunidades</li><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Trabajos verticales" data-title="Trabajos verticales y en altura">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Trabajos verticales y en altura">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-comunidades="6">
         <span class="tag">Recomendado</span>
@@ -184,7 +205,7 @@
         <h3>Pintado de garajes y parkings</h3>
         <p>Renovación de garajes, parkings y zonas comunes.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-c">Comunidades</li></ul>
-        <a href="#contacto" class="link" data-service="Pintura de fachadas" data-title="Pintado de garajes y parkings">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Pintado de garajes y parkings">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-comunidades="7" data-empresas="3">
         <span class="tag">Recomendado</span>
@@ -192,7 +213,7 @@
         <h3>Panel sandwich</h3>
         <p>Aislante térmico y acústico, impermeabilizante. Montaje e instalación.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-c">Comunidades</li><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Panel sandwich" data-title="Panel sandwich">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Panel sandwich">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-empresas="6">
         <span class="tag">Recomendado</span>
@@ -200,7 +221,7 @@
         <h3>Pavimentos continuos y epoxi</h3>
         <p>Pintura epoxi en pavimento continuo para naves, locales y garajes.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Pavimento continuo / epoxi" data-title="Pavimentos continuos y epoxi">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Pavimentos continuos y epoxi">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="5">
         <span class="tag">Recomendado</span>
@@ -208,7 +229,7 @@
         <h3>Deshollinado de chimeneas</h3>
         <p>Limpieza y deshollinación de chimeneas.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li></ul>
-        <a href="#contacto" class="link" data-service="Otro" data-title="Deshollinado de chimeneas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Deshollinado de chimeneas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="6">
         <span class="tag">Recomendado</span>
@@ -216,7 +237,7 @@
         <h3>Jardinería y diseño de jardines</h3>
         <p>Diseño y mantenimiento de jardines.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li></ul>
-        <a href="#contacto" class="link" data-service="Otro" data-title="Jardinería y diseño de jardines">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Jardinería y diseño de jardines">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="7">
         <span class="tag">Recomendado</span>
@@ -224,7 +245,7 @@
         <h3>Mantenimiento de piscinas</h3>
         <p>Mantenimiento y limpieza de piscinas.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li></ul>
-        <a href="#contacto" class="link" data-service="Otro" data-title="Mantenimiento de piscinas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Mantenimiento de piscinas">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-empresas="7">
         <span class="tag">Recomendado</span>
@@ -232,7 +253,7 @@
         <h3>Reformas integrales de locales</h3>
         <p>Reformas de locales y comercios.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Reformas" data-title="Reformas integrales de locales">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Reformas integrales de locales">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-empresas="8">
         <span class="tag">Recomendado</span>
@@ -240,7 +261,7 @@
         <h3>Mantenimiento de cocinas industriales</h3>
         <p>Mantenimiento para cocinas de empresas y comercios.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Otro" data-title="Mantenimiento de cocinas industriales">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Mantenimiento de cocinas industriales">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <article class="svc" data-particulares="9" data-comunidades="8" data-empresas="9">
         <span class="tag">Recomendado</span>
@@ -248,7 +269,7 @@
         <h3>Reformas en general</h3>
         <p>Todo tipo de reformas: canalización de agua, Velux y azoteas.</p>
         <ul class="cats" aria-label="Para quién"><li class="c-p">Particulares</li><li class="c-c">Comunidades</li><li class="c-e">Empresas y naves</li></ul>
-        <a href="#contacto" class="link" data-service="Reformas" data-title="Reformas en general">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+        <a href="#contacto" class="link" data-title="Reformas en general">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
       </article>
       <p class="svc-divider" id="svc-divider" hidden>También disponibles</p>
     </div>
@@ -316,21 +337,32 @@
         <li><span class="row"><span class="ico"><svg class="i"><use href="#i-pin"/></svg></span><span><small>Oficina</small>Jacinto Labaila 8b, CP 45007, Valencia</span></span></li>
       </ul>
     </div>
-    <form class="card stepper" id="contact-form" novalidate>
-      <div class="card-head"><h2>Pide tu presupuesto gratis</h2><p>3 pasos rápidos. Sin compromiso.</p></div>
-      <div class="bar"><span id="bar-fill"></span></div>
-      <p class="step-label" id="step-label">Paso 1 de 3</p>
-
-      <fieldset class="step is-on" data-step="1"><legend>¿Qué necesitas?</legend><div class="opts"><label class="opt"><input type="radio" name="servicio" value="Reparación de tejados"><span>Reparar mi tejado</span></label><label class="opt"><input type="radio" name="servicio" value="Impermeabilización de terrazas y cubiertas"><span>Impermeabilizar terraza o cubierta</span></label><label class="opt"><input type="radio" name="servicio" value="Limpieza y montaje de canalones"><span>Canalones</span></label><label class="opt"><input type="radio" name="servicio" value="Pintura de fachadas"><span>Fachada o pintura</span></label><label class="opt"><input type="radio" name="servicio" value="Panel sandwich"><span>Panel sandwich</span></label><label class="opt"><input type="radio" name="servicio" value="Pavimento continuo / epoxi"><span>Pavimento epoxi</span></label><label class="opt"><input type="radio" name="servicio" value="Reformas"><span>Reformas</span></label><label class="opt"><input type="radio" name="servicio" value="Otro"><span>Otra cosa</span></label></div></fieldset>
-      <fieldset class="step" data-step="2"><legend>¿Para quién es?</legend><div class="opts one"><label class="opt big"><input type="radio" name="cliente" value="Mi vivienda"><span><svg class="i"><use href="#i-home"/></svg>Mi vivienda</span></label><label class="opt big"><input type="radio" name="cliente" value="Comunidad de vecinos"><span><svg class="i"><use href="#i-building"/></svg>Comunidad de vecinos</span></label><label class="opt big"><input type="radio" name="cliente" value="Empresa o nave"><span><svg class="i"><use href="#i-factory"/></svg>Empresa o nave</span></label></div></fieldset>
-      <fieldset class="step" data-step="3"><legend>¿Cómo te contactamos?</legend>
-        <div class="field"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" type="text" autocomplete="name" required></div>
-        <div class="field"><label for="c-tel">Teléfono</label><input id="c-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6XX XXX XXX" required></div>
-        <div class="field"><label for="c-msg">Cuéntanos más <small>(opcional)</small></label><textarea id="c-msg" name="mensaje" rows="2"></textarea></div>
-        <label class="check"><input type="checkbox" name="privacidad" required> <span>Acepto la <a href="https://grupo-urbanisima.com/ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
-        <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
-      </fieldset>
-      <div class="step-nav"><button type="button" class="back" id="btn-back" hidden>← Atrás</button></div>
+    <form class="card" id="contact-form" novalidate>
+      <div class="card-head"><h2>Presupuesto gratis</h2><p>Cuéntanos qué necesitas y te respondemos por WhatsApp.</p></div>
+      <div class="field"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre" required></div>
+      <div class="field"><label for="c-tel">Teléfono</label><input id="c-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6XX XXX XXX" required></div>
+      <div class="field"><label for="servicio-select">¿Qué necesitas?</label>
+        <select id="servicio-select" name="servicio">
+          <option value="">Selecciona un servicio</option>
+          <option>Reparación de tejados y cubiertas</option>
+          <option>Impermeabilización de terrazas y cubiertas</option>
+          <option>Montaje y limpieza de canalones</option>
+          <option>Pintura y rehabilitación de fachadas</option>
+          <option>Trabajos verticales y en altura</option>
+          <option>Pintado de garajes y parkings</option>
+          <option>Panel sandwich</option>
+          <option>Pavimentos continuos y epoxi</option>
+          <option>Deshollinado de chimeneas</option>
+          <option>Jardinería y diseño de jardines</option>
+          <option>Mantenimiento de piscinas</option>
+          <option>Reformas integrales de locales</option>
+          <option>Mantenimiento de cocinas industriales</option>
+          <option>Reformas en general</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <label class="check"><input type="checkbox" name="privacidad" required> <span>Acepto la <a href="https://grupo-urbanisima.com/ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
+      <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
       <p class="form-msg" role="status" aria-live="polite"></p>
     </form>
   </div>
@@ -358,10 +390,10 @@
 
     <nav class="foot-col" aria-label="Servicios principales">
       <h4>Más solicitados</h4>
-      <a href="#contacto" data-service="Reparación de tejados" data-title="Reparación de tejados y cubiertas">Reparación de tejados</a>
-      <a href="#contacto" data-service="Impermeabilización de terrazas y cubiertas" data-title="Impermeabilización de terrazas y cubiertas">Impermeabilización</a>
-      <a href="#contacto" data-service="Limpieza y montaje de canalones" data-title="Montaje y limpieza de canalones">Limpieza de canalones</a>
-      <a href="#contacto" data-service="Pintura de fachadas" data-title="Pintura y rehabilitación de fachadas">Fachadas</a>
+      <a href="#contacto" data-title="Reparación de tejados y cubiertas">Reparación de tejados</a>
+      <a href="#contacto" data-title="Impermeabilización de terrazas y cubiertas">Impermeabilización</a>
+      <a href="#contacto" data-title="Montaje y limpieza de canalones">Limpieza de canalones</a>
+      <a href="#contacto" data-title="Pintura y rehabilitación de fachadas">Fachadas</a>
     </nav>
 
     <div class="foot-col">
@@ -404,6 +436,6 @@
   <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg> WhatsApp</a>
 </div>
 
-<script src="main.js?v=11" defer></script>
+<script src="main.js?v=12" defer></script>
 </body>
 </html>
