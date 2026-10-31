@@ -90,4 +90,16 @@
     }, { threshold: .6 });
     els.forEach(function (el) { io.observe(el); });
   }
+
+  // Entrada suave de elementos al hacer scroll
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var targets = document.querySelectorAll('.head, .svc, .shot, .steps li, .benefits li, .faq details, .contact-copy');
+    document.documentElement.classList.add('js');
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); ro.unobserve(en.target); }
+      });
+    }, { threshold: .1, rootMargin: '0px 0px -30px 0px' });
+    targets.forEach(function (el) { el.classList.add('reveal'); ro.observe(el); });
+  }
 })();

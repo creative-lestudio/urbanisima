@@ -198,7 +198,7 @@ label.check a{color:var(--blue-mid)}
   .steps{grid-template-columns:1fr}
   .stats{grid-template-columns:repeat(2,1fr);row-gap:20px}
   .stats>div:nth-child(3){border-left:0}
-  .menu a:nth-child(-n+4){display:none}
+  .menu a:nth-child(-n+5){display:none}
 }
 /* Mobile */
 @media (max-width:760px){
@@ -207,7 +207,7 @@ label.check a{color:var(--blue-mid)}
   .burger{display:block}
   .menu{position:fixed;inset:var(--head) 0 auto 0;background:#fff;flex-direction:column;align-items:stretch;gap:0;padding:8px 16px 20px;box-shadow:0 20px 30px -10px rgba(2,36,64,.3);display:none}
   .menu.open{display:flex}
-  .menu a:not(.btn),.menu a:nth-child(-n+4){display:flex;color:var(--blue);padding:15px 4px;border-bottom:1px solid var(--line);font-size:1rem;opacity:1}
+  .menu a:not(.btn),.menu a:nth-child(-n+5){display:flex;color:var(--blue);padding:15px 4px;border-bottom:1px solid var(--line);font-size:1rem;opacity:1}
   .menu .menu-phone{display:none!important}
   .menu .btn{margin-top:14px}
   .header.menu-open{background:#fff}
@@ -230,3 +230,51 @@ label.check a{color:var(--blue-mid)}
   .sticky-cta .btn{min-height:46px;padding:.7em .5em}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* ---- Mejoras visuales v3 ---- */
+/* Remate en pendiente (eco del tejado del logo) */
+.section.dark,.contact{position:relative}
+.section.dark::before,.contact::before{content:"";position:absolute;top:-1px;left:0;right:0;height:clamp(28px,4vw,56px);background:var(--bg);clip-path:polygon(0 0,100% 0,0 100%)}
+.contact::before{background:var(--alt)}
+.section.dark>.wrap,.contact>.wrap{position:relative}
+
+/* Galería */
+.gallery{display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:1fr 1fr;gap:20px}
+.shot{position:relative;margin:0;border-radius:var(--r);overflow:hidden;background:var(--blue-dark);box-shadow:var(--shadow);min-height:220px}
+.shot.tall{grid-row:span 2}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.shot:hover img{transform:scale(1.05)}
+.shot figcaption{position:absolute;inset:auto 0 0 0;padding:56px 22px 20px;background:linear-gradient(transparent,rgba(2,36,64,.9));color:#fff;display:flex;flex-direction:column;gap:2px}
+.shot figcaption strong{font:700 1.05rem Montserrat,sans-serif}
+.shot figcaption span{font-size:.88rem;opacity:.85}
+
+/* Hero: detalle de refuerzo */
+.hero h1{text-shadow:0 2px 24px rgba(2,36,64,.35)}
+.hero .card{position:relative}
+.hero .card::before{content:"Gratis";position:absolute;top:-14px;right:22px;background:var(--yellow);color:var(--blue-deep);font:800 .78rem Montserrat,sans-serif;text-transform:uppercase;letter-spacing:.1em;padding:.4em 1em;border-radius:999px;box-shadow:0 6px 14px -4px rgba(254,194,0,.6)}
+
+/* Botón con brillo */
+.btn:not(.btn-ghost):not(.btn-ghost-dark):not(.btn-sm){position:relative;overflow:hidden}
+.btn:not(.btn-ghost):not(.btn-ghost-dark):not(.btn-sm)::after{content:"";position:absolute;inset:0 auto 0 -60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);animation:shine 4.5s ease-in-out infinite}
+@keyframes shine{0%,70%{left:-60%}100%{left:130%}}
+
+/* Entrada al hacer scroll: solo si hay JS; sin JS todo es visible */
+.js .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.js .reveal.in{opacity:1;transform:none}
+
+/* Tarjetas: acento al hover */
+.svc:not(.featured):hover .ico{background:var(--yellow)}
+.ico{transition:background .2s}
+.steps li{transition:transform .2s,background .2s}
+.steps li:hover{transform:translateY(-4px);background:rgba(255,255,255,.1)}
+
+@media (max-width:1020px){
+  .gallery{grid-template-columns:1fr 1fr}
+  .shot.tall{grid-column:span 2;grid-row:auto;aspect-ratio:16/9}
+}
+@media (max-width:760px){
+  .gallery{grid-template-columns:1fr}
+  .shot.tall{grid-column:auto;aspect-ratio:4/3}
+  .shot{aspect-ratio:4/3}
+}
+@media (prefers-reduced-motion:reduce){.btn::after{display:none}.js .reveal{opacity:1;transform:none}}
