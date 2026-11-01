@@ -463,3 +463,53 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .svc.is-top h3{padding-right:0}
   .svc-grid{row-gap:14px}
 }
+
+/* ======== v23: formulario con texto y dos botones, cookies, páginas legales ======== */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row>.field{min-width:0}
+textarea{resize:vertical;min-height:112px;line-height:1.5}
+.hint{font-size:.8rem;color:var(--muted);margin:6px 0 0;line-height:1.45}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.send-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.send-row .btn{width:100%;padding-inline:.8em}
+.btn-mail{background:var(--blue);color:#fff;box-shadow:0 8px 20px -8px rgba(1,71,127,.6)}
+.btn-mail:hover{background:var(--blue-dark)}
+.btn:disabled{opacity:.6;cursor:wait;transform:none}
+.send-note{font-size:.82rem;color:var(--muted);text-align:center;margin:12px 0 0}
+.is-busy{pointer-events:none}
+.svc.is-pick{border-color:var(--yellow);box-shadow:0 0 0 2px var(--yellow),var(--shadow)}
+@media (max-width:760px){
+  .field-row{grid-template-columns:1fr}
+  .send-row{grid-template-columns:1fr}
+}
+
+/* Banner de cookies (solo aparece si hay etiqueta de Google configurada) */
+.cookie-bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:80;max-width:720px;margin-inline:auto;background:var(--blue-deep);color:#e6eef6;border-radius:16px;padding:16px 18px;box-shadow:0 20px 50px -10px rgba(0,0,0,.55);display:flex;gap:14px 20px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:.88rem;line-height:1.45}
+.cookie-bar p{margin:0;flex:1 1 280px}
+.cookie-bar a{color:var(--yellow)}
+.cookie-bar div{display:flex;gap:8px}
+.cookie-bar button{font:800 .85rem Montserrat,sans-serif;border-radius:999px;padding:.7em 1.3em;cursor:pointer;min-height:44px;border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff}
+.cookie-bar .ck-yes{background:var(--yellow);border-color:var(--yellow);color:var(--blue-deep)}
+@media (max-width:760px){.cookie-bar{bottom:calc(86px + env(safe-area-inset-bottom))}.cookie-bar div{width:100%}.cookie-bar button{flex:1}}
+
+/* Páginas legales y "gracias" */
+.doc-page{background:var(--bg)}
+.doc-header{background:#fff;box-shadow:0 1px 0 var(--line)}
+.doc-header .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+.doc-header img{height:40px;width:auto}
+.doc{padding:48px 0 72px}
+.doc h1{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:1em}
+.doc h2{font-size:1.1rem;margin:1.8em 0 .5em;letter-spacing:0}
+.doc p{color:#2c3946;max-width:75ch}
+.thanks{text-align:center;padding:72px 0 96px}
+.thanks p{margin-inline:auto}
+.thanks-ico{display:grid;place-items:center;width:84px;height:84px;margin:0 auto 22px;border-radius:50%;background:#e6f6ec;color:#188f48}
+.lead-d{font-size:1.15rem}
+.back-link{color:var(--blue-mid);font-weight:700;text-decoration:none}
+.doc-foot{background:var(--blue-deep);color:#b4c3d3;font-size:.85rem;padding:22px 0}
+.doc-foot .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:space-between}
+.doc-foot nav{display:flex;gap:6px 20px;flex-wrap:wrap}
+.doc-foot a{color:#b4c3d3;text-decoration:none;padding:.4em 0}
+.doc-foot a:hover{color:var(--yellow)}
+
+.doc h1{color:var(--blue-dark)}

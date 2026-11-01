@@ -1,5 +1,6 @@
 (function () {
-  var WA = '34722115251';
+  var CFG = window.URBANISIMA_CONFIG || {};
+  var WA = CFG.WHATSAPP || '34722115251';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var header = document.querySelector('.header');
   var burger = document.querySelector('.burger');
@@ -59,16 +60,15 @@
     wrap(h1);
   })();
 
-  /* ---------- Servicios ordenados por tipo de cliente ---------- */
+  /* ---------- Servicios: siempre los 14, ordenados por probabilidad según el perfil ---------- */
   var grid = document.getElementById('service-grid');
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.svc'));
-  var divider = document.getElementById('svc-divider');
   var status = document.getElementById('svc-status');
   var tabs = document.querySelectorAll('.tab');
-  var CLIENT = { particulares: 'Mi vivienda', comunidades: 'Comunidad de vecinos', empresas: 'Empresa o nave' };
   var NAMES = { particulares: 'particulares', comunidades: 'comunidades de vecinos', empresas: 'empresas y naves industriales' };
-  var currentCat = 'all';
+  var currentCat = 'all', pickSlug = null;
 
+  function titleOf(c) { return c.querySelector('h3').textContent; }
   function applyCategory(cat) {
     var before = cards.map(function (c) { return c.getBoundingClientRect(); });
     currentCat = cat;
@@ -77,22 +77,23 @@
       var on = t.dataset.filter === cat;
       t.classList.toggle('is-on', on); t.setAttribute('aria-selected', String(on));
     });
-    if (cat === 'all') {
-      cards.forEach(function (c, i) { c.style.order = i + 1; c.classList.remove('is-top', 'is-other'); });
-      divider.hidden = true;
-      status.textContent = 'Mostrando todos los servicios';
-    } else {
-      var rel = cards.filter(function (c) { return c.dataset[cat]; })
-        .sort(function (a, b) { return a.dataset[cat] - b.dataset[cat]; });
-      var rest = cards.filter(function (c) { return !c.dataset[cat]; });
-      rel.forEach(function (c, i) { c.style.order = i + 1; c.classList.toggle('is-top', i < 3); c.classList.remove('is-other'); });
-      divider.style.order = rel.length + 1; divider.hidden = !rest.length;
-      rest.forEach(function (c, i) { c.style.order = rel.length + 2 + i; c.classList.remove('is-top'); c.classList.add('is-other'); });
-      status.textContent = rel.length + ' servicios ordenados para ' + NAMES[cat] + ', y ' + rest.length + ' más disponibles';
+    var sorted = cat === 'all' ? cards.slice() : cards.slice().sort(function (a, b) { return a.dataset[cat] - b.dataset[cat]; });
+    sorted.forEach(function (c, i) {
+      c.style.order = i + 1;
+      c.classList.toggle('is-top', cat !== 'all' && i < 3);
+      c.classList.remove('is-pick');
+      c.querySelector('.tag').textContent = 'Más solicitado';
+    });
+    var pick = pickSlug && grid.querySelector('[data-slug="' + pickSlug + '"]');
+    if (pick) { // servicio que llega desde un anuncio: va primero
+      pick.style.order = 0; pick.classList.add('is-pick', 'is-top'); pick.querySelector('.tag').textContent = 'Lo que buscas';
     }
+    status.textContent = cat === 'all'
+      ? 'Mostrando los 14 servicios'
+      : 'Los 14 servicios, de más a menos solicitados por ' + NAMES[cat];
     if (!reduce) { // animación FLIP: las tarjetas se deslizan a su nueva posición
       cards.forEach(function (c, i) {
-        var a = c.getBoundingClientRect(), dx = before[i].left - a.left, dy = before[i].top - a.top;
+        var a2 = c.getBoundingClientRect(), dx = before[i].left - a2.left, dy = before[i].top - a2.top;
         if (!dx && !dy) return;
         c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
         requestAnimationFrame(function () {
@@ -117,48 +118,99 @@
     });
   });
 
-  /* ---------- Formularios -> WhatsApp ---------- */
+  /* ---------- Formularios: WhatsApp / correo, siempre con copia al correo de la empresa ---------- */
+  var WHO = { particulares: 'Particular', comunidades: 'Comunidad de vecinos', empresas: 'Empresa / nave industrial' };
   function waLink(text) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
   function fail(form, msg, field) {
     var m = form.querySelector('.form-msg');
     m.className = 'form-msg'; m.textContent = msg;
     if (field) { field.classList.add('is-invalid'); field.focus(); }
   }
-  function validContact(form, d) {
+  function say(form, msg) { var m = form.querySelector('.form-msg'); m.className = 'form-msg ok'; m.textContent = msg; }
+  function busy(form, on) {
+    form.querySelectorAll('button[type=submit]').forEach(function (b) { b.disabled = on; });
+    form.classList.toggle('is-busy', on);
+  }
+  function validContact(form, d, needMessage) {
     var nombre = (d.get('nombre') || '').trim(), tel = (d.get('telefono') || '').trim();
+    var email = (d.get('email') || '').trim(), msg = (d.get('mensaje') || '').trim();
     form.querySelectorAll('.is-invalid').forEach(function (el) { el.classList.remove('is-invalid'); });
-    if (!nombre) { fail(form, 'Escribe tu nombre.', form.nombre); return null; }
+    if (nombre.length < 2) { fail(form, 'Escribe tu nombre.', form.nombre); return null; }
     if (tel.replace(/\D/g, '').length < 9) { fail(form, 'Escribe un teléfono válido de 9 cifras.', form.telefono); return null; }
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { fail(form, 'Revisa el correo: parece incompleto.', form.email); return null; }
+    if (needMessage && msg.length < 10) { fail(form, 'Cuéntanos brevemente qué necesitas (mínimo 10 caracteres).', form.mensaje); return null; }
     if (form.privacidad && !form.privacidad.checked) { fail(form, 'Acepta la política de privacidad para continuar.'); return null; }
-    return { nombre: nombre, tel: tel };
+    return { nombre: nombre, tel: tel, email: email, msg: msg };
   }
-  function sent(form) {
-    var m = form.querySelector('.form-msg');
-    m.className = 'form-msg ok'; m.textContent = 'Abriendo WhatsApp con tu mensaje…';
+  function payload(origen, canal, d, v) {
+    var p = {
+      origen: origen, canal: canal, nombre: v.nombre, telefono: v.tel, email: v.email,
+      servicio: d.get('servicio') || '', perfil: currentCat !== 'all' ? WHO[currentCat] : '',
+      mensaje: v.msg, pagina: location.href, web: d.get('web') || ''
+    };
+    var a = window.UrbAttribution ? window.UrbAttribution() : {};
+    Object.keys(a).forEach(function (k) { p[k] = a[k]; });
+    return p;
   }
-  var WHO = { particulares: 'particular', comunidades: 'una comunidad de vecinos', empresas: 'una empresa / nave' };
+  function postLead(p) { // devuelve una promesa con true/false; nunca lanza error
+    if (!window.fetch) return Promise.resolve(false);
+    var ctl = window.AbortController ? new AbortController() : null;
+    var t = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    return fetch(CFG.ENDPOINT || 'contact.php', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p), keepalive: true, signal: ctl ? ctl.signal : undefined
+    }).then(function (r) { return r.ok ? r.json() : { ok: false }; })
+      .then(function (r) { clearTimeout(t); return !!(r && r.ok); })
+      .catch(function () { clearTimeout(t); return false; });
+  }
+  function thanks(canal) { location.href = 'gracias/?c=' + canal; }
+  function lines(v, d, p) {
+    return ['Hola, soy ' + v.nombre + '.', 'Teléfono: ' + v.tel + (v.email ? '\nCorreo: ' + v.email : ''),
+      p.perfil ? 'Soy: ' + p.perfil : '', d.get('servicio') ? 'Necesito: ' + d.get('servicio') : '',
+      v.msg ? '\n' + v.msg : '', '\nQuiero un presupuesto gratuito.'].filter(Boolean).join('\n');
+  }
+  function submitLead(form, origen, needMessage, canal) {
+    var d = new FormData(form);
+    if (d.get('web')) return; // trampa anti-bots
+    var v = validContact(form, d, needMessage);
+    if (!v) return;
+    var p = payload(origen, canal, d, v), text = lines(v, d, p);
+    busy(form, true);
+    if (canal === 'whatsapp') {
+      // se abre WhatsApp al instante (clic del usuario) y, a la vez, se envía la copia al correo
+      var w = window.open(waLink(text), '_blank'); if (w) w.opener = null;
+      say(form, 'Abriendo WhatsApp… y enviando copia al correo.');
+      var done = false, go = function () { if (done) return; done = true; if (!w) location.href = waLink(text); else thanks('whatsapp'); };
+      postLead(p).then(go); setTimeout(go, 3500);
+    } else {
+      say(form, 'Enviando…');
+      postLead(p).then(function (ok) {
+        if (ok) { thanks('email'); return; }
+        // plan B: si el servidor no responde, se abre el correo del usuario con el mensaje ya redactado
+        busy(form, false);
+        fail(form, 'No hemos podido enviarlo automáticamente. Hemos abierto tu programa de correo con el mensaje listo; también puedes usar WhatsApp.');
+        location.href = 'mailto:' + (CFG.EMAIL || 'info@grupo-urbanisima.com') + '?subject=' + encodeURIComponent('Solicitud de presupuesto - ' + v.nombre) + '&body=' + encodeURIComponent(text);
+      });
+    }
+  }
 
-  /* Formulario de contacto (abajo): rápido, como antes */
+  /* Formulario de contacto (abajo): descripción obligatoria y dos botones */
   var contact = document.getElementById('contact-form');
   contact.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
   contact.addEventListener('submit', function (e) {
     e.preventDefault();
-    var d = new FormData(contact), v = validContact(contact, d);
-    if (!v) return;
-    var text = 'Hola, soy ' + v.nombre + '. Mi teléfono es ' + v.tel + '.' +
-      (d.get('servicio') ? ' Necesito: ' + d.get('servicio') + '.' : '') + ' Quiero un presupuesto gratuito.';
-    sent(contact);
-    window.open(waLink(text), '_blank', 'noopener');
+    var canal = e.submitter && e.submitter.value === 'email' ? 'email' : 'whatsapp';
+    submitLead(contact, 'contacto', true, canal);
   });
 
   // "Pedir presupuesto" en una tarjeta o en el pie: elige el servicio en el formulario de contacto
   var sel = document.getElementById('servicio-select');
+  function selectService(t) {
+    var ok = false;
+    Array.prototype.forEach.call(sel.options, function (o) { if (o.value === t || o.text === t) ok = true; });
+    sel.value = ok ? t : 'Otro';
+  }
   document.querySelectorAll('[data-title]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      var t = a.getAttribute('data-title'), ok = false;
-      Array.prototype.forEach.call(sel.options, function (o) { if (o.value === t || o.text === t) ok = true; });
-      sel.value = ok ? t : 'Otro';
-    });
+    a.addEventListener('click', function () { selectService(a.getAttribute('data-title')); });
   });
 
   /* Formulario interactivo del hero (arriba): 2 pasos, opciones según el perfil */
@@ -172,15 +224,15 @@
     hfFill.style.width = (n * 50) + '%';
     hero.querySelector('.form-msg').textContent = '';
   }
-  function buildChips(cat) {
-    var top = cards.filter(function (c) { return c.dataset[cat]; })
-      .sort(function (a, b) { return a.dataset[cat] - b.dataset[cat]; }).slice(0, 5)
-      .map(function (c) { return c.querySelector('h3').textContent; });
+  function buildChips(cat, wanted) {
+    var top = cards.slice().sort(function (a, b) { return a.dataset[cat] - b.dataset[cat]; }).slice(0, 5).map(titleOf);
+    if (wanted && top.indexOf(wanted) < 0) top.unshift(wanted);
     top.push('Otro');
     chips.innerHTML = '';
     top.forEach(function (t, i) {
       var l = document.createElement('label'); l.className = 'hf-chip';
-      var inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'servicio'; inp.value = t; inp.checked = i === 0;
+      var inp = document.createElement('input'); inp.type = 'radio'; inp.name = 'servicio'; inp.value = t;
+      inp.checked = wanted ? t === wanted : i === 0;
       var sp = document.createElement('span'); sp.textContent = t;
       l.appendChild(inp); l.appendChild(sp); chips.appendChild(l);
     });
@@ -196,15 +248,23 @@
   });
   document.getElementById('hf-back').addEventListener('click', function () { heroGo(1); });
   hero.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
-  hero.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var d = new FormData(hero), v = validContact(hero, d);
-    if (!v) return;
-    var text = 'Hola, soy ' + v.nombre + (currentCat !== 'all' ? ' (' + WHO[currentCat] + ')' : '') +
-      '. Mi teléfono es ' + v.tel + '.' + (d.get('servicio') ? ' Necesito: ' + d.get('servicio') + '.' : '') +
-      ' Quiero un presupuesto gratuito.';
-    sent(hero);
-    window.open(waLink(text), '_blank', 'noopener');
+  hero.addEventListener('submit', function (e) { e.preventDefault(); submitLead(hero, 'hero', false, 'whatsapp'); });
+
+  /* Enlaces desde anuncios: ?perfil=comunidades&servicio=impermeabilizacion (y gclid/utm se guardan en tracking.js) */
+  (function fromAds() {
+    var q = new URLSearchParams(location.search), perfil = q.get('perfil'), slug = q.get('servicio');
+    var card = slug && grid.querySelector('[data-slug="' + slug.replace(/[^a-z]/g, '') + '"]');
+    if (card) pickSlug = card.dataset.slug;
+    if (perfil && NAMES[perfil]) {
+      applyCategory(perfil); buildChips(perfil, card ? titleOf(card) : null); heroGo(2);
+    } else if (card) applyCategory('all');
+    if (card) selectService(titleOf(card));
+  })();
+
+  /* Clics en teléfono y WhatsApp (medición de conversiones) */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"]');
+    if (a && window.UrbTrack) window.UrbTrack(a.href.indexOf('tel:') === 0 ? 'click_call' : 'click_whatsapp');
   });
 
   /* ---------- Contadores ---------- */

@@ -39,7 +39,11 @@ El workflow `.github/workflows/pages.yml` publica la web en cada push a la rama
 Activación (una sola vez): repositorio → Settings → Pages → Source: **GitHub Actions**.
 La URL será `https://creative-lestudio.github.io/urbanisima/`.
 
+## Publicación y Google Ads
+
+Ver **[docs/GUIA-LANZAMIENTO.md](docs/GUIA-LANZAMIENTO.md)**: despliegue en SiteGround, formulario por correo, conversiones y rediseño de campañas.
+
 ## Pendiente de configurar
 
-- Los formularios abren WhatsApp (+34 722 115 251). Para recibirlos por email/CRM, conecta un servicio (p. ej. Formspree) en `main.js`.
-- Los enlaces legales apuntan a la web actual.
+- Los formularios abren WhatsApp o envían correo mediante `contact.php` (requiere PHP: funciona en SiteGround; en la vista previa de GitHub Pages no hay PHP y se abre el programa de correo como plan B).
+- IDs de Google Ads en `config.js` (ver la guía).

@@ -1,0 +1,80 @@
+# ============================================================
+# Grupo Urbanísima – configuración de Apache (SiteGround)
+# ============================================================
+# 1) Fuerza HTTPS y dominio sin "www"
+# 2) Redirecciones 301 de las URLs antiguas de WordPress (conservan el posicionamiento en Google
+#    y evitan errores 404 en anuncios y enlaces externos)
+# 3) Compresión y caché
+# ============================================================
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://grupo-urbanisima.com%{REQUEST_URI} [L,R=301]
+
+# --- URLs antiguas -> web nueva (NE conserva el #ancla; los parámetros ?perfil y ?servicio preseleccionan el contenido)
+RewriteRule ^contactar/?$ /#contacto [R=301,L,NE]
+RewriteRule ^deshollinacion-de-chimeneas-en-alicante/?$ /?servicio=chimeneas#servicios [R=301,L,NE]
+RewriteRule ^deshollinacion-de-chimeneas-en-castellon/?$ /?servicio=chimeneas#servicios [R=301,L,NE]
+RewriteRule ^diseno-de-jardines-valencia/?$ /?servicio=jardines#servicios [R=301,L,NE]
+RewriteRule ^especialistas-en-deshollinar-chimeneas/?$ /?servicio=chimeneas#servicios [R=301,L,NE]
+RewriteRule ^especialistas-en-impermeabilizacion-en-valencia/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^impermeabilizacion-de-cubiertas-en-valencia/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^impermeabilizacion-de-cubiertas-valencia/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^impermeabilizacion-de-tejados-en-valencia/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^impermeabilizacion-de-terrazas-en-valencia/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^impermeabilizacion-y-reparacion-de-canalones/?$ /?servicio=canalones#servicios [R=301,L,NE]
+RewriteRule ^instalacion-y-montaje-de-canalones-en-valencia/?$ /?servicio=canalones#servicios [R=301,L,NE]
+RewriteRule ^instalacion-y-montaje-de-panel-sandwich/?$ /?servicio=panel#servicios [R=301,L,NE]
+RewriteRule ^limpieza-y-deshollinado-de-chimenea-en-alicante/?$ /?servicio=chimeneas#servicios [R=301,L,NE]
+RewriteRule ^limpieza-y-deshollinado-de-chimenea-en-castellon/?$ /?servicio=chimeneas#servicios [R=301,L,NE]
+RewriteRule ^limpieza-y-deshollinado-de-chimenea-en-valencia/?$ /?servicio=chimeneas#servicios [R=301,L,NE]
+RewriteRule ^limpieza-y-mantenimiento-de-canalones/?$ /?servicio=canalones#servicios [R=301,L,NE]
+RewriteRule ^recarga-de-aires-acondicionados-en-valencia/?$ / [R=301,L,NE]
+RewriteRule ^reformas-integrales-de-locales-valencia/?$ /?perfil=empresas&servicio=locales#servicios [R=301,L,NE]
+RewriteRule ^rehabilitacion-de-tejados-en-valencia/?$ /?servicio=tejados#servicios [R=301,L,NE]
+RewriteRule ^rehabilitacion-de-terrazas-en-valencia/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^reparacion-cubiertas-naves-industriales-valencia/?$ /?perfil=empresas&servicio=tejados#servicios [R=301,L,NE]
+RewriteRule ^reparacion-de-aire-acondicionado-en-valencia/?$ / [R=301,L,NE]
+RewriteRule ^reparacion-de-tejados-en-valencia/?$ /?servicio=tejados#servicios [R=301,L,NE]
+RewriteRule ^reparacion-y-rehabilitacion-de-cubiertas-en-valencia/?$ /?servicio=tejados#servicios [R=301,L,NE]
+RewriteRule ^servicios-a-comunidades-de-vecinos/?$ /?perfil=comunidades#servicios [R=301,L,NE]
+RewriteRule ^servicios-a-empresas-comercios-y-naves-industriales/?$ /?perfil=empresas#servicios [R=301,L,NE]
+RewriteRule ^servicios-a-particulares/?$ /?perfil=particulares#servicios [R=301,L,NE]
+RewriteRule ^servicios-de-montaje-e-instalacion-de-aire-acondicionado-en-valencia/?$ / [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/?$ /#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/recarga-de-aires-acondicionados/?$ / [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicio-de-limpieza-y-deshollinado-de-chimenea/?$ /?servicio=chimeneas#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicio-de-pintura-epoxi-en-pavimento-continuo/?$ /?servicio=epoxi#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-impermeabilizacion-de-cubiertas/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-impermeabilizacion-de-terrazas/?$ /?servicio=impermeabilizacion#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-jardineria/?$ /?servicio=jardines#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-limpieza-de-canalones/?$ /?servicio=canalones#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-montaje-de-panel-sandwich/?$ /?servicio=panel#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-pintores-de-casas-y-chalets-particulares-en-valencia/?$ /?servicio=fachadas#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-pintores-de-fachadas-y-patios-interiores/?$ /?servicio=fachadas#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-reformas/?$ /?servicio=reformas#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-rehabilitacion-y-limpieza-de-piscinas-en-valencia/?$ /?servicio=piscinas#servicios [R=301,L,NE]
+RewriteRule ^servicios-grupo-urbanisima/servicios-de-reparacion-de-tejados/?$ /?servicio=tejados#servicios [R=301,L,NE]
+
+# --- Archivos antiguos de WordPress que ya no existen
+RewriteRule ^(wp-login\.php|xmlrpc\.php)$ - [R=404,L]
+RewriteRule ^(wp-admin|wp-content|wp-includes|wp-json)(/|$) - [R=410,L]
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/png "access plus 6 months"
+ExpiresByType image/jpeg "access plus 6 months"
+ExpiresByType text/css "access plus 1 week"
+ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# Páginas sin extensión y errores
+DirectoryIndex index.html
+Options -Indexes

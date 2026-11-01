@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /gracias/
+Disallow: /contact.php
+
+Sitemap: https://grupo-urbanisima.com/sitemap.xml
