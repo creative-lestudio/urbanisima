@@ -8,7 +8,7 @@
  *                  Google Ads > Objetivos > Conversiones > (acción) > Configuración de la etiqueta > "Fragmento de evento".
  */
 window.URBANISIMA_CONFIG = {
-  GOOGLE_TAG_ID: '',
+  GOOGLE_TAG_ID: 'AW-758981388',
   CONVERSIONS: {
     lead_email: '',      // solicitud enviada por correo (formulario). Se dispara en /gracias/?c=email
     lead_whatsapp: '',   // solicitud enviada por WhatsApp (se abre el chat). Se dispara en /gracias/?c=whatsapp
