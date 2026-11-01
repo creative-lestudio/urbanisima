@@ -9,8 +9,11 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} ^www\. [NC]
+# Solo en el dominio real (no en subdominios de prueba): quita "www" y fuerza HTTPS
+RewriteCond %{HTTP_HOST} ^www\.grupo-urbanisima\.com$ [NC]
+RewriteRule ^ https://grupo-urbanisima.com%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^grupo-urbanisima\.com$ [NC]
+RewriteCond %{HTTPS} off
 RewriteRule ^ https://grupo-urbanisima.com%{REQUEST_URI} [L,R=301]
 
 # --- URLs antiguas -> web nueva. QSA conserva los parámetros originales (gclid, utm_*): imprescindible para no perder la atribución de Google Ads.
