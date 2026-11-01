@@ -513,3 +513,8 @@ textarea{resize:vertical;min-height:112px;line-height:1.5}
 .doc-foot a:hover{color:var(--yellow)}
 
 .doc h1{color:var(--blue-dark)}
+
+.hero-form textarea{min-height:84px;padding:11px 14px}
+.hero-form .field{margin-bottom:12px}
+.hero-form .send-row{margin-top:2px}
+.hero-form .send-row .btn{font-size:.88rem;white-space:nowrap;gap:.45em;padding-inline:.6em}

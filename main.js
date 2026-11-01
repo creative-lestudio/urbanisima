@@ -248,7 +248,10 @@
   });
   document.getElementById('hf-back').addEventListener('click', function () { heroGo(1); });
   hero.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
-  hero.addEventListener('submit', function (e) { e.preventDefault(); submitLead(hero, 'hero', false, 'whatsapp'); });
+  hero.addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitLead(hero, 'hero', true, e.submitter && e.submitter.value === 'email' ? 'email' : 'whatsapp');
+  });
 
   /* Enlaces desde anuncios: ?perfil=comunidades&servicio=impermeabilizacion (y gclid/utm se guardan en tracking.js) */
   (function fromAds() {

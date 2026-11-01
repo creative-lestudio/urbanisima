@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.skip{position:absolute;left:-999px;top:8px}</style>
-<link rel="stylesheet" href="styles.css?v=23">
+<link rel="stylesheet" href="styles.css?v=25">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"RoofingContractor","name":"Grupo Urbanísima","telephone":"+34722115251","email":"info@grupo-urbanisima.com","address":{"@type":"PostalAddress","streetAddress":"Jacinto Labaila 8b","postalCode":"45007","addressLocality":"Valencia","addressCountry":"ES"},"areaServed":"Provincia de Valencia","url":"https://grupo-urbanisima.com/"}
 </script>
@@ -130,8 +130,15 @@
           <div class="field"><label for="h-nombre">Nombre</label><input id="h-nombre" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre"></div>
           <div class="field"><label for="h-tel">Teléfono</label><input id="h-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6XX XXX XXX"></div>
         </div>
-        <button type="submit" class="btn btn-wa btn-block"><svg class="i"><use href="#i-chat"/></svg> Pedir presupuesto por WhatsApp</button>
-        <p class="hf-legal">Gratis y sin compromiso. Se abre WhatsApp y recibimos además una copia por correo. Al enviar aceptas la <a href="ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a>.</p>
+        <div class="field"><label for="h-msg">Cuéntanos qué necesitas</label>
+          <textarea id="h-msg" name="mensaje" rows="3" minlength="10" placeholder="Ej.: gotera en el salón cuando llueve, tejado de 80 m² en Torrent, es urgente…"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label>Web <input name="web" tabindex="-1" autocomplete="off"></label></div>
+        <div class="send-row">
+          <button type="submit" name="canal" value="email" class="btn btn-mail"><svg class="i"><use href="#i-mail"/></svg> Enviar por correo</button>
+          <button type="submit" name="canal" value="whatsapp" class="btn btn-wa"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
+        </div>
+        <p class="hf-legal">Gratis y sin compromiso. Si lo envías por WhatsApp, también recibimos una copia por correo. Al enviar aceptas la <a href="ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a>.</p>
         <button type="button" class="back" id="hf-back">← Cambiar perfil</button>
         <p class="form-msg" role="status" aria-live="polite"></p>
       </div>
@@ -436,8 +443,8 @@
   <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg> WhatsApp</a>
 </div>
 
-<script src="config.js?v=23"></script>
-<script src="tracking.js?v=23" defer></script>
-<script src="main.js?v=23" defer></script>
+<script src="config.js?v=25"></script>
+<script src="tracking.js?v=25" defer></script>
+<script src="main.js?v=25" defer></script>
 </body>
 </html>
