@@ -67,7 +67,7 @@ Prueba todo en un sitio paralelo antes de reemplazar la web real.
 3. Sube los archivos de la web nueva a la raíz de `public_html` (incluido `.htaccess`, que sustituye al de WordPress).
 4. Comprueba, con el navegador en una ventana privada:
    - `https://grupo-urbanisima.com/` carga la web nueva y `http://` y `www.` redirigen a `https://grupo-urbanisima.com`.
-   - Cinco URLs antiguas redirigen bien, por ejemplo `/servicios-grupo-urbanisima/servicios-de-reparacion-de-tejados/` debe llevar a `/?servicio=tejados#servicios`.
+   - Cinco URLs antiguas redirigen bien, por ejemplo `/servicios-grupo-urbanisima/servicios-de-reparacion-de-tejados/` debe llevar a `/?servicio=tejados`.
    - Los formularios, igual que en el paso 2.
 5. **Search Console:** Sitemaps → añadir `https://grupo-urbanisima.com/sitemap.xml`. Revisa "Páginas" a las 2 semanas: si aparecen 404 de URLs que antes traían visitas, añade su redirección en `.htaccess`.
 6. Si el sitio no cargara o hubiera un error 500: renombra `.htaccess` a `.htaccess.bak`; la web debería abrir. Si no, restaura la copia del paso 1.
@@ -86,7 +86,8 @@ Objetivos → Conversiones → **Nueva acción de conversión → Sitio web**:
 
 | Acción | Categoría | ¿Principal? | Conteo | Ventana |
 |---|---|---|---|---|
-| **Solicitud enviada** (correo o WhatsApp) | Enviar formulario de clientes potenciales | **Sí** | Uno | 30 días |
+| **Solicitud por correo** (`lead_email`) | Enviar formulario de clientes potenciales | **Sí** | Uno | 30 días |
+| **Solicitud por WhatsApp** (`lead_whatsapp`) | Enviar formulario de clientes potenciales | No al principio (secundaria); principal cuando haya datos | Uno | 30 días |
 | **Clic en teléfono** | Contacto | No (secundaria) | Uno | 30 días |
 | **Clic en WhatsApp** | Contacto | No (secundaria) | Uno | 30 días |
 | **Llamadas desde anuncios** (más de 30 s) | Llamada | **Sí** | Uno | 30 días |
@@ -100,7 +101,8 @@ Para la última: al crear los anuncios añade el *asset de llamada* y activa "Co
    ```js
    GOOGLE_TAG_ID: 'AW-1234567890',
    CONVERSIONS: {
-     lead:           'AW-1234567890/AbCdEf...',   // Solicitud enviada
+     lead_email:     'AW-1234567890/AbCdEf...',   // Solicitud por correo
+     lead_whatsapp:  'AW-1234567890/XyZaBc...',   // Solicitud por WhatsApp
      click_call:     'AW-1234567890/GhIjKl...',   // Clic en teléfono
      click_whatsapp: 'AW-1234567890/MnOpQr...'    // Clic en WhatsApp
    },
@@ -109,7 +111,7 @@ Para la última: al crear los anuncios añade el *asset de llamada* y activa "Co
 5. **Verifica:** abre https://tagassistant.google.com, conecta tu web, acepta cookies, envía un formulario de prueba y confirma que se dispara la conversión en `/gracias/`. El estado en Google Ads puede tardar 24-48 h en pasar a "Registrando conversiones".
 
 ### 4.4 Qué se mide
-- **`lead`:** se dispara una vez por sesión al cargar `/gracias/`, tanto si envían por correo como por WhatsApp. Con WhatsApp cuenta cuando abren el chat, no cuando lo envían; es una limitación normal de WhatsApp.
+- **`lead_email` / `lead_whatsapp`:** se disparan una vez por sesión al cargar `/gracias/`. Con WhatsApp cuenta cuando abren el chat, no cuando lo envían; es una limitación normal de WhatsApp.
 - Cada correo de solicitud incluye el **gclid y los UTM** de la visita, así sabes qué anuncio y qué palabra clave trajo cada cliente. Pide al cliente que anote cuáles se convierten en trabajo y, en 4-6 semanas, impórtalo como conversión offline.
 
 ### 4.5 Opcional recomendado
@@ -152,11 +154,11 @@ Todas: **Red de Búsqueda**, ubicación *Provincia de Valencia* (presencia), idi
 
 | Campaña | Grupos de anuncios (ejemplos) | URL final |
 |---|---|---|
-| **1. Goteras e impermeabilización** (la de mayor intención) | goteras en techo · impermeabilización de terrazas · impermeabilización de cubiertas · humedades en tejado | `https://grupo-urbanisima.com/?servicio=impermeabilizacion#servicios` |
-| **2. Reparación de tejados** | reparación de tejados · cambio de tejas · rehabilitación de tejados · tejados urgente | `…/?servicio=tejados#servicios` |
-| **3. Comunidades de vecinos** | rehabilitación de fachadas · impermeabilización de edificios · pintura de patios · pintado de garajes | `…/?perfil=comunidades&servicio=fachadas#servicios` |
-| **4. Empresas y naves** | cubiertas de naves industriales · panel sandwich · pavimento epoxi · reformas de locales | `…/?perfil=empresas&servicio=tejados#servicios` |
-| **5. Otros servicios** (poco presupuesto) | canalones · deshollinado de chimeneas · jardinería | `…/?servicio=canalones#servicios` etc. |
+| **1. Goteras e impermeabilización** (la de mayor intención) | goteras en techo · impermeabilización de terrazas · impermeabilización de cubiertas · humedades en tejado | `https://grupo-urbanisima.com/?servicio=impermeabilizacion` |
+| **2. Reparación de tejados** | reparación de tejados · cambio de tejas · rehabilitación de tejados · tejados urgente | `…/?servicio=tejados` |
+| **3. Comunidades de vecinos** | rehabilitación de fachadas · impermeabilización de edificios · pintura de patios · pintado de garajes | `…/?perfil=comunidades&servicio=fachadas` |
+| **4. Empresas y naves** | cubiertas de naves industriales · panel sandwich · pavimento epoxi · reformas de locales | `…/?perfil=empresas&servicio=tejados` |
+| **5. Otros servicios** (poco presupuesto) | canalones · deshollinado de chimeneas · jardinería | `…/?servicio=canalones` etc. |
 | **6. Marca** (opcional, barata) | "grupo urbanisima" | `https://grupo-urbanisima.com/` |
 
 **Cómo funcionan las URL:** la web lee `?perfil=` y `?servicio=`. La página llega ya con el servicio buscado **el primero**, marcado "Lo que buscas", seleccionado en el formulario, y con el formulario del hero abierto en el paso 2 con los servicios del perfil. Valores de `servicio`: `tejados`, `impermeabilizacion`, `canalones`, `fachadas`, `verticales`, `garajes`, `panel`, `epoxi`, `chimeneas`, `jardines`, `piscinas`, `locales`, `cocinas`, `reformas`. Valores de `perfil`: `particulares`, `comunidades`, `empresas`.

@@ -33,7 +33,7 @@
   var n=0,t=setInterval(function(){
     if(window.UrbTrack&&window.gtag){ clearInterval(t);
       try{ if(sessionStorage.getItem('urb_lead')) return; sessionStorage.setItem('urb_lead','1'); }catch(e){}
-      window.UrbTrack('lead',{canal:c||'desconocido'});
+      window.UrbTrack('lead_'+(c==='whatsapp'?'whatsapp':'email'),{canal:c||'email'});
     } else if(++n>40) clearInterval(t);
   },100);
 })();

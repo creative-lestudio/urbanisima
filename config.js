@@ -10,7 +10,8 @@
 window.URBANISIMA_CONFIG = {
   GOOGLE_TAG_ID: '',
   CONVERSIONS: {
-    lead: '',            // solicitud enviada (correo o WhatsApp). Se dispara en /gracias/
+    lead_email: '',      // solicitud enviada por correo (formulario). Se dispara en /gracias/?c=email
+    lead_whatsapp: '',   // solicitud enviada por WhatsApp (se abre el chat). Se dispara en /gracias/?c=whatsapp
     click_call: '',      // clic en un teléfono
     click_whatsapp: ''   // clic directo en los botones de WhatsApp (flotante, barra móvil, contacto)
   },

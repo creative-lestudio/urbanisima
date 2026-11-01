@@ -265,6 +265,14 @@
     if (card) selectService(titleOf(card));
   })();
 
+  /* ?ir=servicios|contacto|proteccion|ventajas: baja a esa sección (lo usan las redirecciones de las URLs antiguas) */
+  (function goTo() {
+    var id = new URLSearchParams(location.search).get('ir');
+    if (!id || !/^(servicios|contacto|proteccion|ventajas)$/.test(id)) return;
+    var el = document.getElementById(id); if (!el) return;
+    setTimeout(function () { el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }, 400);
+  })();
+
   /* Clics en teléfono y WhatsApp (medición de conversiones) */
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"]');
