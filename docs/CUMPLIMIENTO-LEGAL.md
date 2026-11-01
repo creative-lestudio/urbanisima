@@ -24,7 +24,7 @@
 1. **CIF y datos del Registro Mercantil.** Son obligatorios en el Aviso legal (art. 10 LSSI-CE) y no aparecían en los textos anteriores. Complétalos en `config.js` (`LEGAL.CIF` y `LEGAL.REGISTRO_MERCANTIL`). Mientras estén vacíos, las páginas muestran «[… pendiente de completar]».
    - Comprueba que no falta nada con: `npm run check:legal` (si devuelve error, no publiques).
 2. **Código postal.** Los textos y la web dicen **45007**, pero los códigos postales de Valencia empiezan por **46** (el 45 es Toledo). Confirma el correcto, corrígelo en `config.js` (`LEGAL.CODIGO_POSTAL`) y en `index.html` (contacto, pie y datos estructurados `postalCode`).
-3. **Proveedor de correo.** La política anterior citaba Raiola Networks; la nueva lo mantiene. Confirma si sigue siendo el proveedor (y el hosting es SiteGround) o cámbialo en el texto.
+3. **Proveedor de correo.** La política anterior citaba Raiola Networks, pero los buzones de la empresa (`info@`, `admin@`, `gerencia@`) están en SiteGround, y así consta ahora en la política. Si queda algún buzón antiguo en otro proveedor, hay que añadirlo.
 4. **Contratos de encargado del tratamiento (art. 28 RGPD).** Acepta/archiva los de SiteGround, el proveedor de correo y, en Google Ads, las *Condiciones de tratamiento de datos* (Administración → Configuración de la cuenta).
 5. **Procedimientos internos** (la política lo promete):
    - **Eliminar las solicitudes que no se contraten a los 30 días** del último contacto (correo, WhatsApp, hojas de cálculo). Si prefieres otro plazo, cámbialo en la política y en `contact.php`.
