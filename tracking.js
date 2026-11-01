@@ -103,7 +103,7 @@
     var c = readConsent(); if (!c || !loaded || !(c.a || c.p)) return;
     gtag('event', name, params || {});
     var to = C.CONVERSIONS && C.CONVERSIONS[name];
-    if (to && c.p) gtag('event', 'conversion', { send_to: to });
+    if (to && c.p) gtag('event', 'conversion', { send_to: to, value: 1.0, currency: 'EUR' });
   };
 
   /* ---------- Interfaz: banner + panel de configuración ---------- */
