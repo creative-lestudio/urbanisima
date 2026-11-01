@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-$TO   = ['info@grupo-urbanisima.com'];
+$TO   = ['creative.lestudio@gmail.com']; // ⚠ SOLO PARA PRUEBAS. Antes de publicar, cambiar por ['info@grupo-urbanisima.com'] (npm run check:legal avisa si se olvida)
 $FROM = 'web@grupo-urbanisima.com';
 
 header('Content-Type: application/json; charset=utf-8');
