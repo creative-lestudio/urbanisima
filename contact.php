@@ -62,41 +62,146 @@ if (count($hits) >= 6) out(429, ['ok' => false, 'error' => 'rate']);
 $hits[] = $now;
 @file_put_contents($file, implode(',', $hits));
 
-/* Atribución de Google Ads: qué anuncio trajo a esta persona */
-$attrib = '';
+/* ---------- Origen de la visita (solo existe si el visitante aceptó las cookies de publicidad) ---------- */
+$A = [];
 foreach (['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'landing', 'referrer'] as $k) {
     $v = oneline($in[$k] ?? '', 250);
-    if ($v !== '') $attrib .= str_pad($k, 14) . ': ' . $v . "\n";
+    if ($v !== '') $A[$k] = $v;
 }
+$hasAds  = isset($A['gclid']) || isset($A['gbraid']) || isset($A['wbraid']) || (isset($A['utm_source']) && stripos($A['utm_source'], 'google') !== false);
+$siteHost = preg_replace('/^www\./', '', (string)($_SERVER['HTTP_HOST'] ?? ''));
+$refHost = !empty($A['referrer']) ? preg_replace('/^www\./', '', (string)parse_url($A['referrer'], PHP_URL_HOST)) : '';
+$extRef  = ($refHost !== '' && $refHost !== $siteHost && stripos($refHost, 'grupo-urbanisima.com') === false) ? $refHost : '';
+if ($hasAds)        $origenTxt = 'Anuncio de Google Ads';
+elseif ($A)         $origenTxt = $extRef !== '' ? 'Visita desde ' . $extRef : 'Visita directa o búsqueda en Google';
+else                $origenTxt = 'No disponible (el visitante no aceptó las cookies de publicidad)';
+
+/* Pista automática de urgencia, para priorizar a quién llamar primero */
+$urgente = (bool)preg_match('/urgen|cuanto antes|lo antes posible|inmediat|inund|se cae|desprend|peligro|hoy mismo|ya mismo/iu', $mensaje);
+
+/* Teléfono para WhatsApp (España por defecto) */
+$digits = (string)preg_replace('/\D/', '', $telefono);
+if (strpos($digits, '0034') === 0) $digits = substr($digits, 2);
+if (strlen($digits) === 9) $digits = '34' . $digits;
 
 $canalTxt = $canal === 'email' ? 'por correo' : 'por WhatsApp (copia)';
-$asunto   = "[Web] Nueva solicitud de $nombre" . ($servicio !== '' ? " - $servicio" : '') . ' - ' . ($canal === 'email' ? 'correo' : 'WhatsApp');
+$asunto   = ($urgente ? '⚠ ' : '') . "[Web] Nueva solicitud de $nombre" . ($servicio !== '' ? " - $servicio" : '') . ' - ' . ($canal === 'email' ? 'correo' : 'WhatsApp');
 
-$cuerpo  = "NUEVA SOLICITUD DESDE LA WEB\n";
+/* ---------- Versión de texto (para clientes de correo sin HTML) ---------- */
+$cuerpo  = "NUEVA SOLICITUD DESDE LA WEB" . ($urgente ? "  (⚠ menciona urgencia)" : '') . "\n";
 $cuerpo .= str_repeat('=', 40) . "\n\n";
 $cuerpo .= "Nombre:     $nombre\n";
 $cuerpo .= "Teléfono:   $telefono\n";
 $cuerpo .= 'Correo:     ' . ($email !== '' ? $email : '(no indicado)') . "\n";
 $cuerpo .= 'Perfil:     ' . ($perfil !== '' ? $perfil : '(no indicado)') . "\n";
 $cuerpo .= 'Servicio:   ' . ($servicio !== '' ? $servicio : '(no indicado)') . "\n";
-$cuerpo .= "Enviado:    $canalTxt (formulario: $origen)\n\n";
+$cuerpo .= "Enviado:    $canalTxt\n\n";
 $cuerpo .= "DESCRIPCIÓN DEL CLIENTE\n" . str_repeat('-', 40) . "\n";
 $cuerpo .= ($mensaje !== '' ? $mensaje : '(sin descripción)') . "\n\n";
-if ($attrib !== '') $cuerpo .= "ORIGEN DE LA VISITA (Google Ads)\n" . str_repeat('-', 40) . "\n" . $attrib . "\n";
-$cuerpo .= str_repeat('-', 40) . "\nPágina: $pagina\nFecha:  " . date('d/m/Y H:i:s') . "\n";
+$cuerpo .= "ORIGEN DE LA VISITA\n" . str_repeat('-', 40) . "\n$origenTxt\n";
+foreach (['utm_campaign' => 'Campaña', 'utm_term' => 'Palabra clave', 'gclid' => 'gclid'] as $k => $lab) if (isset($A[$k])) $cuerpo .= "$lab: {$A[$k]}\n";
+$cuerpo .= "\n" . str_repeat('-', 40) . "\nPágina: $pagina\nFecha:  " . date('d/m/Y H:i:s') . "\n";
 $cuerpo .= 'Consentimiento: política de privacidad aceptada' . ($polVer !== '' ? " (versión $polVer)" : '') . ".\n";
 $cuerpo .= "Conservación: eliminar este mensaje a los 30 días del último contacto si no se contrata el servicio.\n";
-if ($canal === 'whatsapp') $cuerpo .= "\nNota: el cliente ha abierto WhatsApp con este mismo mensaje; también puede escribir al " . '+34 722 115 251' . ".\n";
+if ($canal === 'whatsapp') $cuerpo .= "\nNota: el cliente ha abierto WhatsApp con este mismo mensaje.\n";
+
+/* ---------- Versión HTML con la imagen de Urbanísima ---------- */
+function hx(string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
+$logoPath = __DIR__ . '/assets/logo-blanco.png';
+$logoB64  = is_file($logoPath) ? chunk_split(base64_encode((string)file_get_contents($logoPath))) : '';
+$logoHtml = $logoB64 !== ''
+    ? '<img src="cid:logo@grupo-urbanisima" width="190" alt="Grupo Urbanísima" style="display:block;border:0;outline:none;height:auto;max-width:190px">'
+    : '<span style="font:800 20px Arial,Helvetica,sans-serif;color:#ffffff;letter-spacing:1px">GRUPO URBAN&Iacute;SIMA</span>';
+
+$F  = "font-family:Montserrat,'Segoe UI',Arial,Helvetica,sans-serif;";   // títulos
+$B  = "font-family:'Segoe UI',Arial,Helvetica,sans-serif;";               // texto
+$btn = function (string $href, string $label, string $bg, string $fg, string $border = '') use ($F) {
+    $bd = $border !== '' ? "border:2px solid $border;" : 'border:2px solid ' . $bg . ';';
+    return '<a href="' . hx($href) . '" style="display:inline-block;margin:0 8px 8px 0;' . $bd . 'background:' . $bg . ';color:' . $fg . ';' . $F . 'font-weight:800;font-size:14px;line-height:20px;text-decoration:none;padding:9px 20px;border-radius:999px">' . hx($label) . '</a>';
+};
+$row = function (string $label, string $valueHtml) use ($B) {
+    return '<tr><td style="padding:9px 0;border-bottom:1px solid #e6edf5;' . $B . 'font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6b7a8a;width:132px;vertical-align:top">' . $label . '</td>'
+         . '<td style="padding:9px 0;border-bottom:1px solid #e6edf5;' . $B . 'font-size:15px;color:#16202b;vertical-align:top">' . $valueHtml . '</td></tr>';
+};
+$pill = fn(string $t, string $bg, string $fg) => '<span style="display:inline-block;background:' . $bg . ';color:' . $fg . ';' . 'font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin:0 6px 6px 0">' . $t . '</span>';
+
+$badges  = $pill('Nueva solicitud', '#fff3c4', '#022440');
+$badges .= $pill($canal === 'email' ? 'Enviada por correo' : 'Enviada por WhatsApp', '#e8f1fb', '#01477f');
+if ($urgente) $badges .= $pill('⚠ Menciona urgencia', '#fde8e6', '#b3261e');
+
+$btns = $btn('tel:+' . $digits, 'Llamar ahora', '#fec200', '#022440') . $btn('https://wa.me/' . $digits, 'WhatsApp', '#1fa855', '#ffffff');
+if ($email !== '') $btns .= $btn('mailto:' . $email, 'Responder por correo', '#ffffff', '#01477f', '#01477f');
+
+$datos  = $row('Nombre', hx($nombre));
+$datos .= $row('Teléfono', '<a href="tel:+' . hx($digits) . '" style="color:#01477f;text-decoration:none;font-weight:700">' . hx($telefono) . '</a>');
+$datos .= $row('Correo', $email !== '' ? '<a href="mailto:' . hx($email) . '" style="color:#01477f">' . hx($email) . '</a>' : '<span style="color:#8a97a5">No indicado</span>');
+$datos .= $row('Soy', $perfil !== '' ? hx($perfil) : '<span style="color:#8a97a5">No indicado</span>');
+$datos .= $row('Servicio', $servicio !== '' ? '<strong>' . hx($servicio) . '</strong>' : '<span style="color:#8a97a5">No indicado</span>');
+
+$origenRows = $row('Origen', '<strong>' . hx($origenTxt) . '</strong>');
+if (isset($A['utm_campaign'])) $origenRows .= $row('Campaña', hx($A['utm_campaign']));
+if (isset($A['utm_term']))     $origenRows .= $row('Palabra clave', hx($A['utm_term']));
+if (isset($A['gclid']))        $origenRows .= $row('gclid', '<span style="font-family:Consolas,Menlo,monospace;font-size:12px;color:#566473;word-break:break-all">' . hx(mb_substr($A['gclid'], 0, 60)) . '</span>');
+$origenRows .= $row('Página', '<a href="' . hx($pagina) . '" style="color:#01477f;word-break:break-all">' . hx(mb_strlen($pagina) > 70 ? mb_substr($pagina, 0, 70) . '…' : $pagina) . '</a>');
+
+$replyNote = $email !== ''
+    ? 'Pulsa <strong>Responder</strong> en tu correo para contestar directamente al cliente.'
+    : 'El cliente no indicó correo: llámale o escríbele por WhatsApp.';
+$secTitle = fn(string $t) => '<tr><td style="padding:26px 28px 6px;background:#ffffff;' . $F . 'font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#01477f">' . $t . '</td></tr>';
+
+$html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Nueva solicitud</title></head>'
+  . '<body style="margin:0;padding:0;background:#eef3f8">'
+  . '<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#eef3f8;font-size:1px;line-height:1px">' . hx($nombre) . ' pide presupuesto' . ($servicio !== '' ? ' · ' . hx($servicio) : '') . ' · ' . hx($telefono) . '</div>'
+  . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef3f8"><tr><td align="center" style="padding:24px 12px">'
+  . '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">'
+  /* cabecera */
+  . '<tr><td style="background:#022440;border-radius:18px 18px 0 0;padding:24px 28px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'
+  . '<td>' . $logoHtml . '</td></tr></table></td></tr>'
+  . '<tr><td style="background:#fec200;height:5px;line-height:5px;font-size:0">&nbsp;</td></tr>'
+  /* título */
+  . '<tr><td style="background:#ffffff;padding:28px 28px 8px">' . $badges
+  . '<h1 style="margin:10px 0 6px;' . $F . 'font-size:26px;line-height:1.2;font-weight:800;color:#022440">' . hx($nombre) . ' pide presupuesto</h1>'
+  . '<p style="margin:0;' . $B . 'font-size:15px;color:#566473">' . ($servicio !== '' ? hx($servicio) : 'Servicio sin especificar') . ($perfil !== '' ? ' &middot; ' . hx($perfil) : '') . '</p></td></tr>'
+  /* acciones */
+  . '<tr><td style="background:#ffffff;padding:18px 28px 6px;line-height:1">' . $btns . '</td></tr>'
+  /* descripción */
+  . $secTitle('Lo que necesita')
+  . '<tr><td style="background:#ffffff;padding:6px 28px 4px"><div style="background:#f2f6fb;border-left:4px solid #fec200;border-radius:0 12px 12px 0;padding:16px 18px;' . $B . 'font-size:16px;line-height:1.6;color:#16202b">'
+  . ($mensaje !== '' ? nl2br(hx($mensaje), false) : '<span style="color:#8a97a5">Sin descripción</span>') . '</div></td></tr>'
+  /* datos */
+  . $secTitle('Datos de contacto')
+  . '<tr><td style="background:#ffffff;padding:0 28px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $datos . '</table></td></tr>'
+  /* origen */
+  . $secTitle('Cómo llegó')
+  . '<tr><td style="background:#ffffff;padding:0 28px 8px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' . $origenRows . '</table></td></tr>'
+  . '<tr><td style="background:#ffffff;padding:14px 28px 28px;' . $B . 'font-size:13px;line-height:1.5;color:#566473">' . $replyNote . '</td></tr>'
+  /* pie */
+  . '<tr><td style="background:#022440;border-radius:0 0 18px 18px;padding:20px 28px;' . $B . 'font-size:12px;line-height:1.6;color:#b4c3d3">'
+  . 'Recibida el ' . date('d/m/Y \a \l\a\s H:i') . ' desde grupo-urbanisima.com.<br>'
+  . 'Consentimiento: política de privacidad aceptada' . ($polVer !== '' ? ' (versión ' . hx($polVer) . ')' : '') . '. '
+  . 'Conservación: eliminar este mensaje a los 30 días del último contacto si no se contrata el servicio.<br>'
+  . '<span style="color:#7f93a8">Correo automático &middot; Web desarrollada por LE STUDIO</span></td></tr>'
+  . '</table></td></tr></table></body></html>';
+
+/* ---------- Montaje MIME: texto + HTML + logo incrustado ---------- */
+$bRel = '=_rel_' . md5(uniqid('', true));
+$bAlt = '=_alt_' . md5(uniqid('', true));
+$cuerpoMime  = "--$bRel\r\nContent-Type: multipart/alternative; boundary=\"$bAlt\"\r\n\r\n";
+$cuerpoMime .= "--$bAlt\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($cuerpo)) . "\r\n";
+$cuerpoMime .= "--$bAlt\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($html)) . "\r\n";
+$cuerpoMime .= "--$bAlt--\r\n";
+if ($logoB64 !== '') $cuerpoMime .= "--$bRel\r\nContent-Type: image/png; name=\"logo.png\"\r\nContent-Transfer-Encoding: base64\r\nContent-ID: <logo@grupo-urbanisima>\r\nContent-Disposition: inline; filename=\"logo.png\"\r\n\r\n" . $logoB64 . "\r\n";
+$cuerpoMime .= "--$bRel--\r\n";
 
 $h  = "From: Web Grupo Urbanísima <$FROM>\r\n";
 if ($email !== '') $h .= "Reply-To: $nombre <$email>\r\n";
-$h .= "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n";
+$h .= "MIME-Version: 1.0\r\nContent-Type: multipart/related; boundary=\"$bRel\"; type=\"multipart/alternative\"\r\n";
 
 $subjectEnc = mb_encode_mimeheader($asunto, 'UTF-8', 'B', "\r\n");
 $ok = false;
 foreach ($TO as $dest) {
-    $r = @mail($dest, $subjectEnc, $cuerpo, $h, '-f' . $FROM);
-    if (!$r) $r = @mail($dest, $subjectEnc, $cuerpo, $h);
+    $r = @mail($dest, $subjectEnc, $cuerpoMime, $h, '-f' . $FROM);
+    if (!$r) $r = @mail($dest, $subjectEnc, $cuerpoMime, $h);
     $ok = $ok || $r;
 }
 

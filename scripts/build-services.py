@@ -16,7 +16,7 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '27'  # versión de CSS/JS (rompe la caché del navegador)
+V = '28'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
 # rank = (particulares, comunidades, empresas): 1 = más solicitado. Debe coincidir con index.html.
@@ -175,6 +175,33 @@ SERVICES = [
        ('¿Cómo se plantea el presupuesto?','Planificamos presupuestos consensuados en función de las necesidades de cada cliente, tras una visita sin coste.'),
        ('¿Dais garantía del trabajo?','Sí. Los trabajos cuentan con la garantía legal que corresponde y con la que se indique en el presupuesto.')],
   rel=['locales','fachadas','jardines']),
+]
+BITS = {
+ 'tejados': ['Cambio de tejas y uralita', 'Retejados y goteras', 'Panel sandwich y Velux'],
+ 'impermeabilizacion': ['Resinas con fibra de vidrio', 'Terrazas, azoteas y naves', 'Fin de goteras y humedades'],
+ 'canalones': ['Limpieza y bajantes', 'Montaje y sustitución', 'Aluminio, zinc y cobre'],
+ 'fachadas': ['Fachadas y patios interiores', 'Portales y comunidades', 'Casas y chalets'],
+ 'verticales': ['Sin andamios (descuelgue)', 'Plan de seguridad', 'Fachadas y cubiertas'],
+ 'garajes': ['Paredes y techos', 'Pavimento epoxi', 'Comunidades y empresas'],
+ 'panel': ['Doble capa o sustitución', 'Aislamiento térmico y acústico', 'Naves y viviendas'],
+ 'epoxi': ['Suelo liso y antideslizante', 'Naves, talleres y garajes', 'Fácil de limpiar'],
+ 'chimeneas': ['Hollín y creosota', 'Prevención de incendios', 'Revisión periódica'],
+ 'jardines': ['Podas, talas y desbroces', 'Césped artificial', 'Diseño de jardines'],
+ 'piscinas': ['Mantenimiento y limpieza', 'Revisión del vaso', 'Rehabilitación'],
+ 'locales': ['Todos los gremios', 'Solados y alicatados', 'Electricidad y fontanería'],
+ 'cocinas': ['Empresas y comercios', 'Mantenimiento', 'Reformas de cocina'],
+ 'reformas': ['Viviendas y locales', 'Cocinas y baños', 'Fontanería y electricidad'],
+}
+for _s in SERVICES: _s['bits'] = BITS[_s['key']]
+PROBLEMS = [  # icono, título, subtítulo, servicio al que lleva
+ ('drop', 'Goteras en el techo', 'Humedades y filtraciones', 'impermeabilizacion'),
+ ('roof', 'Tejado deteriorado', 'Tejas rotas o cubierta antigua', 'tejados'),
+ ('gutter', 'Canalones obstruidos', 'Limpieza o cambio', 'canalones'),
+ ('brush', 'Fachada o patio', 'Pintura y rehabilitación', 'fachadas'),
+ ('layers', 'Cubierta de nave', 'Panel sandwich y aislamiento', 'panel'),
+ ('floor', 'Suelo de nave o garaje', 'Pavimento epoxi', 'epoxi'),
+ ('flame', 'Chimenea', 'Limpieza y deshollinado', 'chimeneas'),
+ ('tools', 'Reforma', 'Viviendas y locales', 'reformas'),
 ]
 BY_KEY = {s['key']: s for s in SERVICES}
 
@@ -461,8 +488,8 @@ def hub_page():
         {'@type': 'ListItem', 'position': 2, 'name': 'Servicios', 'item': url}]},
       {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': s['title'], 'url': f'{SITE}/servicios/{s["slug"]}/'} for i, s in enumerate(SERVICES)]},
     ]
-    cards = ''.join(f'''<a class="hub-card" href="{s["slug"]}/" data-particulares="{s["rank"][0]}" data-comunidades="{s["rank"][1]}" data-empresas="{s["rank"][2]}">
-      <span class="ico">{ic(s["icon"],root)}</span><h3>{e(s["title"])}</h3><p>{e(s["short"])}</p><span class="rel-more">Ver servicio {ic("arrow",root)}</span></a>''' for s in SERVICES)
+    cards = ''.join(f'''<a class="hub-card" data-slug="{s["key"]}" href="{s["slug"]}/" data-particulares="{s["rank"][0]}" data-comunidades="{s["rank"][1]}" data-empresas="{s["rank"][2]}">
+      <span class="ico">{ic(s["icon"],root)}</span><h3>{e(s["title"])}</h3><p>{e(s["short"])}</p><ul class="bits">{"".join("<li>"+e(b)+"</li>" for b in s["bits"])}</ul><span class="rel-more">Ver servicio {ic("arrow",root)}</span></a>''' for s in SERVICES)
     return (head(title, desc, url, root, jsonld(graph)) + '<body class="sv-page" data-root="../">\n' + header(root) + f'''
 <main id="contenido">
 <section class="sv-hero">
@@ -493,7 +520,60 @@ def write(path, content):
     os.makedirs(os.path.dirname(full), exist_ok=True)
     open(full, 'w', encoding='utf8').write(content)
 
+def home_cards():
+    out = ''
+    for s in SERVICES:
+        r = s['rank']
+        bits = ''.join(f'<li>{e(b)}</li>' for b in s['bits'])
+        out += f'''      <article class="svc" id="svc-{s["key"]}" data-slug="{s["key"]}" data-particulares="{r[0]}" data-comunidades="{r[1]}" data-empresas="{r[2]}">
+        <span class="tag">Más solicitado</span>
+        <span class="ico"><svg class="i"><use href="#i-{s["icon"]}"/></svg></span>
+        <h3><a class="svc-link" href="servicios/{s["slug"]}/">{e(s["title"])}</a></h3>
+        <p>{e(s["short"])}</p>
+        <ul class="bits">{bits}</ul>
+        <div class="svc-actions">
+          <a href="#contacto" class="link" data-title="{e(s["title"])}">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
+          <a class="more-link" href="servicios/{s["slug"]}/">Ver servicio</a>
+        </div>
+      </article>
+'''
+    return out
+
+def home_problems():
+    tiles = ''.join(f'''
+      <a class="prob" href="servicios/{BY_KEY[k]["slug"]}/"><span class="ico"><svg class="i"><use href="#i-{icn}"/></svg></span><span class="prob-t"><strong>{e(t)}</strong><small>{e(sub)}</small></span><svg class="i go"><use href="#i-arrow"/></svg></a>''' for icn, t, sub, k in PROBLEMS)
+    return f'''<!-- PROBLEMAS-START -->
+<section class="section alt problems" id="problemas">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Elige tu caso</p>
+      <h2>¿Qué necesitas resolver?</h2>
+      <p class="sub">Pulsa el que más se parezca a tu problema. Te llevamos al servicio adecuado, con presupuesto gratis y sin compromiso.</p>
+    </div>
+    <div class="prob-grid">{tiles}
+    </div>
+    <p class="prob-help">¿No ves tu caso? <a href="tel:{PHONE_TEL}">Llámanos al {PHONE_TXT}</a> o <a href="https://wa.me/{WA}?text=Hola%2C%20quiero%20pedir%20presupuesto" target="_blank" rel="noopener">escríbenos por WhatsApp</a>.</p>
+  </div>
+</section>
+<!-- PROBLEMAS-END -->
+
+'''
+
+def patch_home():
+    path = os.path.join(ROOT, 'index.html')
+    s = open(path, encoding='utf8').read()
+    a = s.index('<div class="svc-grid" id="service-grid" data-cat="all">') + len('<div class="svc-grid" id="service-grid" data-cat="all">')
+    b = s.index('    </div>\n    <p class="more">', a)
+    s = s[:a] + '\n' + home_cards() + s[b:]
+    if '<!-- PROBLEMAS-START -->' in s:
+        i = s.index('<!-- PROBLEMAS-START -->'); j = s.index('<!-- PROBLEMAS-END -->') + len('<!-- PROBLEMAS-END -->\n\n')
+        s = s[:i] + home_problems() + s[j:]
+    else:
+        s = s.replace('<!-- SERVICIOS -->', home_problems() + '<!-- SERVICIOS -->', 1)
+    open(path, 'w', encoding='utf8').write(s)
+
 def build():
+    patch_home()
     write('servicios/index.html', hub_page())
     for s in SERVICES:
         write(f'servicios/{s["slug"]}/index.html', service_page(s))

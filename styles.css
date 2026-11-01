@@ -634,3 +634,86 @@ textarea{resize:vertical;min-height:112px;line-height:1.5}
 }
 
 .svc-link{color:inherit;text-decoration:none}.svc-link:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* ======== v28: servicios más visuales + "¿Qué necesitas resolver?" ======== */
+/* Sección de problemas */
+.problems{padding:64px 0 56px}
+.prob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.prob{display:flex;align-items:center;gap:14px;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:16px 18px;text-decoration:none;color:inherit;transition:transform .18s,border-color .18s,box-shadow .18s;min-height:88px}
+.prob:hover{border-color:var(--yellow);transform:translateY(-3px);box-shadow:var(--shadow)}
+.prob .ico{margin:0;flex:none;width:48px;height:48px}
+.prob-t{min-width:0;flex:1}
+.prob-t strong{display:block;font:800 .98rem/1.2 Montserrat,sans-serif;color:var(--blue-dark)}
+.prob-t small{display:block;color:var(--muted);font-size:.82rem;line-height:1.35;margin-top:3px}
+.prob .go{margin-left:auto;color:var(--blue-mid);flex:none;transition:transform .18s}
+.prob:hover .go{transform:translateX(4px)}
+.prob-help{text-align:center;margin:26px 0 0;color:var(--muted)}
+.prob-help a{color:var(--blue-mid);font-weight:700}
+
+/* Tarjetas de servicio: panel visual + lista corta + acciones */
+.svc-grid{gap:22px}
+.svc-grid .svc{padding:0;overflow:hidden;border-radius:20px;background:#fff}
+.svc-grid .svc>.ico{position:relative;width:100%;height:118px;margin:0;border-radius:0;display:grid;place-items:center;overflow:hidden;color:var(--yellow);background:linear-gradient(135deg,var(--blue-dark),var(--blue));transition:none}
+.svc-grid .svc>.ico::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 22px,rgba(255,255,255,.07) 22px 26px)}
+.svc-grid .svc>.ico .i{position:relative;width:56px;height:56px;stroke-width:1.5;transition:transform .35s}
+.svc-grid .svc:hover>.ico .i{transform:scale(1.12) rotate(-4deg)}
+.svc-grid .svc[data-slug="impermeabilizacion"]>.ico,.svc-grid .svc[data-slug="canalones"]>.ico,.svc-grid .svc[data-slug="piscinas"]>.ico,.svc-grid .svc[data-slug="chimeneas"]>.ico{background:linear-gradient(135deg,var(--blue),var(--blue-mid))}
+.svc-grid .svc[data-slug="fachadas"]>.ico,.svc-grid .svc[data-slug="garajes"]>.ico,.svc-grid .svc[data-slug="epoxi"]>.ico,.svc-grid .svc[data-slug="reformas"]>.ico,.svc-grid .svc[data-slug="locales"]>.ico,.svc-grid .svc[data-slug="cocinas"]>.ico,.svc-grid .svc[data-slug="jardines"]>.ico{background:linear-gradient(135deg,#ffd13b,var(--yellow));color:var(--blue-deep)}
+.svc-grid .svc[data-slug="fachadas"]>.ico::before,.svc-grid .svc[data-slug="garajes"]>.ico::before,.svc-grid .svc[data-slug="epoxi"]>.ico::before,.svc-grid .svc[data-slug="reformas"]>.ico::before,.svc-grid .svc[data-slug="locales"]>.ico::before,.svc-grid .svc[data-slug="cocinas"]>.ico::before,.svc-grid .svc[data-slug="jardines"]>.ico::before{background:repeating-linear-gradient(135deg,transparent 0 22px,rgba(1,51,90,.08) 22px 26px)}
+.svc-grid .svc:hover>.ico{background-color:initial}
+.svc-grid .svc>h3{margin:18px 0 6px;padding-inline:22px;font-size:1.08rem}
+.svc-grid .svc>p{margin:0 0 12px;padding-inline:22px;font-size:.92rem;flex:0 1 auto;display:block;-webkit-line-clamp:unset;overflow:visible}
+.bits{list-style:none;margin:0 0 16px;padding:0 22px;display:grid;gap:6px;font:700 .84rem/1.35 Lato,sans-serif;color:var(--blue-dark)}
+.bits li{display:flex;gap:.6em;align-items:flex-start}
+.bits li::before{content:"";flex:none;width:7px;height:7px;margin-top:.5em;border-radius:50%;background:var(--yellow)}
+.svc-actions{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 22px 18px;border-top:1px solid var(--line)}
+.svc-actions .link{margin:0;min-height:0;padding:0}
+.more-link{font:700 .84rem Montserrat,sans-serif;color:var(--muted);text-decoration:none}
+.more-link:hover{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+.svc-grid .svc .tag{left:14px;right:auto;top:14px;z-index:2}
+.svc-grid .svc.is-top{border-color:var(--yellow);box-shadow:0 0 0 1px var(--yellow),var(--shadow)}
+
+/* Tarjetas de /servicios/ con el mismo lenguaje visual */
+.hub-grid .hub-card{padding:0;overflow:hidden;gap:0;border-radius:20px}
+.hub-card>.ico{position:relative;width:100%;height:104px;margin:0;border-radius:0;display:grid;place-items:center;overflow:hidden;color:var(--yellow);background:linear-gradient(135deg,var(--blue-dark),var(--blue))}
+.hub-card>.ico::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 22px,rgba(255,255,255,.07) 22px 26px)}
+.hub-card>.ico .i{position:relative;width:50px;height:50px;stroke-width:1.5;transition:transform .35s}
+.hub-card:hover>.ico .i{transform:scale(1.12) rotate(-4deg)}
+.hub-card[data-slug="impermeabilizacion"]>.ico,.hub-card[data-slug="canalones"]>.ico,.hub-card[data-slug="piscinas"]>.ico,.hub-card[data-slug="chimeneas"]>.ico{background:linear-gradient(135deg,var(--blue),var(--blue-mid))}
+.hub-card[data-slug="fachadas"]>.ico,.hub-card[data-slug="garajes"]>.ico,.hub-card[data-slug="epoxi"]>.ico,.hub-card[data-slug="reformas"]>.ico,.hub-card[data-slug="locales"]>.ico,.hub-card[data-slug="cocinas"]>.ico,.hub-card[data-slug="jardines"]>.ico{background:linear-gradient(135deg,#ffd13b,var(--yellow));color:var(--blue-deep)}
+.hub-card h3{margin:16px 0 6px;padding-inline:20px;font-size:1.05rem}
+.hub-card p{padding-inline:20px;margin:0 0 12px}
+.hub-card .bits{padding-inline:20px}
+.hub-card .rel-more{padding:14px 20px 18px;margin-top:auto;border-top:1px solid var(--line)}
+
+@media (max-width:1020px){.prob-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){
+  .problems{padding:44px 0 36px}
+  .prob-grid{gap:10px}
+  .prob{padding:12px;gap:10px;min-height:76px;border-radius:14px}
+  .prob .ico{width:40px;height:40px}
+  .prob .ico .i{width:20px;height:20px}
+  .prob .go{display:none}
+  .prob-t strong{font-size:.88rem}
+  .prob-t small{display:none}
+  .prob-help{font-size:.92rem;margin-top:18px}
+
+  /* servicios en móvil: filas compactas (se mantiene la lectura rápida) */
+  .svc-grid .svc{display:grid;grid-template-columns:46px 1fr;column-gap:12px;padding:14px;overflow:visible;border-radius:16px}
+  .svc-grid .svc>.ico{width:46px;height:46px;height:46px;border-radius:14px;grid-column:1;grid-row:1/span 3;color:var(--blue);background:rgba(254,194,0,.22)!important;overflow:visible}
+  .svc-grid .svc>.ico::before{display:none}
+  .svc-grid .svc>.ico .i{width:24px;height:24px;stroke-width:2}
+  .svc-grid .svc:hover>.ico .i{transform:none}
+  .svc-grid .svc>h3,.svc-grid .svc>p,.svc-grid .svc>.svc-actions{grid-column:2;padding:0;margin:0 0 4px}
+  .svc-grid .svc>h3{font-size:.98rem}
+  .svc-grid .svc>p{font-size:.86rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
+  .svc-grid .svc>.bits{display:none}
+  .svc-grid .svc>.svc-actions{border:0;padding:0;gap:16px;justify-content:flex-start;margin:0}
+  .svc-actions .link{min-height:40px}
+  .more-link{min-height:40px;display:inline-flex;align-items:center}
+  .svc-grid .svc .tag{left:auto;right:14px;top:-10px}
+  .hub-grid .hub-card{padding:0}
+  .hub-card>.ico{height:76px}
+  .hub-card>.ico .i{width:38px;height:38px}
+  .hub-card .bits{display:none}
+}
