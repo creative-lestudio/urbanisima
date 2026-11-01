@@ -3,6 +3,10 @@
 (function () {
   var CFG = window.URBANISIMA_CONFIG || {};
   var WA = CFG.WHATSAPP || '34722115251';
+  // El número de WhatsApp de config.js manda sobre cualquier enlace wa.me del HTML (se cambia en un solo sitio)
+  document.querySelectorAll('a[href*="wa.me/"]').forEach(function (a) {
+    a.setAttribute('href', a.getAttribute('href').replace(/wa\.me\/\+?\d+/, 'wa.me/' + WA));
+  });
   var root = document.body.getAttribute('data-root') || '';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 

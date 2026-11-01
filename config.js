@@ -16,7 +16,7 @@ window.URBANISIMA_CONFIG = {
     click_whatsapp: ''   // clic directo en los botones de WhatsApp (flotante, barra móvil, contacto)
   },
   ENDPOINT: 'contact.php',               // script PHP que envía el correo (ver contact.php)
-  WHATSAPP: '34722115251',
+  WHATSAPP: '584241859724',              // ⚠ SOLO PRUEBAS. El número real del cliente es '34722115251' (se cambia aquí y afecta a TODOS los enlaces y formularios)
   EMAIL: 'info@grupo-urbanisima.com',    // solo para el plan B (se abre el correo del usuario si falla el envío)
 
   /* DATOS LEGALES. Aparecen en el Aviso legal y la Política de privacidad (LSSI-CE art. 10, RGPD art. 13).
