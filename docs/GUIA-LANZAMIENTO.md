@@ -35,7 +35,7 @@ Objetivo: publicar la web nueva en el dominio del cliente (SiteGround), dejar el
 |---|---|
 | **Aire acondicionado** | La web antigua tiene 4 páginas (recarga, reparación, montaje). No está en los 14 servicios. ¿Lo siguen ofreciendo? Si sí, hay que añadirlo como servicio 15. Ahora esas URLs redirigen a la portada. |
 | **Chimeneas en Alicante y Castellón** | La web nueva dice "provincia de Valencia". ¿Atienden también esas provincias? |
-| **Textos legales** | Hemos copiado los actuales (Aviso legal, Privacidad, Cookies). Conviene que su gestoría los actualice: ahora se envían datos por correo y WhatsApp, y se usará Google Ads con consentimiento. |
+| **Textos legales** | Se han reescrito (ver `docs/CUMPLIMIENTO-LEGAL.md`). Faltan el **CIF y el Registro Mercantil**, y hay que confirmar el **código postal** (45007 no es de Valencia). Que los revise su gestoría o abogado. |
 | **Correo de recepción** | ¿Todo a `info@`? En la web antigua también aparece `admin@`. Se cambia en `contact.php` (línea `$TO`). |
 | **Quién edita la web a partir de ahora** | La web nueva es estática (rápida y sin plugins que se rompan), pero **ya no se edita desde WordPress**. Los cambios se hacen sobre los archivos. |
 
@@ -59,6 +59,8 @@ Prueba todo en un sitio paralelo antes de reemplazar la web real.
 6. En el móvil, comprueba que todo se ve bien y los botones Llamar y WhatsApp funcionan.
 
 ## 3. Publicar en el dominio real (30 min, mejor fuera del horario de atención)
+
+> **Antes de publicar:** rellena los datos legales en `config.js` (CIF, Registro Mercantil, código postal) y ejecuta `npm run check:legal`. Sin ellos el Aviso legal está incompleto. Ver `docs/CUMPLIMIENTO-LEGAL.md`.
 
 1. Haz **otra copia de seguridad** justo antes (paso 1.1).
 2. En el Administrador de archivos, mueve los archivos de WordPress de `public_html` a una carpeta `public_html/_wp_old/` y **protégela con contraseña** (URLs protegidas). Mantenla 30 días por si hay que recuperar algo; luego elimínala.
@@ -103,7 +105,7 @@ Para la última: al crear los anuncios añade el *asset de llamada* y activa "Co
      click_whatsapp: 'AW-1234567890/MnOpQr...'    // Clic en WhatsApp
    },
    ```
-4. Sube `config.js` otra vez (al subdominio primero, luego a la raíz). Al configurar el ID, la web muestra el **banner de cookies** y carga Google con *Consent Mode v2* (obligatorio en la UE).
+4. Sube `config.js` otra vez (al subdominio primero, luego a la raíz). Al configurar el ID, la web muestra el **banner de cookies** y **solo carga Google cuando el visitante acepta** (cumple la LSSI-CE y la guía de la AEPD). Es normal que Google Ads registre menos conversiones que las solicitudes reales recibidas por correo: lleva también esa cuenta.
 5. **Verifica:** abre https://tagassistant.google.com, conecta tu web, acepta cookies, envía un formulario de prueba y confirma que se dispara la conversión en `/gracias/`. El estado en Google Ads puede tardar 24-48 h en pasar a "Registrando conversiones".
 
 ### 4.4 Qué se mide
@@ -239,8 +241,9 @@ Adapta por campaña: en la de comunidades usa "Rehabilitación de Fachadas", "Co
 - [ ] `sitemap.xml` enviado en Search Console
 - [ ] `config.js` con ID de Google y las 3 conversiones
 - [ ] Tag Assistant confirma la conversión en `/gracias/`
-- [ ] Banner de cookies visible y funcionando
-- [ ] Textos legales revisados por la gestoría
+- [ ] Banner de cookies visible y funcionando (probar Aceptar, Rechazar y «Configurar cookies» del pie)
+- [ ] **`config.js` → `LEGAL`: CIF, Registro Mercantil y código postal correctos; `npm run check:legal` sin errores**
+- [ ] Textos legales revisados por la gestoría o abogado (ver `docs/CUMPLIMIENTO-LEGAL.md`)
 - [ ] Decisión sobre aire acondicionado y Alicante/Castellón
 - [ ] Campañas nuevas con URLs con parámetros y plantilla de seguimiento
 - [ ] Campañas viejas pausadas (no borradas) tras 2 semanas de comparación
@@ -256,5 +259,8 @@ Adapta por campaña: en la de comunidades usa "Rehabilitación de Fachadas", "Co
 | `contact.php` | Envía el correo de cada solicitud (líneas `$TO` y `$FROM` al principio) |
 | `.htaccess` | HTTPS, redirecciones 301 de las URLs antiguas, caché |
 | `gracias/` | Página de solicitud enviada (aquí se mide la conversión) |
-| `aviso-legal/`, `ley-proteccion-datos/`, `aviso-ley-cookies/` | Textos legales (copiados de la web actual) |
+| `aviso-legal/`, `ley-proteccion-datos/`, `aviso-ley-cookies/`, `condiciones/` | Textos legales actualizados (RGPD, LOPDGDD, LSSI-CE, TRLGDCU). Datos de la empresa en `config.js` |
+| `assets/fonts/` | Tipografías alojadas en la web (sin llamadas a Google) |
+| `legal.js` | Rellena CIF, domicilio, etc. en las páginas legales desde `config.js` |
+| `scripts/check-legal.mjs` | `npm run check:legal`: avisa de datos legales que faltan |
 | `robots.txt`, `sitemap.xml` | SEO |

@@ -483,15 +483,6 @@ textarea{resize:vertical;min-height:112px;line-height:1.5}
   .send-row{grid-template-columns:1fr}
 }
 
-/* Banner de cookies (solo aparece si hay etiqueta de Google configurada) */
-.cookie-bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:80;max-width:720px;margin-inline:auto;background:var(--blue-deep);color:#e6eef6;border-radius:16px;padding:16px 18px;box-shadow:0 20px 50px -10px rgba(0,0,0,.55);display:flex;gap:14px 20px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:.88rem;line-height:1.45}
-.cookie-bar p{margin:0;flex:1 1 280px}
-.cookie-bar a{color:var(--yellow)}
-.cookie-bar div{display:flex;gap:8px}
-.cookie-bar button{font:800 .85rem Montserrat,sans-serif;border-radius:999px;padding:.7em 1.3em;cursor:pointer;min-height:44px;border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff}
-.cookie-bar .ck-yes{background:var(--yellow);border-color:var(--yellow);color:var(--blue-deep)}
-@media (max-width:760px){.cookie-bar{bottom:calc(86px + env(safe-area-inset-bottom))}.cookie-bar div{width:100%}.cookie-bar button{flex:1}}
-
 /* Páginas legales y "gracias" */
 .doc-page{background:var(--bg)}
 .doc-header{background:#fff;box-shadow:0 1px 0 var(--line)}
@@ -518,3 +509,55 @@ textarea{resize:vertical;min-height:112px;line-height:1.5}
 .hero-form .field{margin-bottom:12px}
 .hero-form .send-row{margin-top:2px}
 .hero-form .send-row .btn{font-size:.88rem;white-space:nowrap;gap:.45em;padding-inline:.6em}
+
+/* ======== v26: cumplimiento legal ======== */
+.link-btn{background:none;border:0;padding:.5em 0;color:inherit;font:inherit;font-size:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.legal-left .link-btn{color:#b4c3d3;font-size:.85rem}
+.legal-left .link-btn:hover,.doc-foot .link-btn:hover{color:var(--yellow)}
+.doc-foot .link-btn{color:#b4c3d3}
+.rgpd{margin-top:14px;border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px;font-size:.8rem;color:var(--muted);background:#fbfcfe}
+.rgpd summary{cursor:pointer;font-weight:700;color:var(--blue);list-style:none;min-height:28px;display:flex;align-items:center}
+.rgpd summary::-webkit-details-marker{display:none}
+.rgpd summary::after{content:"+";margin-left:auto;font-weight:800;color:var(--blue-mid)}
+.rgpd[open] summary::after{content:"–"}
+.rgpd dl{margin:10px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
+.rgpd dt{font-weight:700;color:var(--blue-dark)}
+.rgpd dd{margin:0;line-height:1.45}
+.rgpd a{color:var(--blue-mid)}
+@media (max-width:520px){.rgpd dl{grid-template-columns:1fr;gap:2px}.rgpd dt{margin-top:6px}}
+.hero-form .check{margin:2px 0 12px;font-size:.84rem}
+.hero-form .rgpd{margin-top:10px}
+
+/* Banner de cookies: Aceptar y Rechazar con el mismo peso (Guía AEPD) */
+.cookie-bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:90;max-width:760px;margin-inline:auto;background:var(--blue-deep);color:#e6eef6;border-radius:18px;padding:18px 20px;box-shadow:0 24px 60px -10px rgba(0,0,0,.6);display:flex;gap:16px 24px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:.9rem;line-height:1.5;border:1px solid rgba(255,255,255,.14)}
+.ck-text{flex:1 1 320px;min-width:0}
+.ck-text strong{display:block;color:#fff;font:800 1rem Montserrat,sans-serif;margin-bottom:4px}
+.cookie-bar p{margin:0}
+.cookie-bar a{color:var(--yellow)}
+.ck-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ck-btn{font:800 .88rem Montserrat,sans-serif;border-radius:999px;padding:.75em 1.4em;cursor:pointer;min-height:46px;border:2px solid #fff;background:#fff;color:var(--blue-deep);transition:.15s}
+.ck-btn:hover{background:var(--yellow);border-color:var(--yellow)}
+.ck-link{background:none;border:0;color:#fff;font:700 .88rem Montserrat,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:46px;padding:0 .6em}
+.ck-link:hover{color:var(--yellow)}
+.ck-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:10px 0;border-top:1px solid rgba(255,255,255,.12);cursor:pointer}
+.ck-row small{display:block;color:#b4c3d3;font-size:.8rem;margin-top:2px}
+.ck-row input{width:22px;height:22px;flex:none;margin:2px 0 0;accent-color:var(--yellow)}
+.ck-more{margin-top:8px!important}
+.cookie-bar.is-panel{max-height:calc(100dvh - 24px);overflow:auto}
+.cookie-bar.is-panel .ck-text{flex-basis:100%}
+@media (max-width:760px){.cookie-bar{bottom:calc(84px + env(safe-area-inset-bottom));padding:16px}.cookie-bar.is-panel{bottom:12px}.ck-actions{width:100%}.ck-btn{flex:1 1 calc(50% - 10px)}.ck-link{width:100%;text-align:center}}
+
+/* Páginas legales: tablas y datos */
+.upd{color:var(--muted);font-size:.9rem;margin:-.5em 0 1.6em}
+.doc ul{padding-left:1.2em;max-width:75ch;color:#2c3946}
+.doc li{margin-bottom:.45em}
+.doc ul.data{list-style:none;padding:0;background:var(--alt);border:1px solid var(--line);border-radius:var(--r-sm);padding:16px 20px}
+.doc ul.data li{margin:.35em 0}
+.doc a{color:var(--blue-mid)}
+.doc code{background:var(--alt);padding:.1em .4em;border-radius:5px;font-size:.88em}
+.tbl{overflow-x:auto;margin:1em 0 1.4em;border:1px solid var(--line);border-radius:var(--r-sm)}
+.tbl table{border-collapse:collapse;width:100%;min-width:560px;font-size:.88rem}
+.tbl th{background:var(--alt);color:var(--blue-dark);text-align:left;font-family:Montserrat,sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+.tbl th,.tbl td{padding:10px 12px;vertical-align:top;border-bottom:1px solid var(--line)}
+.tbl tr:last-child td{border-bottom:0}
+.box{background:var(--alt);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 18px;font-size:.92rem;line-height:1.7;max-width:75ch}

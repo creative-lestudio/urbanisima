@@ -63,12 +63,21 @@ RewriteRule ^(wp-login\.php|xmlrpc\.php)$ - [R=404,L]
 RewriteRule ^(wp-admin|wp-content|wp-includes|wp-json)(/|$) - [R=410,L]
 </IfModule>
 
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
 <IfModule mod_deflate.c>
 AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
 </IfModule>
 
 <IfModule mod_expires.c>
 ExpiresActive On
+ExpiresByType font/woff2 "access plus 1 year"
 ExpiresByType image/png "access plus 6 months"
 ExpiresByType image/jpeg "access plus 6 months"
 ExpiresByType text/css "access plus 1 week"

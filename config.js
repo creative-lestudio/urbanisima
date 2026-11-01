@@ -16,5 +16,18 @@ window.URBANISIMA_CONFIG = {
   },
   ENDPOINT: 'contact.php',               // script PHP que envía el correo (ver contact.php)
   WHATSAPP: '34722115251',
-  EMAIL: 'info@grupo-urbanisima.com'     // solo para el plan B (se abre el correo del usuario si falla el envío)
+  EMAIL: 'info@grupo-urbanisima.com',    // solo para el plan B (se abre el correo del usuario si falla el envío)
+
+  /* DATOS LEGALES. Aparecen en el Aviso legal y la Política de privacidad (LSSI-CE art. 10, RGPD art. 13).
+     RELLENAR ANTES DE PUBLICAR. Se comprueba con:  npm run check:legal  */
+  LEGAL: {
+    RAZON_SOCIAL: 'Grupo Urbanisima S.L.U.',
+    CIF: '',                                   // p. ej. B12345678  (el de la factura de la empresa)
+    REGISTRO_MERCANTIL: '',                    // p. ej. Registro Mercantil de Valencia, Tomo X, Folio Y, Hoja V-ZZZZZ
+    DOMICILIO: 'Calle Jacinto Labaila 8b',
+    CODIGO_POSTAL: '45007',                    // ¡VERIFICAR! Los códigos postales de Valencia empiezan por 46
+    MUNICIPIO: 'Valencia',
+    TELEFONO: '+34 722 115 251',
+    FECHA_ACTUALIZACION: '1 de noviembre de 2026'
+  }
 };

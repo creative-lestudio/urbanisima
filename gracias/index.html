@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Solicitud enviada | Grupo Urbanísima</title>
+<meta name="description" content="Hemos recibido tu solicitud.">
 <meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://grupo-urbanisima.com/gracias/">
 <link rel="icon" href="../assets/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=23">
-<script src="../config.js?v=23"></script>
-<script src="../tracking.js?v=23" defer></script>
+<link rel="preload" href="../assets/fonts/montserrat-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<link rel="stylesheet" href="../styles.css?v=26">
+<script src="../config.js?v=26"></script>
+<script src="../legal.js?v=26" defer></script>
+<script src="../tracking.js?v=26" defer></script>
 </head>
 <body class="doc-page">
 <header class="doc-header"><div class="wrap"><a href="../" aria-label="Grupo Urbanísima, inicio"><img src="../assets/logo.png" alt="Grupo Urbanísima" width="268" height="55"></a><a href="../" class="btn btn-sm">← Volver a la web</a></div></header>
@@ -27,14 +29,18 @@
 (function(){
   var q=new URLSearchParams(location.search),c=q.get('c');
   if(c==='whatsapp'){document.getElementById('t-text').textContent='Se ha abierto WhatsApp con tu mensaje y hemos enviado una copia a nuestro correo. Te responderemos en menos de 24 horas.';}
-  // Conversión "solicitud enviada": una sola vez por sesión
-  try{ if(sessionStorage.getItem('urb_lead')) return; sessionStorage.setItem('urb_lead','1'); }catch(e){}
-  var n=0,t=setInterval(function(){ if(window.UrbTrack&&window.gtag){ clearInterval(t); window.UrbTrack('lead',{canal:c||'desconocido'}); } else if(++n>40) clearInterval(t); },100);
+  // Conversión "solicitud enviada": una sola vez por sesión (solo se mide si has aceptado las cookies de publicidad)
+  var n=0,t=setInterval(function(){
+    if(window.UrbTrack&&window.gtag){ clearInterval(t);
+      try{ if(sessionStorage.getItem('urb_lead')) return; sessionStorage.setItem('urb_lead','1'); }catch(e){}
+      window.UrbTrack('lead',{canal:c||'desconocido'});
+    } else if(++n>40) clearInterval(t);
+  },100);
 })();
 </script>
 <footer class="doc-foot"><div class="wrap">
 <span>© <span id="y">2026</span> Grupo Urbanísima</span>
-<nav><a href="../aviso-legal/">Aviso legal</a><a href="../ley-proteccion-datos/">Privacidad</a><a href="../aviso-ley-cookies/">Cookies</a></nav>
+<nav aria-label="Legal"><a href="../aviso-legal/">Aviso legal</a><a href="../ley-proteccion-datos/">Privacidad</a><a href="../aviso-ley-cookies/">Cookies</a><a href="../condiciones/">Condiciones</a><button type="button" class="link-btn" data-cookie-settings hidden>Configurar cookies</button></nav>
 <a class="sign" href="https://lestudio-crea.com" target="_blank" rel="noopener" aria-label="Desarrollado por Le Studio"><span>Desarrollado por</span><img src="../assets/lestudio-logo.png" alt="Le Studio" width="900" height="392"></a>
 </div></footer>
 <script>document.getElementById('y').textContent=new Date().getFullYear()</script>

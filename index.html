@@ -14,11 +14,10 @@
 <meta property="og:url" content="https://grupo-urbanisima.com/">
 <meta name="theme-color" content="#01335a">
 <link rel="icon" href="assets/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/montserrat-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 <style>.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.skip{position:absolute;left:-999px;top:8px}</style>
-<link rel="stylesheet" href="styles.css?v=25">
+<link rel="stylesheet" href="styles.css?v=26">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"RoofingContractor","name":"Grupo Urbanísima","telephone":"+34722115251","email":"info@grupo-urbanisima.com","address":{"@type":"PostalAddress","streetAddress":"Jacinto Labaila 8b","postalCode":"45007","addressLocality":"Valencia","addressCountry":"ES"},"areaServed":"Provincia de Valencia","url":"https://grupo-urbanisima.com/"}
 </script>
@@ -134,11 +133,22 @@
           <textarea id="h-msg" name="mensaje" rows="3" minlength="10" placeholder="Ej.: gotera en el salón cuando llueve, tejado de 80 m² en Torrent, es urgente…"></textarea>
         </div>
         <div class="hp" aria-hidden="true"><label>Web <input name="web" tabindex="-1" autocomplete="off"></label></div>
+        <label class="check"><input type="checkbox" name="privacidad" required> <span>He leído y acepto la <a href="ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
         <div class="send-row">
           <button type="submit" name="canal" value="email" class="btn btn-mail"><svg class="i"><use href="#i-mail"/></svg> Enviar por correo</button>
           <button type="submit" name="canal" value="whatsapp" class="btn btn-wa"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
         </div>
-        <p class="hf-legal">Gratis y sin compromiso. Si lo envías por WhatsApp, también recibimos una copia por correo. Al enviar aceptas la <a href="ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a>.</p>
+        <p class="hf-legal">Gratis y sin compromiso. Si lo envías por WhatsApp, también recibimos una copia por correo.</p>
+        <details class="rgpd"><summary>Información básica sobre protección de datos</summary>
+        <dl>
+          <dt>Responsable</dt><dd>Grupo Urbanisima S.L.U.</dd>
+          <dt>Finalidad</dt><dd>Atender tu solicitud de presupuesto o consulta.</dd>
+          <dt>Legitimación</dt><dd>Tu consentimiento y las medidas precontractuales que nos pides.</dd>
+          <dt>Destinatarios</dt><dd>No cedemos datos a terceros salvo obligación legal. Usamos proveedores de alojamiento y correo y, si eliges WhatsApp, esa plataforma (Meta). Con WhatsApp también recibimos una copia por correo.</dd>
+          <dt>Derechos</dt><dd>Acceso, rectificación, supresión, oposición, limitación y portabilidad, escribiendo a info@grupo-urbanisima.com. Puedes reclamar ante la AEPD.</dd>
+          <dt>Más información</dt><dd><a href="ley-proteccion-datos/" target="_blank" rel="noopener">Política de privacidad</a></dd>
+        </dl>
+      </details>
         <button type="button" class="back" id="hf-back">← Cambiar perfil</button>
         <p class="form-msg" role="status" aria-live="polite"></p>
       </div>
@@ -369,12 +379,22 @@
         <p class="hint">Cuanto más detalle (qué ocurre, dónde, metros aproximados, si es urgente), mejor podremos valorar el servicio y darte un presupuesto ajustado.</p>
       </div>
       <div class="hp" aria-hidden="true"><label>Web <input name="web" tabindex="-1" autocomplete="off"></label></div>
-      <label class="check"><input type="checkbox" name="privacidad" required> <span>Acepto la <a href="ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
+      <label class="check"><input type="checkbox" name="privacidad" required> <span>He leído y acepto la <a href="ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
       <div class="send-row">
         <button type="submit" name="canal" value="email" class="btn btn-mail"><svg class="i"><use href="#i-mail"/></svg> Enviar por correo</button>
         <button type="submit" name="canal" value="whatsapp" class="btn btn-wa"><svg class="i"><use href="#i-chat"/></svg> Enviar por WhatsApp</button>
       </div>
       <p class="send-note">Si lo envías por WhatsApp, también recibimos una copia en nuestro correo.</p>
+      <details class="rgpd"><summary>Información básica sobre protección de datos</summary>
+        <dl>
+          <dt>Responsable</dt><dd>Grupo Urbanisima S.L.U.</dd>
+          <dt>Finalidad</dt><dd>Atender tu solicitud de presupuesto o consulta.</dd>
+          <dt>Legitimación</dt><dd>Tu consentimiento y las medidas precontractuales que nos pides.</dd>
+          <dt>Destinatarios</dt><dd>No cedemos datos a terceros salvo obligación legal. Usamos proveedores de alojamiento y correo y, si eliges WhatsApp, esa plataforma (Meta). Con WhatsApp también recibimos una copia por correo.</dd>
+          <dt>Derechos</dt><dd>Acceso, rectificación, supresión, oposición, limitación y portabilidad, escribiendo a info@grupo-urbanisima.com. Puedes reclamar ante la AEPD.</dd>
+          <dt>Más información</dt><dd><a href="ley-proteccion-datos/" target="_blank" rel="noopener">Política de privacidad</a></dd>
+        </dl>
+      </details>
       <p class="form-msg" role="status" aria-live="polite"></p>
     </form>
   </div>
@@ -424,6 +444,8 @@
         <a href="aviso-legal/">Aviso legal</a>
         <a href="ley-proteccion-datos/">Privacidad</a>
         <a href="aviso-ley-cookies/">Cookies</a>
+        <a href="condiciones/">Condiciones</a>
+        <button type="button" class="link-btn" data-cookie-settings hidden>Configurar cookies</button>
         <button type="button" class="to-top" id="to-top" aria-label="Volver arriba">↑ Arriba</button>
       </nav>
     </div>
@@ -443,8 +465,8 @@
   <a href="https://wa.me/34722115251?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener"><svg class="i"><use href="#i-chat"/></svg> WhatsApp</a>
 </div>
 
-<script src="config.js?v=25"></script>
-<script src="tracking.js?v=25" defer></script>
-<script src="main.js?v=25" defer></script>
+<script src="config.js?v=26"></script>
+<script src="tracking.js?v=26" defer></script>
+<script src="main.js?v=26" defer></script>
 </body>
 </html>

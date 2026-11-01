@@ -43,6 +43,10 @@ La URL será `https://creative-lestudio.github.io/urbanisima/`.
 
 Ver **[docs/GUIA-LANZAMIENTO.md](docs/GUIA-LANZAMIENTO.md)**: despliegue en SiteGround, formulario por correo, conversiones y rediseño de campañas.
 
+## Cumplimiento legal
+
+Ver **[docs/CUMPLIMIENTO-LEGAL.md](docs/CUMPLIMIENTO-LEGAL.md)**. Antes de publicar: completa `LEGAL` en `config.js` y ejecuta `npm run check:legal`.
+
 ## Pendiente de configurar
 
 - Los formularios abren WhatsApp o envían correo mediante `contact.php` (requiere PHP: funciona en SiteGround; en la vista previa de GitHub Pages no hay PHP y se abre el programa de correo como plan B).

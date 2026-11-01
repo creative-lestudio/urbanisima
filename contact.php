@@ -43,11 +43,14 @@ $mensaje  = clean($in['mensaje'] ?? '', 3000);
 $canal    = ($in['canal'] ?? '') === 'email' ? 'email' : 'whatsapp';
 $origen   = ($in['origen'] ?? '') === 'hero' ? 'hero' : 'contacto';
 $pagina   = oneline($in['pagina'] ?? '', 300);
+$acepta   = !empty($in['privacidad']);
+$polVer   = oneline($in['politica_version'] ?? '', 20);
 
 if (mb_strlen($nombre) < 2)                           out(422, ['ok' => false, 'error' => 'nombre']);
 if (strlen((string)preg_replace('/\D/', '', $telefono)) < 9) out(422, ['ok' => false, 'error' => 'telefono']);
 if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) out(422, ['ok' => false, 'error' => 'email']);
 if ($origen === 'contacto' && mb_strlen($mensaje) < 10) out(422, ['ok' => false, 'error' => 'mensaje']);
+if (!$acepta) out(422, ['ok' => false, 'error' => 'privacidad']);
 
 /* Límite sencillo: 6 solicitudes cada 10 minutos por IP */
 $ip   = $_SERVER['REMOTE_ADDR'] ?? '0';
@@ -80,7 +83,9 @@ $cuerpo .= "Enviado:    $canalTxt (formulario: $origen)\n\n";
 $cuerpo .= "DESCRIPCIÓN DEL CLIENTE\n" . str_repeat('-', 40) . "\n";
 $cuerpo .= ($mensaje !== '' ? $mensaje : '(sin descripción)') . "\n\n";
 if ($attrib !== '') $cuerpo .= "ORIGEN DE LA VISITA (Google Ads)\n" . str_repeat('-', 40) . "\n" . $attrib . "\n";
-$cuerpo .= str_repeat('-', 40) . "\nPágina: $pagina\nFecha:  " . date('d/m/Y H:i:s') . "\nIP:     $ip\n";
+$cuerpo .= str_repeat('-', 40) . "\nPágina: $pagina\nFecha:  " . date('d/m/Y H:i:s') . "\n";
+$cuerpo .= 'Consentimiento: política de privacidad aceptada' . ($polVer !== '' ? " (versión $polVer)" : '') . ".\n";
+$cuerpo .= "Conservación: eliminar este mensaje a los 30 días del último contacto si no se contrata el servicio.\n";
 if ($canal === 'whatsapp') $cuerpo .= "\nNota: el cliente ha abierto WhatsApp con este mismo mensaje; también puede escribir al " . '+34 722 115 251' . ".\n";
 
 $h  = "From: Web Grupo Urbanísima <$FROM>\r\n";

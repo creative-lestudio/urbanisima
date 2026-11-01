@@ -146,7 +146,8 @@
     var p = {
       origen: origen, canal: canal, nombre: v.nombre, telefono: v.tel, email: v.email,
       servicio: d.get('servicio') || '', perfil: currentCat !== 'all' ? WHO[currentCat] : '',
-      mensaje: v.msg, pagina: location.href, web: d.get('web') || ''
+      mensaje: v.msg, pagina: location.href, web: d.get('web') || '',
+      privacidad: true, politica_version: '2026-11-01'
     };
     var a = window.UrbAttribution ? window.UrbAttribution() : {};
     Object.keys(a).forEach(function (k) { p[k] = a[k]; });

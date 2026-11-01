@@ -1,0 +1,15 @@
+// Comprueba que los datos legales obligatorios están rellenados en config.js antes de publicar.
+//   npm run check:legal
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+const ctx = { window: {} };
+vm.createContext(ctx);
+vm.runInContext(readFileSync(new URL('../config.js', import.meta.url), 'utf8'), ctx);
+const L = (ctx.window.URBANISIMA_CONFIG || {}).LEGAL || {};
+const required = { CIF: 'NIF/CIF de la empresa', REGISTRO_MERCANTIL: 'Datos del Registro Mercantil', DOMICILIO: 'Domicilio', CODIGO_POSTAL: 'Código postal', MUNICIPIO: 'Municipio' };
+let bad = 0;
+for (const [k, label] of Object.entries(required)) if (!String(L[k] || '').trim()) { console.error(`✗ Falta ${label} (LEGAL.${k} en config.js)`); bad++; }
+const cp = String(L.CODIGO_POSTAL || '');
+if (/valencia/i.test(L.MUNICIPIO || '') && cp && !cp.startsWith('46')) { console.warn(`⚠ El código postal ${cp} no parece de Valencia (empiezan por 46). Verifícalo con el cliente.`); bad++; }
+if (bad) { console.error(`\n${bad} problema(s). Corrígelos antes de publicar.`); process.exit(1); }
+console.log('✓ Datos legales completos.');
