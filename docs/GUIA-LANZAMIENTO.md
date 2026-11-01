@@ -161,6 +161,20 @@ Todas: **Red de Búsqueda**, ubicación *Provincia de Valencia* (presencia), idi
 | **5. Otros servicios** (poco presupuesto) | canalones · deshollinado de chimeneas · jardinería | `…/?servicio=canalones` etc. |
 | **6. Marca** (opcional, barata) | "grupo urbanisima" | `https://grupo-urbanisima.com/` |
 
+**URL finales recomendadas: la página de cada servicio.** Ahora cada servicio tiene su propia página con formulario. Es mejor usarlas como URL final del anuncio (Google valora que la página trate exactamente lo que se busca):
+
+| Campaña / grupo | URL final |
+|---|---|
+| Tejados y cubiertas | `https://grupo-urbanisima.com/servicios/reparacion-de-tejados-valencia/` |
+| Goteras e impermeabilización | `https://grupo-urbanisima.com/servicios/impermeabilizacion-terrazas-cubiertas-valencia/` |
+| Comunidades (fachadas, patios) | `https://grupo-urbanisima.com/servicios/pintura-rehabilitacion-fachadas-valencia/` |
+| Empresas y naves (cubiertas, panel) | `https://grupo-urbanisima.com/servicios/panel-sandwich-valencia/` o la de tejados |
+| Chimeneas | `https://grupo-urbanisima.com/servicios/deshollinado-chimeneas-valencia/` |
+| Canalones | `https://grupo-urbanisima.com/servicios/canalones-valencia/` |
+| Marca / general | `https://grupo-urbanisima.com/` |
+
+Los textos de cada página se editan en `scripts/build-services.py` y se regeneran con `python3 scripts/build-services.py`.
+
 **Cómo funcionan las URL:** la web lee `?perfil=` y `?servicio=`. La página llega ya con el servicio buscado **el primero**, marcado "Lo que buscas", seleccionado en el formulario, y con el formulario del hero abierto en el paso 2 con los servicios del perfil. Valores de `servicio`: `tejados`, `impermeabilizacion`, `canalones`, `fachadas`, `verticales`, `garajes`, `panel`, `epoxi`, `chimeneas`, `jardines`, `piscinas`, `locales`, `cocinas`, `reformas`. Valores de `perfil`: `particulares`, `comunidades`, `empresas`.
 
 **Seguimiento de URL (cuenta → Configuración → Plantilla de seguimiento):**

@@ -31,6 +31,10 @@ Para ver la versión móvil: DevTools del navegador (F12) → icono de dispositi
 Para verla en tu teléfono real: con el ordenador y el móvil en la misma wifi, abre
 `http://IP-DE-TU-ORDENADOR:8080`.
 
+## Páginas de servicios
+
+`/servicios/` y una página por servicio, con su formulario. Se generan con `python3 scripts/build-services.py` (textos, redirecciones 301 de las URLs antiguas y sitemap).
+
 ## Previsualizar online (GitHub Pages)
 
 El workflow `.github/workflows/pages.yml` publica la web en cada push a la rama

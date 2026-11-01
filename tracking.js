@@ -108,7 +108,7 @@
 
   /* ---------- Interfaz: banner + panel de configuración ---------- */
   var ui = null;
-  function base() { return inPage.length && /^(gracias|aviso-legal|ley-proteccion-datos|aviso-ley-cookies|condiciones)$/.test(inPage[inPage.length - 1]) ? '../' : ''; }
+  function base() { var r = document.body && document.body.getAttribute('data-root'); if (r !== null && r !== undefined) return r; return inPage.length && /^(gracias|aviso-legal|ley-proteccion-datos|aviso-ley-cookies|condiciones)$/.test(inPage[inPage.length - 1]) ? '../' : ''; }
   function closeUi() { if (ui) { ui.remove(); ui = null; } }
   function openUi(panel) {
     closeUi();
