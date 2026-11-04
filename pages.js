@@ -28,7 +28,7 @@
   if (grid) {
     var cards = Array.prototype.slice.call(grid.querySelectorAll('.hub-card'));
     var tabs = document.querySelectorAll('.tab'), status = document.getElementById('svc-status');
-    var NAMES = { particulares: 'particulares', comunidades: 'comunidades de vecinos', empresas: 'empresas y naves industriales' };
+    var NAMES = { particulares: 'viviendas particulares', comunidades: 'comunidades de vecinos', empresas: 'naves industriales' };
     cards.forEach(function (c, i) { c.dataset.i = i; });
     function apply(cat) {
       tabs.forEach(function (t) { var on = t.dataset.filter === cat; t.classList.toggle('is-on', on); t.setAttribute('aria-selected', String(on)); });

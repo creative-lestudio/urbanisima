@@ -8,7 +8,7 @@ Uso (desde la raíz del proyecto):   python3 scripts/build-services.py
 Para cambiar un texto, edita SERVICES más abajo y vuelve a ejecutar el script.
 Los textos parten de lo que ya decía la web antigua del cliente.
 """
-import html, json, os, re
+import html, json, os, re, shutil
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 SITE = 'https://grupo-urbanisima.com'
@@ -16,208 +16,204 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '28'  # versión de CSS/JS (rompe la caché del navegador)
+V = '30'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
-# rank = (particulares, comunidades, empresas): 1 = más solicitado. Debe coincidir con index.html.
+# Lista oficial de servicios facilitada por el dueño (3/11/2026). Los 14 están disponibles para cualquier cliente;
+# rank = (viviendas particulares, comunidades de vecinos, naves industriales): 1 = más probable que sea el servicio buscado.
 SERVICES = [
- dict(key='tejados', slug='reparacion-de-tejados-valencia', icon='roof', rank=(1,3,2),
-  title='Reparación de tejados y cubiertas',
-  short='Cambio de tejas de pizarra o mixta y sustitución de tejas o uralita en tejados con humedades.',
-  meta='Reparación de tejados y cubiertas en toda la provincia de Valencia: cambio de tejas, uralita, retejados e impermeabilización. Presupuesto gratis.',
-  intro='Reparamos tejados y cubiertas en todas las localidades de la provincia de Valencia. Resolvemos goteras, tejas rotas o desplazadas y humedades, y renovamos la cubierta cuando hace falta, en viviendas, comunidades de vecinos y naves.',
-  incluye=['Cambio de tejas de pizarra, tejas mixtas y otros tipos de teja','Retejados y recolocación de tejas desplazadas','Sustitución de uralita y de cubiertas deterioradas','Impermeabilización del tejado y sellado de filtraciones','Instalación de panel sandwich y aislamiento térmico','Montaje y limpieza de canalones y bajantes','Instalación de Velux y trabajos en azoteas'],
-  senales=['Goteras o manchas de humedad en el techo cuando llueve','Tejas rotas, sueltas o desplazadas tras el viento o la lluvia','Cubierta de uralita antigua o deteriorada','Canalones obstruidos o que desbordan'],
+ dict(key='tejados', slug='rehabilitacion-reparacion-tejados-valencia', icon='roof', rank=(2,5,4),
+  title='Rehabilitación y reparación de tejados antiguos',
+  short='Cambio de tejas, retejados y sustitución de uralita en tejados antiguos o deteriorados.',
+  meta='Rehabilitación y reparación de tejados antiguos en Valencia: cambio de tejas, retejados, sustitución de uralita e impermeabilización. Presupuesto gratis.',
+  intro='Rehabilitamos y reparamos tejados antiguos en toda la provincia de Valencia. Cambiamos tejas rotas o desplazadas, hacemos retejados, sustituimos uralita y resolvemos humedades y filtraciones para alargar la vida de la cubierta.',
+  incluye=['Cambio de tejas de pizarra, tejas mixtas y otros tipos de teja','Retejados y recolocación de tejas desplazadas','Sustitución de uralita y de aislantes térmicos','Impermeabilización del tejado y sellado de filtraciones','Instalación de panel sandwich sobre la cubierta existente','Limpieza y mantenimiento de canalones y bajantes'],
+  senales=['Tejas rotas, sueltas o desplazadas','Goteras o manchas de humedad en el techo','Cubierta antigua de uralita o muy deteriorada','Quieres alargar la vida del tejado sin construir uno nuevo'],
   faq=[('¿Cómo sé si hay que reparar o renovar la cubierta?','Depende del estado de las tejas, de la estructura y de la antigüedad de la cubierta. En la visita sin coste la revisamos y te explicamos si basta una reparación puntual o conviene una renovación.'),
-       ('¿Cuánto cuesta reparar un tejado?','Depende de la superficie, el material y el acceso. Por eso hacemos una visita sin coste y te damos un presupuesto sin compromiso.'),
-       ('¿Trabajáis en comunidades de vecinos y naves industriales?','Sí. Atendemos a particulares, comunidades de vecinos, empresas y naves industriales en toda la provincia de Valencia.')],
-  rel=['impermeabilizacion','canalones','panel']),
- dict(key='impermeabilizacion', slug='impermeabilizacion-terrazas-cubiertas-valencia', icon='drop', rank=(2,1,1),
-  title='Impermeabilización de terrazas y cubiertas',
-  short='Terrazas, azoteas, terrados, tejados y cubiertas. Fin de goteras y filtraciones.',
-  meta='Impermeabilización de terrazas, azoteas y cubiertas en Valencia con resinas reforzadas con fibra de vidrio. Soluciones a goteras y humedades. Presupuesto gratis.',
-  intro='Acabamos con las goteras, humedades y filtraciones en terrazas, azoteas, terrados, tejados y cubiertas. Una impermeabilización bien hecha evita que el agua siga entrando y que el daño llegue a la estructura del edificio.',
-  incluye=['Revisión de la terraza o cubierta y localización del origen de la filtración','Reparación de grietas, fisuras y zonas deterioradas','Impermeabilización con resinas reforzadas con fibra de vidrio: flexibles, resistentes a la intemperie y transitables','Tratamiento de juntas, remates, bajantes y desagües','Impermeabilización de cubiertas de naves industriales','Mantenimiento y limpieza de canalones para prevenir humedades'],
-  senales=['Humedad o manchas en techos y paredes bajo la terraza','Charcos que se acumulan o pintura que se levanta','Grietas o fisuras en el suelo de la terraza o azotea','Goteras que reaparecen tras reparaciones anteriores'],
-  faq=[('¿Qué es una impermeabilización con resina reforzada con fibra de vidrio?','Es un revestimiento continuo y flexible que se aplica sobre la superficie y la protege del agua. Resiste la intemperie, es transitable y no suele requerir grandes obras. En la visita valoramos si es la solución adecuada en tu caso.'),
-       ('¿Por qué vuelve a entrar el agua si ya reparé la terraza?','Si la impermeabilización no se hace correctamente, la humedad sigue entrando y provoca daños mayores. Hay que localizar el origen real de la filtración y tratar toda la superficie y los remates.'),
-       ('¿Cuánto cuesta impermeabilizar una terraza o cubierta?','Depende de la superficie, el estado del soporte y los remates. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['tejados','canalones','panel']),
- dict(key='canalones', slug='canalones-valencia', icon='gutter', rank=(3,5,5),
-  title='Montaje y limpieza de canalones',
-  short='Limpieza, mantenimiento y cambio total de canalones, canaletas y bajantes.',
-  meta='Montaje, limpieza y mantenimiento de canalones, canaletas y bajantes en Valencia: aluminio, zinc, cobre y galvanizados. Presupuesto gratis y sin compromiso.',
-  intro='Instalamos, limpiamos y mantenemos canalones pluviales, canaletas y bajantes de todo tipo: aluminio, zinc, cobre o galvanizados. Un canalón en mal estado es una de las causas más habituales de filtraciones en cubiertas y tejados. Todo el equipo cumple la normativa de prevención de riesgos laborales.',
-  incluye=['Limpieza de canalones, canaletas y bajantes','Montaje y sustitución completa de canalones','Revisión y mantenimiento periódico','Canalones de aluminio, zinc, cobre y galvanizados','Corrección de pendientes para que no acumulen agua','Sistemas antipájaros'],
-  senales=['Canalones que desbordan o gotean cuando llueve','Hojas, barro o suciedad acumulados','Canalones oxidados, deformados o despegados','Manchas de humedad en la fachada bajo el canalón'],
-  faq=[('¿Cada cuánto conviene limpiar los canalones?','Conviene revisarlos antes de la temporada de lluvias y después de temporales, sobre todo si hay árboles cerca, que acumulan hojas y suciedad.'),
-       ('¿Hacéis el trabajo con andamio?','Hacemos trabajos en altura con o sin andamios, según lo que requiera cada caso.'),
-       ('¿Cuánto cuesta limpiar o cambiar un canalón?','Depende de la longitud, el material y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['tejados','impermeabilizacion','verticales']),
- dict(key='fachadas', slug='pintura-rehabilitacion-fachadas-valencia', icon='brush', rank=(4,2,10),
-  title='Pintura y rehabilitación de fachadas',
-  short='Fachadas, patios interiores, garajes y parkings, casas y chalets. Trabajos verticales o con andamios.',
-  meta='Pintura y rehabilitación de fachadas, patios interiores, portales, casas y chalets en Valencia. Trabajos verticales sin andamio. Presupuesto gratis y sin compromiso.',
-  intro='Pintamos y rehabilitamos fachadas, patios interiores, portales, casas y chalets. Como especialistas en trabajos verticales, accedemos sin andamios a los puntos más difíciles, de forma rápida, segura y sin molestar a propietarios e inquilinos. Contamos además con asesoramiento de decoración y pintura.',
-  incluye=['Pintura exterior y rehabilitación de fachadas','Pintura y restauración de patios interiores','Pintura de portales: techos, paredes, escaleras, rellanos, barandillas, rejas y puertas','Pintura interior y exterior de viviendas y chalets: plástica, alisados, estucos, quitar gotelé, papel pintado, barnizados y lacados','Pintado de garajes y parkings','Trabajos con andamio o con descuelgue vertical'],
-  senales=['Pintura desconchada, sucia o descolorida','Humedades, grietas o desprendimientos en la fachada','Patio interior deteriorado o con manchas','Quieres renovar el aspecto de tu casa o de tu comunidad'],
-  faq=[('¿Hace falta montar andamios?','No siempre. Con trabajos verticales (descuelgue) accedemos a muchos puntos sin andamio, con menos molestias para los vecinos. Lo valoramos en la visita sin coste.'),
-       ('¿Qué materiales utilizáis?','Materiales de primera calidad, con certificado de calidad de los fabricantes, para garantizar un buen acabado.'),
-       ('¿Cuánto cuesta pintar una fachada o un patio?','Depende de la superficie, la altura, el estado del soporte y el tipo de acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['verticales','garajes','impermeabilizacion']),
- dict(key='verticales', slug='trabajos-verticales-valencia', icon='tools', rank=(9,4,4),
-  title='Trabajos verticales y en altura',
-  short='Con o sin andamios, en toda la provincia de Valencia.',
-  meta='Trabajos verticales y en altura en Valencia, con o sin andamios: fachadas, patios, cubiertas y canalones de difícil acceso. Presupuesto gratis.',
-  intro='Realizamos trabajos en altura, con o sin andamios, en toda la provincia de Valencia. Con el descuelgue vertical llegamos a fachadas, patios interiores, cubiertas y otros puntos de difícil acceso de forma rápida y segura, sin molestar a propietarios e inquilinos.',
-  incluye=['Acceso por descuelgue vertical, sin necesidad de andamios','Pintura y rehabilitación de fachadas y patios interiores','Reparación y limpieza en cubiertas y canalones de difícil acceso','Saneado y retirada o fijación de elementos sueltos con riesgo de caída','Presentación de plan de trabajo y de seguridad'],
-  senales=['Patios interiores o fachadas de difícil acceso','Elementos sueltos o desprendimientos con riesgo de caída','Cubiertas o canalones que no se alcanzan sin medios especiales','Quieres evitar el coste y las molestias de un andamio'],
-  faq=[('¿Qué es un trabajo vertical?','Es un trabajo en altura en el que los operarios acceden mediante cuerdas (descuelgue) en lugar de montar andamios. Es una opción adecuada para zonas de difícil acceso.'),
-       ('¿Es seguro?','Presentamos plan de trabajo y de seguridad, y la documentación laboral y legal de nuestros trabajadores.'),
-       ('¿Cuánto cuesta un trabajo en altura?','Depende de la altura, el tipo de trabajo y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['fachadas','canalones','tejados']),
- dict(key='garajes', slug='pintura-garajes-parkings-valencia', icon='brush', rank=(10,6,11),
-  title='Pintado de garajes y parkings',
-  short='Renovación de garajes, parkings y zonas comunes.',
-  meta='Pintado de garajes y parkings en Valencia para comunidades de vecinos y empresas: paredes, techos y pavimento con pintura epoxi. Presupuesto gratis y sin compromiso.',
-  intro='Renovamos garajes, parkings y zonas comunes de comunidades de vecinos, empresas y particulares. Cada garaje es distinto: en la visita valoramos el estado del suelo y de las paredes y te proponemos la mejor solución.',
-  incluye=['Pintura de paredes, techos y elementos del garaje o parking','Pintura epoxi en el pavimento','Trabajos con medios de elevación o descuelgue vertical cuando hace falta','Coordinación con la comunidad o la empresa para organizar el trabajo'],
-  senales=['Paredes o techos desconchados, sucios o con manchas','Suelo de hormigón desgastado o con manchas de aceite','Quieres renovar un garaje comunitario o un parking de empresa'],
-  faq=[('¿Pintáis también el suelo del garaje?','Sí. Para el pavimento utilizamos pintura epoxi, que da una superficie lisa, fácil de limpiar y que ayuda a prevenir las manchas de aceite.'),
-       ('¿Trabajáis para comunidades de vecinos?','Sí. Atendemos a comunidades de vecinos, empresas y particulares en toda la provincia de Valencia.'),
-       ('¿Cuánto cuesta pintar un garaje?','Depende de la superficie y del estado de las paredes y del suelo. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['epoxi','fachadas','reformas']),
- dict(key='panel', slug='panel-sandwich-valencia', icon='layers', rank=(11,7,3),
-  title='Panel sandwich',
-  short='Aislante térmico y acústico, impermeabilizante. Montaje e instalación.',
-  meta='Instalación y montaje de panel sandwich en Valencia: cubiertas con aislamiento térmico y acústico para viviendas y naves. Presupuesto gratis.',
-  intro='Instalamos, rehabilitamos y mantenemos paneles sandwich en toda la provincia de Valencia. Es una solución ideal tanto para naves industriales como para viviendas: impermeabiliza y aporta aislamiento térmico y acústico, resistente y duradero.',
-  incluye=['Montaje de panel sandwich sobre la cubierta existente, formando una doble capa','Sustitución de la cubierta existente por placas de panel sandwich, evitando sobrepeso','Cubiertas tipo sándwich y paneles de policarbonato','Rehabilitación y mantenimiento de paneles','Limpieza y mantenimiento de paneles de aluminio, cobre o galvanizados'],
-  senales=['Cubierta de nave o vivienda con goteras o mal aislamiento','Problemas de temperatura o de ruido bajo la cubierta','Uralita o cubierta antigua que conviene sustituir'],
+       ('¿Cuánto cuesta rehabilitar un tejado?','Depende de la superficie, el material y el acceso. Por eso hacemos una visita sin coste y te damos un presupuesto sin compromiso.'),
+       ('¿Trabajáis en comunidades de vecinos y naves industriales?','Sí. Atendemos a viviendas particulares, comunidades de vecinos y naves industriales en toda la provincia de Valencia.')],
+  rel=['goteras','tejadosnuevos','impermeabilizacion'],
+  bits=['Cambio de tejas y uralita','Retejados','Humedades y filtraciones']),
+ dict(key='tejadosnuevos', slug='construccion-tejados-nuevos-valencia', icon='building', rank=(13,13,5),
+  title='Construcción de tejados nuevos',
+  short='Tejados nuevos para viviendas, edificios y naves, con los mejores materiales.',
+  meta='Construcción de tejados nuevos en Valencia para viviendas, edificios y naves: montaje, impermeabilización y aislamiento. Presupuesto gratis y sin compromiso.',
+  intro='Construimos tejados nuevos para viviendas, edificios y naves de la provincia de Valencia, con los mejores materiales y un acabado pensado para durar. Cuéntanos tu proyecto y te asesoramos en una visita sin coste.',
+  incluye=['Montaje de tejados nuevos','Cubiertas de panel sandwich con aislamiento térmico y acústico','Impermeabilización y remates de la cubierta','Asesoramiento sobre los materiales más adecuados','Gestión de las licencias de obra cuando se necesitan','Plan de trabajo y de seguridad'],
+  senales=['Vas a construir o ampliar una vivienda, un edificio o una nave','La cubierta está tan deteriorada que no compensa repararla','Quieres cambiar el tipo de cubierta'],
+  faq=[('¿Me asesoráis sobre los materiales?','Sí. Te asesoramos sobre los materiales más adecuados según el uso, el edificio y tu presupuesto.'),
+       ('¿Os encargáis de las licencias de obra?','Sí. Obtenemos y presentamos las licencias de obra oportunas cuando el proyecto las necesita.'),
+       ('¿Cuánto cuesta un tejado nuevo?','Depende de la superficie, el tipo de cubierta y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['tejados','panel','impermeabilizacion'],
+  bits=['Montaje de tejados nuevos','Aislamiento y remates','Licencias de obra']),
+ dict(key='panel', slug='cubiertas-cerramientos-panel-sandwich-valencia', icon='layers', rank=(14,12,1),
+  title='Cubiertas y cerramientos de panel sandwich',
+  short='Cubiertas y cerramientos con aislamiento térmico y acústico, para naves y viviendas.',
+  meta='Cubiertas y cerramientos de panel sandwich en Valencia: aislamiento térmico y acústico para naves industriales y viviendas. Presupuesto gratis y sin compromiso.',
+  intro='Instalamos cubiertas y cerramientos de panel sandwich en toda la provincia de Valencia. Es una solución ideal tanto para naves industriales como para viviendas: impermeabiliza y aporta aislamiento térmico y acústico, resistente y duradero.',
+  incluye=['Montaje de panel sandwich sobre la cubierta existente, formando una doble capa','Sustitución de la cubierta existente por placas de panel sandwich, evitando sobrepeso','Cerramientos de panel sandwich','Cubiertas de paneles de policarbonato','Rehabilitación y mantenimiento de paneles'],
+  senales=['Cubierta de nave o vivienda con goteras o mal aislamiento','Problemas de temperatura o de ruido bajo la cubierta','Uralita o cubierta antigua que conviene sustituir','Necesitas cerrar o aislar una nave'],
   faq=[('¿Se puede instalar sobre la cubierta que ya tengo?','Sí, en muchos casos el panel sandwich se instala sobre la cubierta existente, formando una doble capa. También puede sustituirla para evitar sobrepeso. Lo valoramos en la visita.'),
        ('¿Sirve para viviendas o solo para naves?','Sirve para ambos: es una solución habitual en edificios industriales y también en viviendas.'),
        ('¿Cuánto cuesta instalar panel sandwich?','Depende de la superficie, el tipo de panel y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['tejados','impermeabilizacion','epoxi']),
- dict(key='epoxi', slug='pavimentos-continuos-epoxi-valencia', icon='floor', rank=(13,9,6),
-  title='Pavimentos continuos y epoxi',
-  short='Pintura epoxi en pavimento continuo para naves, locales y garajes.',
-  meta='Pavimentos continuos y pintura epoxi en Valencia para naves, talleres, almacenes, garajes y trasteros: suelo liso, antideslizante y fácil de limpiar. Presupuesto gratis.',
-  intro='Aplicamos pintura epoxi en pavimento continuo para dar un nuevo aspecto a suelos de hormigón deteriorados. Obtienes una superficie lisa, coloreada e incluso antideslizante, más fácil de limpiar y que ayuda a prevenir las manchas de derrames de aceite.',
-  incluye=['Pintura epoxi bicomponente en suelos de hormigón','Superficies lisas, coloreadas o antideslizantes','Naves industriales, talleres, almacenes, garajes, sótanos y trasteros','Pintura de naves por el interior y por el exterior, con medios de elevación y aplicación airless','Saneado, retirada o aseguramiento de elementos sueltos en la pintura exterior'],
-  senales=['Suelo de hormigón desgastado, polvoriento o con manchas','Pavimento de taller o nave deteriorado','Manchas de aceite difíciles de limpiar','Quieres un suelo más fácil de limpiar y con mejor aspecto'],
-  faq=[('¿Para qué locales sirve el pavimento epoxi?','Es útil para talleres y naves, y también para almacenes, garajes, sótanos y trasteros.'),
-       ('¿Se puede hacer antideslizante?','Sí, el acabado puede ser liso, coloreado o antideslizante. Lo definimos contigo en la visita según el uso del suelo.'),
-       ('¿Cuánto cuesta un pavimento epoxi?','Depende de la superficie, el estado del hormigón y el acabado. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['garajes','panel','fachadas']),
- dict(key='chimeneas', slug='deshollinado-chimeneas-valencia', icon='flame', rank=(5,12,14),
-  title='Deshollinado de chimeneas',
-  short='Limpieza y deshollinación de chimeneas.',
-  meta='Limpieza y deshollinado de chimeneas en Valencia: elimina hollín, creosota y cenizas, y previene incendios e intoxicaciones. Presupuesto gratis y sin compromiso.',
-  intro='Una chimenea mal mantenida supone un riesgo de incendio. La combustión de la leña genera hollín, creosota y cenizas que se acumulan en la chimenea y en el conducto de humos. Deshollinar protege frente a incendios y también frente a intoxicaciones.',
-  incluye=['Limpieza y deshollinado de la chimenea y del conducto de humos','Eliminación de hollín, creosota, cenizas y suciedad','Revisión periódica de la chimenea','Recomendaciones de uso y mantenimiento'],
-  senales=['Humo que no sale bien o vuelve a la vivienda','Olor a humo o a quemado, o hollín acumulado','Llevas tiempo sin limpiar la chimenea','Vas a empezar la temporada de uso'],
-  faq=[('¿Por qué es importante deshollinar?','Si el conducto está obstruido, los gases se quedan dentro de la vivienda, lo que puede ser peligroso. Además, la creosota acumulada aumenta el riesgo de incendio.'),
-       ('¿Qué puedo hacer yo para cuidarla?','Limpiar las cenizas del hogar con regularidad y quemar solo leña adecuada. Aun así, conviene no renunciar al mantenimiento por parte de un profesional.'),
-       ('¿Cuánto cuesta deshollinar una chimenea?','Depende del tipo de chimenea y del acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['tejados','canalones','reformas']),
- dict(key='jardines', slug='jardineria-diseno-jardines-valencia', icon='leaf', rank=(7,10,12),
-  title='Jardinería y diseño de jardines',
-  short='Diseño y mantenimiento de jardines, y mantenimiento de piscinas.',
-  meta='Jardinería y diseño de jardines en Valencia: mantenimiento, podas, talas, desbroces, césped artificial y diseño a medida. Presupuesto gratis y sin compromiso.',
-  intro='Realizamos todo tipo de trabajos de jardinería con la maquinaria adecuada para cada labor: mantenimiento, podas, talas, desbroces y limpiezas, césped artificial y diseño de jardines. Tú nos cuentas qué idea tienes y nosotros la hacemos realidad.',
-  incluye=['Mantenimiento de jardines','Podas y talas','Desbroces y limpiezas','Instalación de césped artificial','Diseño de jardines: especies florales, árboles, arbustos y césped natural o artificial','Elementos ornamentales: fuentes, piedras o estatuas'],
-  senales=['Jardín descuidado o con maleza','Árboles o setos que necesitan poda o tala','Quieres renovar o diseñar un jardín nuevo','Prefieres césped artificial y menos mantenimiento'],
-  faq=[('¿Puedo elegir las plantas y los elementos del jardín?','Sí. Puedes elegir las especies florales, árboles, arbustos, tipo de césped y elementos ornamentales, y nos encargamos de llevarlo a cabo.'),
-       ('¿Hacéis también mantenimiento periódico?','Sí, realizamos trabajos de mantenimiento, podas, talas, desbroces y limpiezas.'),
-       ('¿Cuánto cuesta diseñar o mantener un jardín?','Depende de la superficie y del trabajo. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['piscinas','reformas','fachadas']),
- dict(key='piscinas', slug='mantenimiento-piscinas-valencia', icon='drop', rank=(8,11,13),
-  title='Mantenimiento de piscinas',
-  short='Mantenimiento y limpieza de piscinas.',
-  meta='Mantenimiento y limpieza de piscinas en Valencia, y rehabilitación cuando hace falta. Presupuesto gratis y sin compromiso.',
-  intro='Mantenemos y limpiamos piscinas de viviendas y chalets en la provincia de Valencia, y valoramos su rehabilitación cuando el estado del vaso lo requiere. Cuéntanos qué necesitas y lo revisamos en una visita sin coste.',
-  incluye=['Mantenimiento y limpieza de la piscina','Revisión del estado del vaso','Valoración de reparaciones y rehabilitación cuando hacen falta'],
-  senales=['Piscina con suciedad, algas o mal aspecto','Piscina sin usar durante un tiempo','Sospecha de fugas, grietas o desperfectos en el vaso'],
-  faq=[('¿Rehabilitáis piscinas?','Valoramos la rehabilitación según el estado de la piscina. Lo revisamos en la visita sin coste y te explicamos las opciones.'),
-       ('¿Atendéis a comunidades y empresas?','Sí. Atendemos a particulares, comunidades de vecinos y empresas en toda la provincia de Valencia.'),
-       ('¿Cuánto cuesta el mantenimiento de una piscina?','Depende del tamaño y del trabajo necesario. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['jardines','impermeabilizacion','reformas']),
- dict(key='locales', slug='reformas-integrales-locales-valencia', icon='tools', rank=(12,13,7),
-  title='Reformas integrales de locales',
-  short='Reformas de locales y comercios.',
-  meta='Reformas integrales de locales y comercios en Valencia con todos los gremios coordinados: albañilería, fontanería, electricidad, pintura y suelos. Presupuesto gratis.',
-  intro='Si has adquirido un local o quieres mejorar el que tienes, cuéntanos qué idea tienes y qué imagen quieres proyectar de tu negocio. Contamos con los gremios necesarios y los coordinamos para cumplir los plazos acordados.',
-  incluye=['Solados y alicatados','Pintura','Instalación de puertas, ventanas y suelos','Instalaciones eléctricas y de fontanería','Asesoramiento sobre materiales y distribución óptima de los espacios','Impermeabilización y reparación de humedades del edificio'],
-  senales=['Local recién adquirido que necesita adaptarse a tu negocio','Quieres renovar la imagen de tu local o comercio','Instalaciones antiguas, humedades o suelos deteriorados'],
-  faq=[('¿Os encargáis de todos los gremios?','Sí. Contamos con profesionales de los distintos gremios y los coordinamos para que la reforma avance según los plazos acordados.'),
-       ('¿Me asesoráis con los materiales y la distribución?','Sí. Te asesoramos sobre los materiales más adecuados y sobre la distribución más óptima de los espacios.'),
-       ('¿Cuánto cuesta reformar un local?','Depende de la superficie y del alcance de la reforma. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['reformas','cocinas','epoxi']),
- dict(key='cocinas', slug='mantenimiento-cocinas-industriales-valencia', icon='tools', rank=(14,14,8),
-  title='Mantenimiento de cocinas industriales',
-  short='Mantenimiento para cocinas de empresas y comercios.',
-  meta='Mantenimiento de cocinas industriales en Valencia para empresas y comercios. Cuéntanos qué necesitas y te damos presupuesto gratis y sin compromiso.',
-  intro='Ofrecemos mantenimiento de cocinas industriales para empresas y comercios de la provincia de Valencia. Cada cocina tiene necesidades distintas: cuéntanos qué necesitas y lo valoramos en una visita sin coste.',
-  incluye=['Mantenimiento de cocinas industriales de empresas y comercios','Reformas y mejoras en suelos, alicatados y pintura del local','Valoración personalizada según las necesidades de cada cocina'],
-  senales=['Cocina industrial con desgaste o desperfectos','Necesitas mantenimiento periódico para tu negocio','Quieres reformar la zona de cocina de tu local'],
-  faq=[('¿Qué incluye el mantenimiento?','Depende de las necesidades de cada cocina. Por eso empezamos con una visita sin coste para valorar qué hace falta y plantearte un presupuesto.'),
-       ('¿Hacéis también la reforma del local?','Sí, realizamos reformas integrales de locales con los gremios necesarios.'),
-       ('¿Cuánto cuesta?','Depende del trabajo y del tamaño de la cocina. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
-  rel=['locales','reformas','epoxi']),
- dict(key='reformas', slug='reformas-valencia', icon='tools', rank=(6,8,9),
-  title='Reformas en general',
-  short='Todo tipo de reformas: canalización de agua, Velux y azoteas.',
-  meta='Reformas en Valencia para viviendas, pisos, casas y locales: cocinas, baños, albañilería, fontanería, electricidad, pintura y más. Presupuesto gratis y sin compromiso.',
-  intro='Realizamos reformas integrales y parciales de viviendas, pisos, casas y locales comerciales. Planificamos presupuestos consensuados según las necesidades de cada cliente, te asesoramos en cada paso del proyecto y damos garantía de nuestro trabajo.',
-  incluye=['Reformas integrales de viviendas, pisos, casas y locales','Reformas de cocinas y baños','Puertas, ventanas y cerramientos','Pintura','Fontanería, electricidad y canalización de agua','Albañilería, alicatados y solados, escayola y pladur','Instalación de Velux y trabajos en azoteas'],
-  senales=['Vivienda o local que necesita renovarse','Cocina o baño anticuados','Instalaciones antiguas de agua o electricidad','Quieres una reforma con un único interlocutor y comunicación constante'],
-  faq=[('¿Hacéis reformas integrales?','Sí: reformas integrales de viviendas, pisos, casas y locales, así como reformas parciales de una cocina, un baño u otras estancias.'),
-       ('¿Cómo se plantea el presupuesto?','Planificamos presupuestos consensuados en función de las necesidades de cada cliente, tras una visita sin coste.'),
+  rel=['tejadosnuevos','tejados','impermeabilizacion'],
+  bits=['Doble capa o sustitución','Aislamiento térmico y acústico','Naves y viviendas']),
+ dict(key='goteras', slug='reparacion-goteras-valencia', icon='drop', rank=(1,2,3),
+  title='Reparación de goteras',
+  short='Localizamos el origen y reparamos goteras, humedades y filtraciones de forma definitiva.',
+  meta='Reparación de goteras en Valencia: localizamos el origen y damos una solución definitiva a goteras, humedades y filtraciones. Presupuesto gratis y sin compromiso.',
+  intro='Localizamos el origen de las goteras y las reparamos de forma definitiva en tejados, terrazas, azoteas y cubiertas. Damos solución a goteras, humedades y filtraciones de todo tipo en la provincia de Valencia.',
+  incluye=['Localización del origen de la gotera','Reparación de tejas, juntas y remates','Impermeabilización de la zona afectada','Tratamiento de humedades y filtraciones','Revisión de canalones y bajantes','Trabajos en altura, con o sin andamios'],
+  senales=['Entra agua o hay goteras cuando llueve','Manchas de humedad en techos o paredes','Pintura que se levanta o desconcha','La gotera reaparece tras una reparación anterior'],
+  faq=[('¿Por qué vuelve la gotera si ya la reparé?','Si no se localiza el origen real de la filtración, la humedad sigue entrando y provoca daños mayores. Hay que tratar la causa y no solo la mancha.'),
+       ('¿Es urgente?','Si entra agua, conviene actuar cuanto antes para evitar daños mayores. Llámanos y valoramos la urgencia.'),
+       ('¿Cuánto cuesta reparar una gotera?','Depende del origen, la superficie y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['impermeabilizacion','tejados','canalones'],
+  bits=['Localizamos el origen','Reparación definitiva','Tejados y terrazas']),
+ dict(key='terrazas', slug='rehabilitacion-construccion-terrazas-valencia', icon='floor', rank=(5,4,11),
+  title='Rehabilitación y construcción de terrazas',
+  short='Rehabilitamos terrazas y azoteas deterioradas y construimos terrazas nuevas, bien impermeabilizadas.',
+  meta='Rehabilitación y construcción de terrazas en Valencia: reparación de azoteas y terrados e impermeabilización transitable. Presupuesto gratis y sin compromiso.',
+  intro='Rehabilitamos terrazas, azoteas y terrados deteriorados y construimos terrazas nuevas, con la impermeabilización adecuada para que no entre la humedad. Trabajamos en viviendas y edificios de toda la provincia de Valencia.',
+  incluye=['Rehabilitación de terrazas, azoteas y terrados','Construcción de terrazas nuevas','Reparación de grietas, fisuras y zonas deterioradas','Impermeabilización con resinas reforzadas con fibra de vidrio, transitables','Tratamiento de juntas, remates y desagües'],
+  senales=['Suelo de la terraza agrietado, desgastado o con charcos','Humedad en los techos bajo la terraza','Quieres construir o ampliar una terraza','La terraza ya se reparó pero sigue entrando agua'],
+  faq=[('¿Se puede seguir usando la terraza?','La impermeabilización con resina reforzada con fibra de vidrio es transitable. Te indicamos los plazos concretos en el presupuesto.'),
+       ('¿Rehabilitar o construir una terraza nueva?','Depende del estado del soporte y de lo que necesites. En la visita sin coste lo valoramos y te proponemos la mejor opción.'),
+       ('¿Cuánto cuesta?','Depende de la superficie y del estado actual. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['impermeabilizacion','goteras','fachadas'],
+  bits=['Azoteas y terrados','Terrazas nuevas','Impermeabilización transitable']),
+ dict(key='impermeabilizacion', slug='impermeabilizacion-cubiertas-canalones-terrazas-valencia', icon='shield', rank=(3,1,2),
+  title='Impermeabilización de cubiertas, canalones y terrazas',
+  short='Resinas reforzadas con fibra de vidrio para cubiertas, canalones y terrazas. Fin de goteras y filtraciones.',
+  meta='Impermeabilización de cubiertas, canalones y terrazas en Valencia con resinas reforzadas con fibra de vidrio. Soluciones a goteras y humedades. Presupuesto gratis.',
+  intro='Acabamos con las goteras, humedades y filtraciones en cubiertas, canalones, terrazas, azoteas y tejados. Una impermeabilización bien hecha evita que el agua siga entrando y que el daño llegue a la estructura del edificio.',
+  incluye=['Revisión de la cubierta, el canalón o la terraza y localización del origen de la filtración','Reparación de grietas, fisuras y zonas deterioradas','Impermeabilización con resinas reforzadas con fibra de vidrio: flexibles, resistentes a la intemperie y transitables','Impermeabilización y reparación de canalones','Tratamiento de juntas, remates, bajantes y desagües','Impermeabilización de cubiertas de naves industriales'],
+  senales=['Humedad o manchas en techos y paredes','Charcos que se acumulan o pintura que se levanta','Grietas o fisuras en el suelo de la terraza o la azotea','Goteras que reaparecen tras reparaciones anteriores'],
+  faq=[('¿Qué es una impermeabilización con resina reforzada con fibra de vidrio?','Es un revestimiento continuo y flexible que se aplica sobre la superficie y la protege del agua. Resiste la intemperie, es transitable y no suele requerir grandes obras. En la visita valoramos si es la solución adecuada en tu caso.'),
+       ('¿Por qué vuelve a entrar el agua si ya reparé la zona?','Si la impermeabilización no se hace correctamente, la humedad sigue entrando y provoca daños mayores. Hay que localizar el origen real de la filtración y tratar toda la superficie y los remates.'),
+       ('¿Cuánto cuesta impermeabilizar?','Depende de la superficie, el estado del soporte y los remates. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['goteras','terrazas','tejados'],
+  bits=['Resinas con fibra de vidrio','Cubiertas, canalones y terrazas','Fin de goteras y humedades']),
+ dict(key='reforma', slug='reforma-integral-valencia', icon='home', rank=(8,8,7),
+  title='Reforma integral',
+  short='Reformas integrales de viviendas, pisos, casas y locales, con presupuesto consensuado.',
+  meta='Reforma integral en Valencia de viviendas, pisos, casas y locales: albañilería, fontanería, electricidad, pintura y más. Presupuesto gratis y sin compromiso.',
+  intro='Realizamos reformas integrales de viviendas, pisos, casas y locales comerciales. Planificamos presupuestos consensuados según las necesidades de cada cliente, te asesoramos en cada paso del proyecto y damos garantía de nuestro trabajo.',
+  incluye=['Reformas integrales de viviendas, pisos, casas y locales comerciales','Albañilería, alicatados y solados','Fontanería y electricidad','Puertas, ventanas y cerramientos','Trabajos en pladur y escayola','Pintura interior'],
+  senales=['Vivienda o local que necesita renovarse por completo','Instalaciones antiguas de agua o electricidad','Quieres una reforma con un único interlocutor y comunicación constante'],
+  faq=[('¿Cómo se plantea el presupuesto de una reforma?','Planificamos presupuestos consensuados en función de las necesidades de cada cliente, tras una visita sin coste.'),
+       ('¿Os encargáis de todos los gremios?','Sí. Contamos con profesionales de los distintos gremios y los coordinamos para que la reforma avance según los plazos acordados.'),
        ('¿Dais garantía del trabajo?','Sí. Los trabajos cuentan con la garantía legal que corresponde y con la que se indique en el presupuesto.')],
-  rel=['locales','fachadas','jardines']),
-]
-BITS = {
- 'tejados': ['Cambio de tejas y uralita', 'Retejados y goteras', 'Panel sandwich y Velux'],
- 'impermeabilizacion': ['Resinas con fibra de vidrio', 'Terrazas, azoteas y naves', 'Fin de goteras y humedades'],
- 'canalones': ['Limpieza y bajantes', 'Montaje y sustitución', 'Aluminio, zinc y cobre'],
- 'fachadas': ['Fachadas y patios interiores', 'Portales y comunidades', 'Casas y chalets'],
- 'verticales': ['Sin andamios (descuelgue)', 'Plan de seguridad', 'Fachadas y cubiertas'],
- 'garajes': ['Paredes y techos', 'Pavimento epoxi', 'Comunidades y empresas'],
- 'panel': ['Doble capa o sustitución', 'Aislamiento térmico y acústico', 'Naves y viviendas'],
- 'epoxi': ['Suelo liso y antideslizante', 'Naves, talleres y garajes', 'Fácil de limpiar'],
- 'chimeneas': ['Hollín y creosota', 'Prevención de incendios', 'Revisión periódica'],
- 'jardines': ['Podas, talas y desbroces', 'Césped artificial', 'Diseño de jardines'],
- 'piscinas': ['Mantenimiento y limpieza', 'Revisión del vaso', 'Rehabilitación'],
- 'locales': ['Todos los gremios', 'Solados y alicatados', 'Electricidad y fontanería'],
- 'cocinas': ['Empresas y comercios', 'Mantenimiento', 'Reformas de cocina'],
- 'reformas': ['Viviendas y locales', 'Cocinas y baños', 'Fontanería y electricidad'],
-}
-for _s in SERVICES: _s['bits'] = BITS[_s['key']]
-PROBLEMS = [  # icono, título, subtítulo, servicio al que lleva
- ('drop', 'Goteras en el techo', 'Humedades y filtraciones', 'impermeabilizacion'),
- ('roof', 'Tejado deteriorado', 'Tejas rotas o cubierta antigua', 'tejados'),
- ('gutter', 'Canalones obstruidos', 'Limpieza o cambio', 'canalones'),
- ('brush', 'Fachada o patio', 'Pintura y rehabilitación', 'fachadas'),
- ('layers', 'Cubierta de nave', 'Panel sandwich y aislamiento', 'panel'),
- ('floor', 'Suelo de nave o garaje', 'Pavimento epoxi', 'epoxi'),
- ('flame', 'Chimenea', 'Limpieza y deshollinado', 'chimeneas'),
- ('tools', 'Reforma', 'Viviendas y locales', 'reformas'),
+  rel=['banos','pladur','pinturainterior'],
+  bits=['Viviendas y locales','Presupuesto consensuado','Todos los gremios']),
+ dict(key='pladur', slug='trabajos-pladur-valencia', icon='layers', rank=(12,9,8),
+  title='Trabajos en pladur',
+  short='Tabiques, techos y revestimientos de pladur para reformas de viviendas, locales y naves.',
+  meta='Trabajos en pladur en Valencia: tabiques, techos y revestimientos para viviendas, locales y naves. Presupuesto gratis y sin compromiso.',
+  intro='Realizamos trabajos en pladur para reformas de viviendas, locales y naves: tabiques, techos y revestimientos, con un acabado limpio y coordinado con el resto de gremios de la reforma.',
+  incluye=['Tabiques de pladur','Techos y falsos techos','Revestimientos de pladur y escayola','Trabajos coordinados con albañilería, electricidad y pintura','Asesoramiento sobre materiales y distribución de espacios'],
+  senales=['Quieres dividir o redistribuir una estancia','Necesitas renovar o rebajar un techo','Estás haciendo una reforma y necesitas el trabajo de pladur'],
+  faq=[('¿Hacéis solo pladur o la reforma completa?','Hacemos ambas cosas: trabajos de pladur sueltos o dentro de una reforma integral con los demás gremios.'),
+       ('¿Me asesoráis sobre la distribución?','Sí. Te asesoramos sobre los materiales más adecuados y la distribución más óptima de los espacios.'),
+       ('¿Cuánto cuesta?','Depende de los metros y del tipo de trabajo. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['reforma','banos','pinturainterior'],
+  bits=['Tabiques y techos','Revestimientos','Dentro de tu reforma']),
+ dict(key='banos', slug='reforma-banos-valencia', icon='drop', rank=(7,10,12),
+  title='Reforma de baños',
+  short='Reformas de baños completas o parciales: alicatados, fontanería, electricidad y pintura.',
+  meta='Reforma de baños en Valencia, completa o parcial: alicatados y solados, fontanería, electricidad y pintura. Presupuesto gratis y sin compromiso.',
+  intro='Reformamos baños completos o de forma parcial: alicatados y solados, fontanería, electricidad, puertas y pintura, con un único interlocutor y comunicación constante durante toda la obra.',
+  incluye=['Reforma completa o parcial del baño','Alicatados y solados','Fontanería y electricidad','Puertas y ventanas','Trabajos de albañilería y pladur','Pintura'],
+  senales=['Baño anticuado o con desperfectos','Instalaciones de fontanería antiguas o con fugas','Quieres renovar el baño sin complicaciones'],
+  faq=[('¿Hacéis reformas parciales de un baño?','Sí. Podemos reformar el baño completo o solo una parte: suelos, alicatados, fontanería o lo que necesites.'),
+       ('¿Cómo se presupuesta?','Tras una visita sin coste, te damos un presupuesto consensuado en función de tus necesidades.'),
+       ('¿Cuánto cuesta reformar un baño?','Depende de los metros, los materiales y el alcance. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['reforma','pladur','pinturainterior'],
+  bits=['Completa o parcial','Alicatados y fontanería','Electricidad y pintura']),
+ dict(key='chimeneas', slug='limpieza-mantenimiento-chimeneas-valencia', icon='flame', rank=(6,11,13),
+  title='Limpieza y mantenimiento de chimeneas',
+  short='Deshollinado y revisión periódica de chimeneas: hollín, creosota y cenizas fuera.',
+  meta='Limpieza y mantenimiento de chimeneas en Valencia: deshollinado, eliminación de hollín y creosota y prevención de incendios. Presupuesto gratis y sin compromiso.',
+  intro='Una chimenea mal mantenida supone un riesgo de incendio. La combustión de la leña genera hollín, creosota y cenizas que se acumulan en la chimenea y en el conducto de humos. Limpiarla protege frente a incendios y también frente a intoxicaciones.',
+  incluye=['Limpieza y deshollinado de la chimenea y del conducto de humos','Eliminación de hollín, creosota, cenizas y suciedad','Revisión periódica de la chimenea','Recomendaciones de uso y mantenimiento'],
+  senales=['Llevas tiempo sin limpiar la chimenea','Olor a humo o a quemado, o hollín acumulado','Vas a empezar la temporada de uso'],
+  faq=[('¿Por qué es importante limpiar la chimenea?','La creosota acumulada aumenta el riesgo de incendio y, si el conducto está obstruido, los gases pueden quedarse dentro de la vivienda, lo que resulta peligroso.'),
+       ('¿Qué puedo hacer yo para cuidarla?','Limpiar las cenizas del hogar con regularidad y quemar solo leña adecuada. Aun así, conviene no renunciar al mantenimiento por parte de un profesional.'),
+       ('¿Cuánto cuesta?','Depende del tipo de chimenea y del acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['desatasco','canalones','tejados'],
+  bits=['Hollín y creosota','Prevención de incendios','Revisión periódica']),
+ dict(key='desatasco', slug='desatasco-chimeneas-salidas-humo-valencia', icon='flame', rank=(11,14,14),
+  title='Desatasco de chimeneas y salidas de humo',
+  short='Desatascamos chimeneas y salidas de humo obstruidas para que vuelvan a funcionar con seguridad.',
+  meta='Desatasco de chimeneas y salidas de humo en Valencia: eliminamos obstrucciones y residuos para evitar riesgos. Presupuesto gratis y sin compromiso.',
+  intro='Si el humo no sale bien o el conducto está obstruido, los gases pueden quedarse dentro de la vivienda, lo que resulta peligroso. Desatascamos chimeneas y salidas de humo para que vuelvan a funcionar con seguridad.',
+  incluye=['Desatasco de chimeneas y conductos de humos obstruidos','Eliminación de hollín, creosota y residuos acumulados','Revisión de la salida de humos','Recomendaciones para evitar nuevas obstrucciones'],
+  senales=['El humo no sale bien o vuelve a la vivienda','Olor a humo en el interior','La chimenea o la salida de humos parece obstruida'],
+  faq=[('¿Es peligroso un conducto obstruido?','Con el conducto obstruido, los gases se quedan en el interior de la vivienda, lo que puede ser un peligro para quienes estén dentro. Conviene revisarlo cuanto antes.'),
+       ('¿Os encargáis también del mantenimiento?','Sí. Además del desatasco, realizamos limpieza y mantenimiento periódico de chimeneas.'),
+       ('¿Cuánto cuesta?','Depende del tipo de instalación y del acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['chimeneas','tejados','canalones'],
+  bits=['Chimeneas obstruidas','Salidas de humo','Seguridad en casa']),
+ dict(key='canalones', slug='limpieza-canalones-valencia', icon='gutter', rank=(4,6,6),
+  title='Limpieza de canalones',
+  short='Limpieza y mantenimiento de canalones, canaletas y bajantes de todo tipo.',
+  meta='Limpieza y mantenimiento de canalones, canaletas y bajantes en Valencia: aluminio, zinc, cobre y galvanizados. Presupuesto gratis y sin compromiso.',
+  intro='Limpiamos y mantenemos canalones pluviales, canaletas y bajantes de todo tipo: aluminio, zinc, cobre o galvanizados. Un canalón obstruido o en mal estado es una de las causas más habituales de filtraciones en cubiertas y tejados. Todo el equipo cumple la normativa de prevención de riesgos laborales.',
+  incluye=['Limpieza de canalones, canaletas y bajantes','Mantenimiento y revisión periódica','Canalones de aluminio, zinc, cobre y galvanizados','Sistemas antipájaros','Impermeabilización y reparación de canalones'],
+  senales=['Canalones que desbordan o gotean cuando llueve','Hojas, barro o suciedad acumulados','Canalones oxidados, deformados o despegados','Manchas de humedad en la fachada bajo el canalón'],
+  faq=[('¿Cada cuánto conviene limpiar los canalones?','Conviene revisarlos antes de la temporada de lluvias y después de temporales, sobre todo si hay árboles cerca, que acumulan hojas y suciedad.'),
+       ('¿Hacéis el trabajo con andamio?','Hacemos trabajos en altura con o sin andamios, según lo que requiera cada caso.'),
+       ('¿Cuánto cuesta limpiar un canalón?','Depende de la longitud, el material y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['impermeabilizacion','goteras','tejados'],
+  bits=['Limpieza y bajantes','Mantenimiento periódico','Aluminio, zinc y cobre']),
+ dict(key='pinturainterior', slug='pintura-interior-valencia', icon='palette', rank=(9,7,10),
+  title='Pintura interior',
+  short='Pintura interior completa o parcial de viviendas, chalets, portales y comunidades.',
+  meta='Pintura interior en Valencia para viviendas, chalets y comunidades: plástica, alisados, estucos, quitar gotelé y lacados. Presupuesto gratis y sin compromiso.',
+  intro='Desarrollamos proyectos de pintura interior completos, parciales y de obra nueva en viviendas, chalets y comunidades de vecinos. Contamos con asesoramiento de decoración y pintura, y con materiales de primera calidad.',
+  incluye=['Pintura plástica, alisados y estucos','Quitar gotelé','Colocación de papel pintado y vinilos decorativos','Imitaciones, barnizados y lacados de puertas y muebles','Pintura de portales: techos, paredes, escaleras, rellanos, barandillas y puertas','Asesoramiento en decoración y pintura'],
+  senales=['Paredes o techos con manchas, desconchones o gotelé','Quieres renovar una estancia o dar un toque moderno a tu hogar','Portal o zonas comunes de la comunidad que necesitan una mano de pintura'],
+  faq=[('¿Pintáis solo una parte de la vivienda?','Sí. Realizamos proyectos completos, parciales y de obra nueva, desde una estancia hasta la vivienda entera.'),
+       ('¿Me asesoráis con los colores y los acabados?','Sí. Contamos con asesoramiento de decoración y pintura para ayudarte a elegir.'),
+       ('¿Cuánto cuesta pintar una vivienda?','Depende de los metros, el estado de las paredes y los acabados. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['fachadas','reforma','pladur'],
+  bits=['Plástica, alisados y estucos','Gotelé, papel y vinilos','Barnizados y lacados']),
+ dict(key='fachadas', slug='pintura-fachadas-valencia', icon='brush', rank=(10,3,9),
+  title='Pintura de fachadas',
+  short='Pintura y rehabilitación de fachadas, patios interiores y portales, con o sin andamios.',
+  meta='Pintura de fachadas en Valencia: fachadas, patios interiores, portales, casas y chalets. Trabajos verticales sin andamio. Presupuesto gratis y sin compromiso.',
+  intro='Pintamos fachadas, patios interiores, portales, casas y chalets. Como especialistas en trabajos verticales, accedemos sin andamios a los puntos más difíciles, de forma rápida, segura y sin molestar a propietarios e inquilinos.',
+  incluye=['Pintura exterior y rehabilitación de fachadas','Pintura y restauración de patios interiores','Pintura de portales y zonas comunes','Pintura exterior de casas y chalets','Trabajos con andamio o con descuelgue vertical','Materiales con certificado de calidad de los fabricantes'],
+  senales=['Pintura de la fachada desconchada, sucia o descolorida','Humedades, grietas o desprendimientos en la fachada','Patio interior deteriorado o con manchas','Quieres renovar el aspecto de tu casa o de tu comunidad'],
+  faq=[('¿Hace falta montar andamios?','No siempre. Con trabajos verticales (descuelgue) accedemos a muchos puntos sin andamio, con menos molestias para los vecinos. Lo valoramos en la visita sin coste.'),
+       ('¿Qué materiales utilizáis?','Materiales de primera calidad, con certificado de calidad de los fabricantes, para garantizar un buen acabado.'),
+       ('¿Cuánto cuesta pintar una fachada?','Depende de la superficie, la altura, el estado del soporte y el tipo de acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
+  rel=['pinturainterior','impermeabilizacion','terrazas'],
+  bits=['Fachadas y patios','Portales y comunidades','Con o sin andamios']),
 ]
 BY_KEY = {s['key']: s for s in SERVICES}
+PROBLEMS = [  # icono, título, subtítulo, servicio al que lleva
+ ('drop', 'Goteras en el techo', 'Humedades y filtraciones', 'goteras'),
+ ('roof', 'Tejado deteriorado', 'Tejas rotas o cubierta antigua', 'tejados'),
+ ('shield', 'Terraza con humedades', 'Impermeabilización', 'impermeabilizacion'),
+ ('gutter', 'Canalones obstruidos', 'Limpieza y mantenimiento', 'canalones'),
+ ('brush', 'Fachada deteriorada', 'Pintura y rehabilitación', 'fachadas'),
+ ('layers', 'Cubierta de nave', 'Panel sandwich y cerramientos', 'panel'),
+ ('flame', 'Chimenea', 'Limpieza y desatasco', 'chimeneas'),
+ ('home', 'Reforma', 'Integral, baños y pladur', 'reforma'),
+]
 
 # Redirecciones 301: URL antigua de WordPress -> página nueva (sin barra inicial ni final)
 OLD = {
  'tejados': ['rehabilitacion-de-tejados-en-valencia','reparacion-de-tejados-en-valencia','reparacion-y-rehabilitacion-de-cubiertas-en-valencia','reparacion-cubiertas-naves-industriales-valencia','servicios-grupo-urbanisima/servicios-de-reparacion-de-tejados'],
- 'impermeabilizacion': ['impermeabilizacion-de-tejados-en-valencia','impermeabilizacion-de-terrazas-en-valencia','rehabilitacion-de-terrazas-en-valencia','impermeabilizacion-de-cubiertas-en-valencia','especialistas-en-impermeabilizacion-en-valencia','impermeabilizacion-de-cubiertas-valencia','servicios-grupo-urbanisima/servicios-de-impermeabilizacion-de-cubiertas','servicios-grupo-urbanisima/servicios-de-impermeabilizacion-de-terrazas'],
- 'canalones': ['instalacion-y-montaje-de-canalones-en-valencia','limpieza-y-mantenimiento-de-canalones','impermeabilizacion-y-reparacion-de-canalones','servicios-grupo-urbanisima/servicios-de-limpieza-de-canalones'],
+ 'impermeabilizacion': ['impermeabilizacion-de-tejados-en-valencia','impermeabilizacion-de-terrazas-en-valencia','impermeabilizacion-de-cubiertas-en-valencia','especialistas-en-impermeabilizacion-en-valencia','impermeabilizacion-de-cubiertas-valencia','impermeabilizacion-y-reparacion-de-canalones','servicios-grupo-urbanisima/servicios-de-impermeabilizacion-de-cubiertas','servicios-grupo-urbanisima/servicios-de-impermeabilizacion-de-terrazas'],
+ 'terrazas': ['rehabilitacion-de-terrazas-en-valencia'],
+ 'canalones': ['instalacion-y-montaje-de-canalones-en-valencia','limpieza-y-mantenimiento-de-canalones','servicios-grupo-urbanisima/servicios-de-limpieza-de-canalones'],
  'panel': ['instalacion-y-montaje-de-panel-sandwich','servicios-grupo-urbanisima/servicios-de-montaje-de-panel-sandwich'],
  'chimeneas': ['limpieza-y-deshollinado-de-chimenea-en-valencia','limpieza-y-deshollinado-de-chimenea-en-alicante','limpieza-y-deshollinado-de-chimenea-en-castellon','especialistas-en-deshollinar-chimeneas','deshollinacion-de-chimeneas-en-alicante','deshollinacion-de-chimeneas-en-castellon','servicios-grupo-urbanisima/servicio-de-limpieza-y-deshollinado-de-chimenea'],
- 'epoxi': ['servicios-grupo-urbanisima/servicio-de-pintura-epoxi-en-pavimento-continuo'],
- 'fachadas': ['servicios-grupo-urbanisima/servicios-de-pintores-de-casas-y-chalets-particulares-en-valencia','servicios-grupo-urbanisima/servicios-de-pintores-de-fachadas-y-patios-interiores'],
- 'jardines': ['servicios-grupo-urbanisima/servicios-de-jardineria','diseno-de-jardines-valencia'],
- 'piscinas': ['servicios-grupo-urbanisima/servicios-de-rehabilitacion-y-limpieza-de-piscinas-en-valencia'],
- 'reformas': ['servicios-grupo-urbanisima/servicios-de-reformas'],
- 'locales': ['reformas-integrales-de-locales-valencia'],
+ 'fachadas': ['servicios-grupo-urbanisima/servicios-de-pintores-de-fachadas-y-patios-interiores'],
+ 'pinturainterior': ['servicios-grupo-urbanisima/servicios-de-pintores-de-casas-y-chalets-particulares-en-valencia'],
+ 'reforma': ['servicios-grupo-urbanisima/servicios-de-reformas','reformas-integrales-de-locales-valencia'],
 }
 OTHER_REDIRECTS = {  # destino directo
  'servicios-grupo-urbanisima': '/servicios/',
@@ -225,6 +221,11 @@ OTHER_REDIRECTS = {  # destino directo
  'servicios-a-particulares': '/?perfil=particulares&ir=servicios',
  'servicios-a-comunidades-de-vecinos': '/?perfil=comunidades&ir=servicios',
  'servicios-a-empresas-comercios-y-naves-industriales': '/?perfil=empresas&ir=servicios',
+ # Servicios que ya no se ofrecen (lista del dueño, 3/11/2026): van al listado de servicios
+ 'servicios-grupo-urbanisima/servicio-de-pintura-epoxi-en-pavimento-continuo': '/servicios/',
+ 'servicios-grupo-urbanisima/servicios-de-jardineria': '/servicios/',
+ 'diseno-de-jardines-valencia': '/servicios/',
+ 'servicios-grupo-urbanisima/servicios-de-rehabilitacion-y-limpieza-de-piscinas-en-valencia': '/servicios/',
 }
 # Aire acondicionado: la web nueva no lo incluye. Mientras el cliente decide, va a la portada.
 OLD_AC = ['recarga-de-aires-acondicionados-en-valencia','servicios-grupo-urbanisima/recarga-de-aires-acondicionados','servicios-de-montaje-e-instalacion-de-aire-acondicionado-en-valencia','reparacion-de-aire-acondicionado-en-valencia']
@@ -316,7 +317,7 @@ def contact_section(root, heading, service_title=None):
         <div class="field"><label for="c-email">Correo <small>(opcional)</small></label><input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"></div>
       </div>
       <div class="field"><label for="c-perfil">Soy <small>(opcional)</small></label>
-        <select id="c-perfil" name="perfil"><option value="">Selecciona</option><option>Particular</option><option>Comunidad de vecinos</option><option>Empresa / nave industrial</option></select></div>
+        <select id="c-perfil" name="perfil"><option value="">Selecciona</option><option>Vivienda particular</option><option>Comunidad de vecinos</option><option>Nave industrial</option></select></div>
       {svc}
       <div class="field"><label for="c-msg">Describe lo que necesitas</label>
         <textarea id="c-msg" name="mensaje" rows="4" required minlength="10" placeholder="Ej.: qué ocurre, dónde, metros aproximados y si es urgente…"></textarea>
@@ -350,16 +351,16 @@ def footer(root):
     <nav class="foot-col" aria-label="Servicios">
       <h4>Servicios</h4>
       <a href="{root}servicios/">Todos los servicios</a>
-      <a href="{root}servicios/{BY_KEY['tejados']['slug']}/">Reparación de tejados</a>
+      <a href="{root}servicios/{BY_KEY['goteras']['slug']}/">Reparación de goteras</a>
+      <a href="{root}servicios/{BY_KEY['tejados']['slug']}/">Tejados</a>
       <a href="{root}servicios/{BY_KEY['impermeabilizacion']['slug']}/">Impermeabilización</a>
-      <a href="{root}servicios/{BY_KEY['canalones']['slug']}/">Canalones</a>
     </nav>
     <nav class="foot-col" aria-label="Más servicios">
       <h4>Más</h4>
-      <a href="{root}servicios/{BY_KEY['fachadas']['slug']}/">Fachadas</a>
+      <a href="{root}servicios/{BY_KEY['fachadas']['slug']}/">Pintura de fachadas</a>
       <a href="{root}servicios/{BY_KEY['panel']['slug']}/">Panel sandwich</a>
       <a href="{root}servicios/{BY_KEY['chimeneas']['slug']}/">Chimeneas</a>
-      <a href="{root}servicios/{BY_KEY['reformas']['slug']}/">Reformas</a>
+      <a href="{root}servicios/{BY_KEY['reforma']['slug']}/">Reforma integral</a>
     </nav>
     <div class="foot-col">
       <h4>Contacto</h4>
@@ -428,7 +429,7 @@ def service_page(s):
           <a href="#contacto" class="btn btn-lg">Pedir presupuesto gratis {ic("arrow",root)}</a>
           <a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a>
         </div>
-        <ul class="trust"><li>{ic("check",root)} Visita a domicilio sin coste</li><li>{ic("check",root)} Presupuesto sin compromiso</li><li>{ic("check",root)} Para particulares, comunidades y empresas</li></ul>
+        <ul class="trust"><li>{ic("check",root)} Visita a domicilio sin coste</li><li>{ic("check",root)} Presupuesto sin compromiso</li><li>{ic("check",root)} Para viviendas, comunidades y naves industriales</li></ul>
       </div>
       <div class="sv-badge" aria-hidden="true">{ic(s["icon"],root)}</div>
     </div>
@@ -495,8 +496,8 @@ def hub_page():
 <section class="sv-hero">
   <div class="wrap">
     <nav class="crumbs" aria-label="Migas de pan"><a href="{root}">Inicio</a><span>›</span><span aria-current="page">Servicios</span></nav>
-    <h1>Servicios en Valencia para particulares, comunidades y empresas</h1>
-    <p class="lead">Reparamos e impermeabilizamos tejados, terrazas y cubiertas, y realizamos canalones, fachadas, reformas y mucho más en toda la provincia de Valencia. Todos los servicios están disponibles para cualquier cliente; elige tu perfil y los ordenamos de más a menos solicitados.</p>
+    <h1>Servicios en Valencia para viviendas, comunidades y naves industriales</h1>
+    <p class="lead">Tejados, terrazas y cubiertas, reparación de goteras, impermeabilización, reformas, chimeneas, canalones y pintura en toda la provincia de Valencia. Todos los servicios están disponibles para cualquier cliente: elige tu perfil y los ordenamos de más a menos solicitados.</p>
     <div class="cta-row"><a href="#contacto" class="btn btn-lg">Pedir presupuesto gratis {ic("arrow",root)}</a><a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a></div>
   </div>
 </section>
@@ -504,9 +505,9 @@ def hub_page():
   <div class="wrap">
     <div class="tabs" role="tablist" aria-label="Tipo de cliente">
       <button class="tab is-on" role="tab" aria-selected="true" data-filter="all">Todos</button>
-      <button class="tab" role="tab" aria-selected="false" data-filter="particulares">{ic("home",root)}Particulares</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="particulares">{ic("home",root)}Viviendas particulares</button>
       <button class="tab" role="tab" aria-selected="false" data-filter="comunidades">{ic("building",root)}Comunidades</button>
-      <button class="tab" role="tab" aria-selected="false" data-filter="empresas">{ic("factory",root)}Empresas y naves</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="empresas">{ic("factory",root)}Naves industriales</button>
     </div>
     <p class="svc-status" id="svc-status" aria-live="polite">Mostrando los 14 servicios</p>
     <div class="hub-grid" id="hub-grid">{cards}</div>
@@ -559,20 +560,86 @@ def home_problems():
 
 '''
 
+def home_services():
+    return f'''<!-- SERVICIOS-START -->
+<section class="section" id="servicios">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Nuestros servicios</p>
+      <h2>Todo lo que tu tejado y tu hogar necesitan</h2>
+      <p class="sub">Todos los servicios están disponibles para cualquier cliente. Los ordenamos según el tipo de cliente que elijas arriba.</p>
+    </div>
+    <p class="svc-status" id="svc-status" aria-live="polite">Mostrando los {len(SERVICES)} servicios</p>
+    <div class="car" role="region" aria-roledescription="carrusel" aria-label="Servicios de Grupo Urbanísima">
+      <button class="car-btn prev" type="button" aria-label="Servicios anteriores" disabled><svg class="i"><use href="#i-arrow"/></svg></button>
+      <div class="car-track" id="service-grid" data-cat="all" tabindex="0">
+{home_cards()}      </div>
+      <button class="car-btn next" type="button" aria-label="Servicios siguientes"><svg class="i"><use href="#i-arrow"/></svg></button>
+    </div>
+    <div class="car-more"><a href="servicios/" class="btn btn-lg">Ver todos los servicios <svg class="i"><use href="#i-arrow"/></svg></a></div>
+  </div>
+</section>
+<!-- SERVICIOS-END -->
+'''
+
 def patch_home():
     path = os.path.join(ROOT, 'index.html')
     s = open(path, encoding='utf8').read()
-    a = s.index('<div class="svc-grid" id="service-grid" data-cat="all">') + len('<div class="svc-grid" id="service-grid" data-cat="all">')
-    b = s.index('    </div>\n    <p class="more">', a)
-    s = s[:a] + '\n' + home_cards() + s[b:]
+
+    # 1) Sección de servicios (carrusel) y de problemas
+    if '<!-- SERVICIOS-START -->' in s:
+        i = s.index('<!-- SERVICIOS-START -->'); j = s.index('<!-- SERVICIOS-END -->') + len('<!-- SERVICIOS-END -->\n')
+    else:
+        i = s.index('<!-- SERVICIOS -->'); j = s.index('</section>', i) + len('</section>\n')
+    s = s[:i] + home_services() + s[j:]
     if '<!-- PROBLEMAS-START -->' in s:
         i = s.index('<!-- PROBLEMAS-START -->'); j = s.index('<!-- PROBLEMAS-END -->') + len('<!-- PROBLEMAS-END -->\n\n')
         s = s[:i] + home_problems() + s[j:]
     else:
-        s = s.replace('<!-- SERVICIOS -->', home_problems() + '<!-- SERVICIOS -->', 1)
+        s = s.replace('<!-- SERVICIOS-START -->', home_problems() + '<!-- SERVICIOS-START -->', 1)
+
+    # 2) Desplegable del formulario de contacto con los servicios actuales
+    opts = ''.join(f'\n          <option>{e(x["title"])}</option>' for x in SERVICES)
+    s = re.sub(r'(<select id="servicio-select" name="servicio">\s*<option value="">Selecciona un servicio</option>).*?(</select>)',
+               lambda m: m.group(1) + opts + '\n          <option>Otro</option>\n        ' + m.group(2), s, count=1, flags=re.S)
+
+    # 3) Pie: enlaces por tipo de cliente y servicios principales
+    def foot_links(*keys):
+        return ''.join(f'\n      <a href="servicios/{BY_KEY[k]["slug"]}/">{e(lbl)}</a>' for k, lbl in keys)
+    s = re.sub(r'<h4>Según quién seas</h4>.*?</nav>', '''<h4>Según quién seas</h4>
+      <a href="#servicios" data-cat="particulares">Viviendas particulares</a>
+      <a href="#servicios" data-cat="comunidades">Comunidades de vecinos</a>
+      <a href="#servicios" data-cat="empresas">Naves industriales</a>
+      <a href="servicios/">Ver todos los servicios</a>
+    </nav>''', s, count=1, flags=re.S)
+    s = re.sub(r'<h4>Más solicitados</h4>.*?</nav>', '<h4>Más solicitados</h4>' + foot_links(
+        ('goteras', 'Reparación de goteras'), ('tejados', 'Tejados'), ('impermeabilizacion', 'Impermeabilización'), ('fachadas', 'Pintura de fachadas'))
+        + '\n      <a href="servicios/">Todos los servicios</a>\n    </nav>', s, count=1, flags=re.S)
+
+    # 4) Etiquetas de perfil del formulario del hero
+    for old, new in [('<strong>Particulares</strong><small>Casa, chalet o piso</small>', '<strong>Viviendas particulares</strong><small>Casa, chalet o piso</small>'),
+                     ('<strong>Comunidades de vecinos</strong><small>Edificios, garajes y patios</small>', '<strong>Comunidades de vecinos</strong><small>Edificios, azoteas y fachadas</small>'),
+                     ('<strong>Empresas y naves</strong><small>Naves, locales y comercios</small>', '<strong>Naves industriales</strong><small>Cubiertas y cerramientos</small>')]:
+        s = s.replace(old, new)
+
+    # 5) Título del hero: abarca todos los servicios, sin encasillar en uno solo
+    s = re.sub(r'<h1>.*?</h1>', '<h1>Tu tejado, tu terraza y tu hogar, <em>de arriba abajo</em></h1>', s, count=1, flags=re.S)
+    s = re.sub(r'<p class="lead">Reparamos e impermeabilizamos.*?</p>',
+               '<p class="lead">Rehabilitamos y construimos tejados, terrazas y cubiertas, reparamos goteras y hacemos reformas, chimeneas, canalones y pintura. Vamos a tu domicilio, vemos el trabajo y te damos presupuesto <strong>gratis y sin compromiso</strong>.</p>', s, count=1, flags=re.S)
+    title = 'Grupo Urbanísima | Tejados, terrazas, reformas e impermeabilización en Valencia'
+    desc = 'Tejados, terrazas y cubiertas, reparación de goteras, reformas, chimeneas, canalones y pintura en toda la provincia de Valencia. Presupuesto gratis y sin compromiso.'
+    s = re.sub(r'<title>.*?</title>', f'<title>{title}</title>', s, count=1)
+    s = re.sub(r'(<meta name="description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), s, count=1)
+    s = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + 'Tejados, terrazas, reformas e impermeabilización en Valencia | Grupo Urbanísima' + m.group(2), s, count=1)
+    s = re.sub(r'(<meta property="og:description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), s, count=1)
     open(path, 'w', encoding='utf8').write(s)
 
 def build():
+    base = os.path.join(ROOT, 'servicios')
+    valid = {s['slug'] for s in SERVICES}
+    if os.path.isdir(base):
+        for d in os.listdir(base):
+            if os.path.isdir(os.path.join(base, d)) and d not in valid: shutil.rmtree(os.path.join(base, d))
     patch_home()
     write('servicios/index.html', hub_page())
     for s in SERVICES:

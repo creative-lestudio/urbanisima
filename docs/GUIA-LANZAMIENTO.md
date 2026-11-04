@@ -161,21 +161,28 @@ Todas: **Red de Búsqueda**, ubicación *Provincia de Valencia* (presencia), idi
 | **5. Otros servicios** (poco presupuesto) | canalones · deshollinado de chimeneas · jardinería | `…/?servicio=canalones` etc. |
 | **6. Marca** (opcional, barata) | "grupo urbanisima" | `https://grupo-urbanisima.com/` |
 
-**URL finales recomendadas: la página de cada servicio.** Ahora cada servicio tiene su propia página con formulario. Es mejor usarlas como URL final del anuncio (Google valora que la página trate exactamente lo que se busca):
+**URL finales recomendadas: la página de cada servicio.** Cada servicio tiene su propia página con formulario. Úsala como URL final del anuncio (Google valora que la página trate exactamente lo que se busca):
 
 | Campaña / grupo | URL final |
 |---|---|
-| Tejados y cubiertas | `https://grupo-urbanisima.com/servicios/reparacion-de-tejados-valencia/` |
-| Goteras e impermeabilización | `https://grupo-urbanisima.com/servicios/impermeabilizacion-terrazas-cubiertas-valencia/` |
-| Comunidades (fachadas, patios) | `https://grupo-urbanisima.com/servicios/pintura-rehabilitacion-fachadas-valencia/` |
-| Empresas y naves (cubiertas, panel) | `https://grupo-urbanisima.com/servicios/panel-sandwich-valencia/` o la de tejados |
-| Chimeneas | `https://grupo-urbanisima.com/servicios/deshollinado-chimeneas-valencia/` |
-| Canalones | `https://grupo-urbanisima.com/servicios/canalones-valencia/` |
+| Goteras | `https://grupo-urbanisima.com/servicios/reparacion-goteras-valencia/` |
+| Tejados (reparación y rehabilitación) | `https://grupo-urbanisima.com/servicios/rehabilitacion-reparacion-tejados-valencia/` |
+| Tejados nuevos | `https://grupo-urbanisima.com/servicios/construccion-tejados-nuevos-valencia/` |
+| Impermeabilización (cubiertas, canalones y terrazas) | `https://grupo-urbanisima.com/servicios/impermeabilizacion-cubiertas-canalones-terrazas-valencia/` |
+| Terrazas | `https://grupo-urbanisima.com/servicios/rehabilitacion-construccion-terrazas-valencia/` |
+| Naves industriales (panel sandwich) | `https://grupo-urbanisima.com/servicios/cubiertas-cerramientos-panel-sandwich-valencia/` |
+| Chimeneas | `https://grupo-urbanisima.com/servicios/limpieza-mantenimiento-chimeneas-valencia/` |
+| Desatasco de chimeneas | `https://grupo-urbanisima.com/servicios/desatasco-chimeneas-salidas-humo-valencia/` |
+| Canalones | `https://grupo-urbanisima.com/servicios/limpieza-canalones-valencia/` |
+| Pintura de fachadas | `https://grupo-urbanisima.com/servicios/pintura-fachadas-valencia/` |
+| Reforma integral · Baños · Pladur | `…/servicios/reforma-integral-valencia/` · `…/reforma-banos-valencia/` · `…/trabajos-pladur-valencia/` |
 | Marca / general | `https://grupo-urbanisima.com/` |
+
+Servicios que ya **no** se ofrecen según el dueño (3/11/2026): jardinería, piscinas, pavimentos epoxi, pintura de garajes, cocinas industriales, trabajos verticales como servicio aparte y reformas de locales como servicio aparte. Las campañas antiguas de **PISCINAS**, **REFORMAS** y **PINTURA Y DECORACION** deben seguir en pausa (o rehacerse con los servicios nuevos), y las URLs antiguas de esos servicios redirigen al listado `/servicios/`.
 
 Los textos de cada página se editan en `scripts/build-services.py` y se regeneran con `python3 scripts/build-services.py`.
 
-**Cómo funcionan las URL:** la web lee `?perfil=` y `?servicio=`. La página llega ya con el servicio buscado **el primero**, marcado "Lo que buscas", seleccionado en el formulario, y con el formulario del hero abierto en el paso 2 con los servicios del perfil. Valores de `servicio`: `tejados`, `impermeabilizacion`, `canalones`, `fachadas`, `verticales`, `garajes`, `panel`, `epoxi`, `chimeneas`, `jardines`, `piscinas`, `locales`, `cocinas`, `reformas`. Valores de `perfil`: `particulares`, `comunidades`, `empresas`.
+**Cómo funcionan las URL:** la web lee `?perfil=` y `?servicio=`. La página llega ya con el servicio buscado **el primero**, marcado "Lo que buscas", seleccionado en el formulario, y con el formulario del hero abierto en el paso 2 con los servicios del perfil. Valores de `servicio`: `tejados`, `tejadosnuevos`, `panel`, `goteras`, `terrazas`, `impermeabilizacion`, `reforma`, `pladur`, `banos`, `chimeneas`, `desatasco`, `canalones`, `pinturainterior`, `fachadas`. Valores de `perfil`: `particulares` (viviendas), `comunidades` (comunidades de vecinos), `empresas` (naves industriales).
 
 **Seguimiento de URL (cuenta → Configuración → Plantilla de seguimiento):**
 `{lpurl}&utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_term={keyword}`

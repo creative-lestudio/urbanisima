@@ -69,7 +69,7 @@
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.svc'));
   var status = document.getElementById('svc-status');
   var tabs = document.querySelectorAll('.tab');
-  var NAMES = { particulares: 'particulares', comunidades: 'comunidades de vecinos', empresas: 'empresas y naves industriales' };
+  var NAMES = { particulares: 'viviendas particulares', comunidades: 'comunidades de vecinos', empresas: 'naves industriales' };
   var currentCat = 'all', pickSlug = null;
 
   function titleOf(c) { return c.querySelector('h3').textContent; }
@@ -95,7 +95,8 @@
     status.textContent = cat === 'all'
       ? 'Mostrando los 14 servicios'
       : 'Los 14 servicios, de más a menos solicitados por ' + NAMES[cat];
-    if (!reduce) { // animación FLIP: las tarjetas se deslizan a su nueva posición
+    if (grid.classList.contains('car-track')) { grid.scrollTo({ left: 0, behavior: reduce ? 'auto' : 'smooth' }); carState(); }
+    else if (!reduce) { // animación FLIP: las tarjetas se deslizan a su nueva posición
       cards.forEach(function (c, i) {
         var a2 = c.getBoundingClientRect(), dx = before[i].left - a2.left, dy = before[i].top - a2.top;
         if (!dx && !dy) return;
@@ -112,6 +113,36 @@
     a.addEventListener('click', function () { applyCategory(a.dataset.cat); });
   });
 
+  /* ---------- Carrusel de servicios: flechas, teclado y arrastre con el ratón ---------- */
+  var prevBtn = document.querySelector('.car-btn.prev'), nextBtn = document.querySelector('.car-btn.next');
+  function carState() {
+    if (!prevBtn) return;
+    var max = grid.scrollWidth - grid.clientWidth - 8;
+    prevBtn.disabled = grid.scrollLeft <= 8; nextBtn.disabled = grid.scrollLeft >= max;
+  }
+  function carStep(dir) {
+    var w = cards[0] ? cards[0].getBoundingClientRect().width + 20 : 320;
+    grid.scrollBy({ left: dir * w * (innerWidth > 1020 ? 3 : innerWidth > 760 ? 2 : 1), behavior: reduce ? 'auto' : 'smooth' });
+  }
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () { carStep(-1); });
+    nextBtn.addEventListener('click', function () { carStep(1); });
+    grid.addEventListener('scroll', carState, { passive: true });
+    addEventListener('resize', carState);
+    grid.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { carStep(1); e.preventDefault(); } else if (e.key === 'ArrowLeft') { carStep(-1); e.preventDefault(); }
+    });
+    var dragging = false, moved = false, sx = 0, sl = 0;
+    grid.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' || e.button !== 0) return; dragging = true; moved = false; sx = e.clientX; sl = grid.scrollLeft; });
+    addEventListener('pointermove', function (e) {
+      if (!dragging) return; var dx = e.clientX - sx;
+      if (Math.abs(dx) > 5) { moved = true; grid.classList.add('is-drag'); grid.scrollLeft = sl - dx; }
+    });
+    addEventListener('pointerup', function () { if (dragging) { dragging = false; grid.classList.remove('is-drag'); } });
+    grid.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+    carState();
+  }
+
   /* ---------- Foco de luz que sigue al ratón ---------- */
   document.querySelectorAll('.svc, .benefits li').forEach(function (el) {
     el.classList.add('spot');
@@ -123,7 +154,7 @@
   });
 
   /* ---------- Formularios: WhatsApp / correo, siempre con copia al correo de la empresa ---------- */
-  var WHO = { particulares: 'Particular', comunidades: 'Comunidad de vecinos', empresas: 'Empresa / nave industrial' };
+  var WHO = { particulares: 'Vivienda particular', comunidades: 'Comunidad de vecinos', empresas: 'Nave industrial' };
   function waLink(text) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
   function fail(form, msg, field) {
     var m = form.querySelector('.form-msg');
