@@ -16,7 +16,7 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '32'  # versión de CSS/JS (rompe la caché del navegador)
+V = '33'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
 # Lista oficial de servicios facilitada por el dueño (3/11/2026). Los 14 están disponibles para cualquier cliente;
@@ -431,7 +431,7 @@ def service_page(s):
         </div>
         <ul class="trust"><li>{ic("check",root)} Visita a domicilio sin coste</li><li>{ic("check",root)} Presupuesto sin compromiso</li><li>{ic("check",root)} Para viviendas, comunidades y naves industriales</li></ul>
       </div>
-      <div class="sv-badge" aria-hidden="true">{ic(s["icon"],root)}</div>
+      {photo(s["key"], root, "sv-photo", True)}
     </div>
   </div>
 </section>
@@ -490,7 +490,7 @@ def hub_page():
       {'@type': 'ItemList', 'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'name': s['title'], 'url': f'{SITE}/servicios/{s["slug"]}/'} for i, s in enumerate(SERVICES)]},
     ]
     cards = ''.join(f'''<a class="hub-card" data-slug="{s["key"]}" href="{s["slug"]}/" data-particulares="{s["rank"][0]}" data-comunidades="{s["rank"][1]}" data-empresas="{s["rank"][2]}">
-      <span class="ico">{ic(s["icon"],root)}</span><h3>{e(s["title"])}</h3><p>{e(s["short"])}</p><ul class="bits">{"".join("<li>"+e(b)+"</li>" for b in s["bits"])}</ul><span class="rel-more">Ver servicio {ic("arrow",root)}</span></a>''' for s in SERVICES)
+      {photo(s["key"], root)}<h3>{e(s["title"])}</h3><p>{e(s["short"])}</p><ul class="bits">{"".join("<li>"+e(b)+"</li>" for b in s["bits"])}</ul><span class="rel-more">Ver servicio {ic("arrow",root)}</span></a>''' for s in SERVICES)
     return (head(title, desc, url, root, jsonld(graph)) + '<body class="sv-page" data-root="../">\n' + header(root) + f'''
 <main id="contenido">
 <section class="sv-hero">
@@ -528,6 +528,20 @@ CTA = {  # texto del botón principal de cada página de servicio: "Solicitar pr
  'pinturainterior': 'pintar mi vivienda', 'fachadas': 'pintar mi fachada',
 }
 
+IMG = {  # foto ilustrativa de cada servicio (assets/img/<nombre>.webp)
+ 'tejados': 'rehabilitacion-reparacion-tejados', 'tejadosnuevos': 'construccion-tejados-nuevos', 'panel': 'cubiertas-panel-sandwich',
+ 'goteras': 'reparacion-goteras', 'terrazas': 'rehabilitacion-terrazas', 'impermeabilizacion': 'impermeabilizacion-cubiertas',
+ 'reforma': 'reforma-integral', 'pladur': 'trabajos-pladur', 'banos': 'reforma-banos', 'chimeneas': 'limpieza-chimeneas',
+ 'desatasco': 'desatasco-chimeneas', 'canalones': 'limpieza-canalones', 'pinturainterior': 'pintura-interior', 'fachadas': 'pintura-fachadas',
+}
+GROUP_IMG = {'tejados': 'tejados', 'humedad': 'impermeabilizacion', 'interior': 'reforma', 'fachadas': 'fachadas'}
+
+def photo(key, root, cls='ph', eager=False):
+    # Imagen ilustrativa (no es una obra real de la empresa): alt descriptivo y etiqueta visible
+    t = BY_KEY[key]['title']
+    return (f'<span class="{cls}"><img src="{root}assets/img/{IMG[key]}.webp" width="275" height="240" alt="Imagen ilustrativa: {e(t)}" '
+            f'{"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async"><i>Ilustrativa</i></span>')
+
 GROUPS = [  # clave, icono, título, descripción, servicios
  ('tejados', 'roof', 'Tejados y cubiertas', 'Rehabilitación, obra nueva y cerramientos para viviendas, edificios y naves.', ['tejados', 'tejadosnuevos', 'panel']),
  ('humedad', 'drop', 'Humedades e impermeabilización', 'Solución a goteras, filtraciones y terrazas con humedad.', ['goteras', 'impermeabilizacion', 'terrazas']),
@@ -549,7 +563,7 @@ def home_services():
           <li data-slug="{k}" data-title="{e(BY_KEY[k]["title"])}"><a href="servicios/{BY_KEY[k]["slug"]}/"><span>{e(BY_KEY[k]["title"])}</span><svg class="i"><use href="#i-arrow"/></svg></a></li>''' for k in keys)
         cols += f'''
       <article class="grp grp-{gk}">
-        <span class="ico"><svg class="i"><use href="#i-{icn}"/></svg></span>
+        {photo(GROUP_IMG[gk], "")}
         <h3>{e(t)}</h3>
         <p>{e(d)}</p>
         <ul class="grp-list">{items}

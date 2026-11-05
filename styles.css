@@ -735,3 +735,14 @@ body{font-size:var(--fs-body)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 .hero-call{margin:14px 0 22px}
 .field .photo-add{display:flex;align-items:center;gap:10px;margin:0;font:700 .9rem Montserrat,sans-serif;color:var(--c-primary)}
+
+/* ===== v33: fotografías ilustrativas por servicio ===== */
+.ph,.sv-photo{position:relative;display:block;overflow:hidden;background:var(--c-surface)}
+.ph img,.sv-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.ph i,.sv-photo i{position:absolute;left:8px;bottom:8px;font:700 .66rem/1 Montserrat,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:rgba(2,36,64,.72);padding:5px 8px;border-radius:4px;font-style:normal}
+.grp .ph{margin:-26px -22px 18px;height:160px;border-radius:7px 7px 0 0}
+.hub-card .ph{height:170px}
+.hub-grid .hub-card{padding:0}
+.sv-photo{width:300px;height:262px;border-radius:14px;border:1px solid rgba(255,255,255,.25);box-shadow:0 20px 40px -24px rgba(0,0,0,.6)}
+.sv-hero-grid{grid-template-columns:1fr auto}
+@media (max-width:1020px){.sv-photo{display:none}}
