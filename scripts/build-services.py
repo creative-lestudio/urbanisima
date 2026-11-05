@@ -16,7 +16,7 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '33'  # versión de CSS/JS (rompe la caché del navegador)
+V = '34'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
 # Lista oficial de servicios facilitada por el dueño (3/11/2026). Los 14 están disponibles para cualquier cliente;
@@ -34,7 +34,7 @@ SERVICES = [
        ('¿Trabajáis en comunidades de vecinos y naves industriales?','Sí. Atendemos a viviendas particulares, comunidades de vecinos y naves industriales en toda la provincia de Valencia.')],
   rel=['goteras','tejadosnuevos','impermeabilizacion'],
   bits=['Cambio de tejas y uralita','Retejados','Humedades y filtraciones']),
- dict(key='tejadosnuevos', slug='construccion-tejados-nuevos-valencia', icon='building', rank=(13,13,5),
+ dict(key='tejadosnuevos', slug='construccion-tejados-nuevos-valencia', icon='construction', rank=(13,13,5),
   title='Construcción de tejados nuevos',
   short='Tejados nuevos para viviendas, edificios y naves, con los mejores materiales.',
   meta='Construcción de tejados nuevos en Valencia para viviendas, edificios y naves: montaje, impermeabilización y aislamiento. Presupuesto gratis y sin compromiso.',
@@ -46,7 +46,7 @@ SERVICES = [
        ('¿Cuánto cuesta un tejado nuevo?','Depende de la superficie, el tipo de cubierta y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['tejados','panel','impermeabilizacion'],
   bits=['Montaje de tejados nuevos','Aislamiento y remates','Licencias de obra']),
- dict(key='panel', slug='cubiertas-cerramientos-panel-sandwich-valencia', icon='layers', rank=(14,12,1),
+ dict(key='panel', slug='cubiertas-cerramientos-panel-sandwich-valencia', icon='industrial', rank=(14,12,1),
   title='Cubiertas y cerramientos de panel sandwich',
   short='Cubiertas y cerramientos con aislamiento térmico y acústico, para naves y viviendas.',
   meta='Cubiertas y cerramientos de panel sandwich en Valencia: aislamiento térmico y acústico para naves industriales y viviendas. Presupuesto gratis y sin compromiso.',
@@ -82,7 +82,7 @@ SERVICES = [
        ('¿Cuánto cuesta?','Depende de la superficie y del estado actual. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['impermeabilizacion','goteras','fachadas'],
   bits=['Azoteas y terrados','Terrazas nuevas','Impermeabilización transitable']),
- dict(key='impermeabilizacion', slug='impermeabilizacion-cubiertas-canalones-terrazas-valencia', icon='shield', rank=(3,1,2),
+ dict(key='impermeabilizacion', slug='impermeabilizacion-cubiertas-canalones-terrazas-valencia', icon='umbrella', rank=(3,1,2),
   title='Impermeabilización de cubiertas, canalones y terrazas',
   short='Resinas reforzadas con fibra de vidrio para cubiertas, canalones y terrazas. Fin de goteras y filtraciones.',
   meta='Impermeabilización de cubiertas, canalones y terrazas en Valencia con resinas reforzadas con fibra de vidrio. Soluciones a goteras y humedades. Presupuesto gratis.',
@@ -94,7 +94,7 @@ SERVICES = [
        ('¿Cuánto cuesta impermeabilizar?','Depende de la superficie, el estado del soporte y los remates. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['goteras','terrazas','tejados'],
   bits=['Resinas con fibra de vidrio','Cubiertas, canalones y terrazas','Fin de goteras y humedades']),
- dict(key='reforma', slug='reforma-integral-valencia', icon='home', rank=(8,8,7),
+ dict(key='reforma', slug='reforma-integral-valencia', icon='hammer', rank=(8,8,7),
   title='Reforma integral',
   short='Reformas integrales de viviendas, pisos, casas y locales, con presupuesto consensuado.',
   meta='Reforma integral en Valencia de viviendas, pisos, casas y locales: albañilería, fontanería, electricidad, pintura y más. Presupuesto gratis y sin compromiso.',
@@ -106,7 +106,7 @@ SERVICES = [
        ('¿Dais garantía del trabajo?','Sí. Los trabajos cuentan con la garantía legal que corresponde y con la que se indique en el presupuesto.')],
   rel=['banos','pladur','pinturainterior'],
   bits=['Viviendas y locales','Presupuesto consensuado','Todos los gremios']),
- dict(key='pladur', slug='trabajos-pladur-valencia', icon='layers', rank=(12,9,8),
+ dict(key='pladur', slug='trabajos-pladur-valencia', icon='panel', rank=(12,9,8),
   title='Trabajos en pladur',
   short='Tabiques, techos y revestimientos de pladur para reformas de viviendas, locales y naves.',
   meta='Trabajos en pladur en Valencia: tabiques, techos y revestimientos para viviendas, locales y naves. Presupuesto gratis y sin compromiso.',
@@ -118,7 +118,7 @@ SERVICES = [
        ('¿Cuánto cuesta?','Depende de los metros y del tipo de trabajo. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['reforma','banos','pinturainterior'],
   bits=['Tabiques y techos','Revestimientos','Dentro de tu reforma']),
- dict(key='banos', slug='reforma-banos-valencia', icon='drop', rank=(7,10,12),
+ dict(key='banos', slug='reforma-banos-valencia', icon='bath', rank=(7,10,12),
   title='Reforma de baños',
   short='Reformas de baños completas o parciales: alicatados, fontanería, electricidad y pintura.',
   meta='Reforma de baños en Valencia, completa o parcial: alicatados y solados, fontanería, electricidad y pintura. Presupuesto gratis y sin compromiso.',
@@ -130,7 +130,7 @@ SERVICES = [
        ('¿Cuánto cuesta reformar un baño?','Depende de los metros, los materiales y el alcance. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['reforma','pladur','pinturainterior'],
   bits=['Completa o parcial','Alicatados y fontanería','Electricidad y pintura']),
- dict(key='chimeneas', slug='limpieza-mantenimiento-chimeneas-valencia', icon='flame', rank=(6,11,13),
+ dict(key='chimeneas', slug='limpieza-mantenimiento-chimeneas-valencia', icon='chimney', rank=(6,11,13),
   title='Limpieza y mantenimiento de chimeneas',
   short='Deshollinado y revisión periódica de chimeneas: hollín, creosota y cenizas fuera.',
   meta='Limpieza y mantenimiento de chimeneas en Valencia: deshollinado, eliminación de hollín y creosota y prevención de incendios. Presupuesto gratis y sin compromiso.',
@@ -142,7 +142,7 @@ SERVICES = [
        ('¿Cuánto cuesta?','Depende del tipo de chimenea y del acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['desatasco','canalones','tejados'],
   bits=['Hollín y creosota','Prevención de incendios','Revisión periódica']),
- dict(key='desatasco', slug='desatasco-chimeneas-salidas-humo-valencia', icon='flame', rank=(11,14,14),
+ dict(key='desatasco', slug='desatasco-chimeneas-salidas-humo-valencia', icon='chimney', rank=(11,14,14),
   title='Desatasco de chimeneas y salidas de humo',
   short='Desatascamos chimeneas y salidas de humo obstruidas para que vuelvan a funcionar con seguridad.',
   meta='Desatasco de chimeneas y salidas de humo en Valencia: eliminamos obstrucciones y residuos para evitar riesgos. Presupuesto gratis y sin compromiso.',
@@ -166,7 +166,7 @@ SERVICES = [
        ('¿Cuánto cuesta limpiar un canalón?','Depende de la longitud, el material y el acceso. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['impermeabilizacion','goteras','tejados'],
   bits=['Limpieza y bajantes','Mantenimiento periódico','Aluminio, zinc y cobre']),
- dict(key='pinturainterior', slug='pintura-interior-valencia', icon='palette', rank=(9,7,10),
+ dict(key='pinturainterior', slug='pintura-interior-valencia', icon='roller', rank=(9,7,10),
   title='Pintura interior',
   short='Pintura interior completa o parcial de viviendas, chalets, portales y comunidades.',
   meta='Pintura interior en Valencia para viviendas, chalets y comunidades: plástica, alisados, estucos, quitar gotelé y lacados. Presupuesto gratis y sin compromiso.',
@@ -178,7 +178,7 @@ SERVICES = [
        ('¿Cuánto cuesta pintar una vivienda?','Depende de los metros, el estado de las paredes y los acabados. Hacemos una visita sin coste y te damos un presupuesto sin compromiso.')],
   rel=['fachadas','reforma','pladur'],
   bits=['Plástica, alisados y estucos','Gotelé, papel y vinilos','Barnizados y lacados']),
- dict(key='fachadas', slug='pintura-fachadas-valencia', icon='brush', rank=(10,3,9),
+ dict(key='fachadas', slug='pintura-fachadas-valencia', icon='building', rank=(10,3,9),
   title='Pintura de fachadas',
   short='Pintura y rehabilitación de fachadas, patios interiores y portales, con o sin andamios.',
   meta='Pintura de fachadas en Valencia: fachadas, patios interiores, portales, casas y chalets. Trabajos verticales sin andamio. Presupuesto gratis y sin compromiso.',
@@ -252,12 +252,16 @@ def head(title, desc, canonical, root, extra=''):
 <meta property="og:url" content="{canonical}">
 <meta name="theme-color" content="#01335a">
 <link rel="icon" href="{root}assets/logo.png">
-<link rel="preload" href="{root}assets/fonts/montserrat-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{root}assets/fonts/manrope-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{root}assets/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{root}assets/fonts/fonts.css">
-<style>.i{{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}}.skip{{position:absolute;left:-999px;top:8px}}</style>
+<style>.i{{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}}.skip{{position:absolute;left:-999px;top:8px}}</style>
 <link rel="stylesheet" href="{root}styles.css?v={V}">
 <script src="{root}config.js?v={V}"></script>
+<script src="{root}assets/servicios-data.js?v={V}"></script>
 <script src="{root}tracking.js?v={V}" defer></script>
+<script src="{root}site.js?v={V}" defer></script>
+<script src="{root}quote.js?v={V}" defer></script>
 <script src="{root}pages.js?v={V}" defer></script>
 {extra}</head>
 '''
@@ -266,14 +270,15 @@ def header(root):
     return f'''<a class="skip" href="#contenido">Saltar al contenido</a>
 <header class="header solid" id="top">
   <div class="wrap nav">
-    <a href="{root}" class="brand" aria-label="Grupo Urbanísima, inicio"><img class="logo-color" src="{root}assets/logo.png" alt="" width="268" height="55"><img class="logo-white" src="{root}assets/logo-blanco.png" alt="" width="260" height="51"></a>
+    <a href="{root}" class="brand" aria-label="Grupo Urbanísima, inicio"><img class="logo-color" src="{root}assets/logo.png" alt="" width="268" height="55"></a>
     <nav id="menu" class="menu" aria-label="Principal">
-      <a href="{root}">Inicio</a>
       <a href="{root}servicios/">Servicios</a>
+      <a href="{root}#proceso">Cómo trabajamos</a>
       <a href="#contacto">Contacto</a>
       <a href="tel:{PHONE_TEL}" class="menu-phone">{ic('phone',root)}722 115 251</a>
-      <a href="#contacto" class="btn btn-sm" data-cta="header">Presupuesto gratuito</a>
+      <a href="#presupuesto" class="btn btn-sm" data-cta="header">Presupuesto gratuito</a>
     </nav>
+    <a class="hdr-call" href="tel:{PHONE_TEL}" aria-label="Llamar al 722 115 251">{ic('phone',root)}</a>
     <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
   </div>
 </header>
@@ -290,18 +295,14 @@ RGPD = '''<details class="rgpd"><summary>Información básica sobre protección 
         </dl>
       </details>'''
 
-def contact_section(root, heading, service_title=None):
-    if service_title:
-        svc = f'<input type="hidden" name="servicio" value="{e(service_title)}">'
-    else:
-        opts = ''.join(f'<option>{e(s["title"])}</option>' for s in SERVICES)
-        svc = f'<div class="field"><label for="c-serv">¿Qué necesitas?</label><select id="c-serv" name="servicio"><option value="">Selecciona un servicio</option>{opts}<option>Otro</option></select></div>'
+def contact_section(root, heading, service_title=None, icon='tools'):
+    attrs = f' data-service="{e(service_title)}" data-icon="{icon}"' if service_title else ''
     return f'''<section class="section contact" id="contacto">
   <div class="wrap split">
     <div class="contact-copy">
       <p class="eyebrow">Contacto</p>
       <h2>{e(heading)}</h2>
-      <p class="lead">Visita a domicilio sin coste y presupuesto sin compromiso, en toda la provincia de Valencia. Te respondemos en menos de 24 horas.</p>
+      <p class="lead">Visita a domicilio sin coste y presupuesto sin compromiso, en toda la provincia de Valencia.</p>
       <ul class="contact-list">
         <li><a href="tel:{PHONE_TEL}"><span class="ico">{ic('phone',root)}</span><span><small>Llámanos</small>{PHONE_TXT}</span></a></li>
         <li><a href="https://wa.me/{WA}?text=Hola%2C%20quiero%20pedir%20presupuesto" target="_blank" rel="noopener"><span class="ico">{ic('chat',root)}</span><span><small>WhatsApp</small>Escríbenos ahora</span></a></li>
@@ -309,30 +310,9 @@ def contact_section(root, heading, service_title=None):
         <li><span class="row"><span class="ico">{ic('clock',root)}</span><span><small>Atención telefónica</small>Lunes a viernes, de 9:00 a 19:00</span></span></li>
       </ul>
     </div>
-    <form class="card" id="contact-form" novalidate>
-      <div class="card-head"><h2>Cuéntanos qué necesitas</h2><p>Elige cómo quieres enviarlo: por correo o por WhatsApp.</p></div>
-      <div class="field"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre" required></div>
-      <div class="field-row">
-        <div class="field"><label for="c-tel">Teléfono</label><input id="c-tel" name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="6XX XXX XXX" required></div>
-        <div class="field"><label for="c-email">Correo <small>(opcional)</small></label><input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"></div>
-      </div>
-      <div class="field"><label for="c-perfil">Soy <small>(opcional)</small></label>
-        <select id="c-perfil" name="perfil"><option value="">Selecciona</option><option>Vivienda particular</option><option>Comunidad de vecinos</option><option>Nave industrial</option></select></div>
-      {svc}
-      <div class="field"><label for="c-msg">Describe lo que necesitas</label>
-        <textarea id="c-msg" name="mensaje" rows="4" required minlength="10" placeholder="Ej.: qué ocurre, dónde, metros aproximados y si es urgente…"></textarea>
-        <p class="hint">Cuanto más detalle, mejor podremos valorar el servicio y darte un presupuesto ajustado.</p>
-      </div>
-      <div class="hp" aria-hidden="true"><label>Web <input name="web" tabindex="-1" autocomplete="off"></label></div>
-      <label class="check"><input type="checkbox" name="privacidad" required> <span>He leído y acepto la <a href="{root}ley-proteccion-datos/" target="_blank" rel="noopener">política de privacidad</a></span></label>
-      <div class="send-row">
-        <button type="submit" name="canal" value="email" class="btn btn-mail">{ic('mail',root)} Enviar por correo</button>
-        <button type="submit" name="canal" value="whatsapp" class="btn btn-wa">{ic('chat',root)} Enviar por WhatsApp</button>
-      </div>
-      <p class="send-note">Si lo envías por WhatsApp, también recibimos una copia en nuestro correo.</p>
-      {RGPD.replace('{root}',root)}
-      <p class="form-msg" role="status" aria-live="polite"></p>
-    </form>
+    <div class="q-card" id="presupuesto">
+      <div data-quote{attrs}><noscript><p>Para pedir presupuesto con este formulario necesitas activar JavaScript. También puedes llamarnos al <a href="tel:{PHONE_TEL}">{PHONE_TXT}</a> o escribir a <a href="mailto:{MAIL}">{MAIL}</a>.</p></noscript></div>
+    </div>
   </div>
 </section>
 '''
@@ -386,7 +366,7 @@ def footer(root):
 <a class="fab" href="https://wa.me/{WA}?text=Hola%2C%20quiero%20pedir%20presupuesto" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">{ic('chat',root)}<span>WhatsApp</span></a>
 <div class="sticky-cta">
   <a href="tel:{PHONE_TEL}" class="btn btn-ghost-dark">{ic('phone',root)} Llamar</a>
-  <a href="https://wa.me/{WA}?text=Hola%2C%20quiero%20pedir%20presupuesto" class="btn btn-wa" target="_blank" rel="noopener">{ic('chat',root)} WhatsApp</a>
+  <a href="#presupuesto" class="btn" data-cta="barra-movil">Pedir presupuesto</a>
 </div>
 </body>
 </html>
@@ -426,7 +406,7 @@ def service_page(s):
         <h1>{e(h1)}</h1>
         <p class="lead">{e(s["intro"])}</p>
         <div class="cta-row">
-          <a href="#contacto" class="btn btn-lg" data-cta="servicio">Solicitar presupuesto para {CTA[s["key"]]} {ic("arrow",root)}</a>
+          <a href="#presupuesto" class="btn btn-lg" data-cta="servicio">Solicitar presupuesto para {CTA[s["key"]]} {ic("arrow",root)}</a>
           <a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a>
         </div>
         <ul class="trust"><li>{ic("check",root)} Visita a domicilio sin coste</li><li>{ic("check",root)} Presupuesto sin compromiso</li><li>{ic("check",root)} Para viviendas, comunidades y naves industriales</li></ul>
@@ -459,7 +439,7 @@ def service_page(s):
       <div class="aside-card">
         <h3>¿Hablamos?</h3>
         <p>Cuéntanos tu caso. Visita y presupuesto sin compromiso en toda la provincia de Valencia.</p>
-        <a href="#contacto" class="btn btn-block" data-cta="servicio-lateral">Pedir presupuesto</a>
+        <a href="#presupuesto" class="btn btn-block" data-cta="servicio-lateral">Pedir presupuesto</a>
         <a href="tel:{PHONE_TEL}" class="btn btn-ghost-dark btn-block">{ic("phone",root)} {PHONE_TXT}</a>
         <a href="https://wa.me/{WA}?text=Hola%2C%20me%20interesa%3A%20{s["title"].replace(" ","%20")}" class="btn btn-wa btn-block" target="_blank" rel="noopener">{ic("chat",root)} WhatsApp</a>
         <small>Lunes a viernes, de 9:00 a 19:00</small>
@@ -476,7 +456,7 @@ def service_page(s):
   </div>
 </section>
 
-''' + contact_section(root, f'Pide tu presupuesto de {s["title"].lower()}', s['title']) + '</main>\n\n' + footer(root))
+''' + contact_section(root, f'Pide tu presupuesto de {s["title"].lower()}', s['title'], s['icon']) + '</main>\n\n' + footer(root))
 
 def hub_page():
     root = '../'
@@ -498,7 +478,7 @@ def hub_page():
     <nav class="crumbs" aria-label="Migas de pan"><a href="{root}">Inicio</a><span>›</span><span aria-current="page">Servicios</span></nav>
     <h1>Servicios en Valencia para viviendas, comunidades y naves industriales</h1>
     <p class="lead">Tejados, terrazas y cubiertas, reparación de goteras, impermeabilización, reformas, chimeneas, canalones y pintura en toda la provincia de Valencia. Todos los servicios están disponibles para cualquier cliente: elige tu perfil y los ordenamos de más a menos solicitados.</p>
-    <div class="cta-row"><a href="#contacto" class="btn btn-lg" data-cta="hub">Solicitar presupuesto gratuito {ic("arrow",root)}</a><a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a></div>
+    <div class="cta-row"><a href="#presupuesto" class="btn btn-lg" data-cta="hub">Solicitar presupuesto gratuito {ic("arrow",root)}</a><a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a></div>
   </div>
 </section>
 <section class="section">
@@ -543,10 +523,10 @@ def photo(key, root, cls='ph', eager=False):
             f'{"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async"><i>Ilustrativa</i></span>')
 
 GROUPS = [  # clave, icono, título, descripción, servicios
- ('tejados', 'roof', 'Tejados y cubiertas', 'Rehabilitación, obra nueva y cerramientos para viviendas, edificios y naves.', ['tejados', 'tejadosnuevos', 'panel']),
- ('humedad', 'drop', 'Humedades e impermeabilización', 'Solución a goteras, filtraciones y terrazas con humedad.', ['goteras', 'impermeabilizacion', 'terrazas']),
- ('interior', 'home', 'Reformas interiores', 'Reformas integrales, baños, pladur y pintura para tu vivienda o local.', ['reforma', 'banos', 'pladur', 'pinturainterior']),
- ('fachadas', 'brush', 'Fachadas y mantenimiento', 'Pintura de fachadas, chimeneas y canalones, para mantener el edificio en buen estado.', ['fachadas', 'chimeneas', 'desatasco', 'canalones']),
+ ('tejados', 'roof', 'Tejados y cubiertas', 'Rehabilitación, obra nueva y cubiertas industriales.', ['tejados', 'tejadosnuevos', 'panel']),
+ ('humedad', 'drop', 'Humedades e impermeabilización', 'Solución a goteras, filtraciones y terrazas.', ['goteras', 'impermeabilizacion', 'terrazas']),
+ ('interior', 'hammer', 'Reformas interiores', 'Reformas integrales, baños, pladur y pintura.', ['reforma', 'banos', 'pladur', 'pinturainterior']),
+ ('fachadas', 'building', 'Fachadas y mantenimiento', 'Fachadas, chimeneas y canalones en buen estado.', ['fachadas', 'chimeneas', 'desatasco', 'canalones']),
 ]
 assert sorted(k for g in GROUPS for k in g[4]) == sorted(x['key'] for x in SERVICES)
 
@@ -564,6 +544,7 @@ def home_services():
         cols += f'''
       <article class="grp grp-{gk}">
         {photo(GROUP_IMG[gk], "")}
+        <span class="grp-ico"><svg class="i"><use href="#i-{icn}"/></svg></span>
         <h3>{e(t)}</h3>
         <p>{e(d)}</p>
         <ul class="grp-list">{items}
@@ -579,8 +560,7 @@ def home_services():
     </div>
     <div class="grp-grid">{cols}
     </div>
-    <div class="car-more"><a href="servicios/" class="btn btn-lg">Ver todos los servicios <svg class="i"><use href="#i-arrow"/></svg></a>
-      <a href="#hero-form" class="btn btn-ghost-dark btn-lg">Pedir presupuesto gratis</a></div>
+    <div class="car-more"><a href="servicios/" class="btn btn-ghost-dark btn-lg">Ver todos los servicios <svg class="i"><use href="#i-arrow"/></svg></a></div>
   </div>
 </section>
 <!-- SERVICIOS-END -->
@@ -622,7 +602,7 @@ def patch_home():
     # 4) Título y texto del hero: reformas en general, del tejado al interior
     s = re.sub(r'<h1>.*?</h1>', '<h1>Reformas y reparaciones en Valencia, <em>del tejado al interior</em></h1>', s, count=1, flags=re.S)
     s = re.sub(r'<p class="lead">.*?</p>',
-               '<p class="lead">Tejados, terrazas, goteras, reformas, baños, pintura y mantenimiento para viviendas, comunidades de vecinos y naves industriales. Vamos a tu domicilio, vemos el trabajo y te damos presupuesto <strong>gratis y sin compromiso</strong>.</p>', s, count=1, flags=re.S)
+               '<p class="lead">Reparamos tejados, solucionamos goteras, impermeabilizamos terrazas y realizamos reformas. Visita gratuita y presupuesto sin compromiso en Valencia y provincia.</p>', s, count=1, flags=re.S)
     title = 'Grupo Urbanísima | Reformas, tejados e impermeabilización en Valencia'
     desc = 'Tejados, terrazas y cubiertas, reparación de goteras, reformas, chimeneas, canalones y pintura en toda la provincia de Valencia. Presupuesto gratis y sin compromiso.'
     s = re.sub(r'<title>.*?</title>', f'<title>{title}</title>', s, count=1)
@@ -637,6 +617,8 @@ def build():
     if os.path.isdir(base):
         for d in os.listdir(base):
             if os.path.isdir(os.path.join(base, d)) and d not in valid: shutil.rmtree(os.path.join(base, d))
+    import json
+    write('assets/servicios-data.js', 'window.URB_SERVICES=' + json.dumps({x['key']: x['title'] for x in SERVICES}, ensure_ascii=False) + ';\n')
     patch_home()
     write('servicios/index.html', hub_page())
     for s in SERVICES:

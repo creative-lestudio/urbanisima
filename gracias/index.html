@@ -8,7 +8,8 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="canonical" href="https://grupo-urbanisima.com/gracias/">
 <link rel="icon" href="../assets/logo.png">
-<link rel="preload" href="../assets/fonts/montserrat-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/manrope-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/fonts/fonts.css">
 <link rel="stylesheet" href="../styles.css?v=26">
 <script src="../config.js?v=26"></script>
@@ -20,7 +21,7 @@
 <main class="doc thanks"><div class="wrap narrow">
 <div class="thanks-ico"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
 <h1 id="t-title">¡Solicitud enviada!</h1>
-<p class="lead-d" id="t-text">Hemos recibido tu mensaje. Te responderemos en menos de 24 horas.</p>
+<p class="lead-d" id="t-text">Hemos recibido tu solicitud. Nos pondremos en contacto contigo lo antes posible.</p>
 <p>Atención telefónica de lunes a viernes, de 9:00 a 19:00. Si es urgente, llámanos:</p>
 <p><a class="btn btn-lg" href="tel:+34722115251">722 115 251</a></p>
 <p><a href="../" class="back-link">← Volver a la web</a></p>
@@ -28,7 +29,7 @@
 <script>
 (function(){
   var q=new URLSearchParams(location.search),c=q.get('c');
-  if(c==='whatsapp'){document.getElementById('t-text').textContent='Se ha abierto WhatsApp con tu mensaje y hemos enviado una copia a nuestro correo. Te responderemos en menos de 24 horas.';}
+  if(c==='whatsapp'){document.getElementById('t-text').textContent='Se ha abierto WhatsApp con tu mensaje y hemos enviado una copia a nuestro correo. Te responderemos lo antes posible.';}
   // Conversión "solicitud enviada": una sola vez por sesión (solo se mide si has aceptado las cookies de publicidad)
   var n=0,t=setInterval(function(){
     if(window.UrbTrack&&window.gtag){ clearInterval(t);

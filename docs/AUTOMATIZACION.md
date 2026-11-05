@@ -32,3 +32,11 @@ Solo se envían si el visitante aceptó las cookies de medición/publicidad.
 | `service_view` | visita a una página de servicio (`servicio`) |
 `project_view` queda pendiente hasta que existan páginas de proyectos.
 KPIs como coste por lead, presupuestos enviados y aceptados se calculan en Google Ads/CRM, no en la web.
+
+## Sistema visual (v34)
+- Tipografías: Manrope (titulares) e Inter (texto, menús, formularios y botones), alojadas en `assets/fonts/` (sin Google).
+- Iconos: `python3 scripts/build-icons.py` regenera `assets/icons.svg` y el bloque inline de `index.html` (Lucide + SVG propios con el mismo trazo).
+- Servicios y páginas: `python3 scripts/build-services.py` (tras tocar servicios, fotos o textos).
+- Formulario único: `quote.js` se monta en todo `<div data-quote>` (portada y páginas de servicio). `data-service="<título>"` precarga el servicio; `?servicio=<clave>` y `?perfil=` también.
+- Fotos de servicio: `assets/img/<nombre>.webp` (ilustrativas; sustituir por las originales con el mismo nombre).
+- Proyectos y opiniones: bloque comentado en `index.html` (ESTRUCTURA-INICIO/FIN); no se publica hasta que haya material real.

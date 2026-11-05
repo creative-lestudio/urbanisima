@@ -7,7 +7,8 @@ Landing estática (HTML + CSS + JS, sin dependencias ni build) orientada a conve
 ```
 index.html   Contenido y estructura
 styles.css   Estilos (colores en :root: --blue #01477f, --yellow #fec200)
-main.js      Menú móvil, formularios → WhatsApp, contadores
+site.js      Menú, cabecera, barra móvil, medición
+quote.js     Formulario único de presupuesto (3 pasos)
 assets/      Logo e imágenes
 ```
 

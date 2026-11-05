@@ -57,7 +57,7 @@ $leadId    = 'UR-' . date('ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));  
 $estado    = 'Nuevo';                                                              // Nuevo > Contactado > Visita pendiente > Presupuesto enviado > Aceptado > Perdido
 $mensaje  = clean($in['mensaje'] ?? '', 3000);
 $canal    = ($in['canal'] ?? '') === 'email' ? 'email' : 'whatsapp';
-$origen   = ($in['origen'] ?? '') === 'hero' ? 'hero' : 'contacto';
+$origen   = ($in['origen'] ?? '') === 'contacto' ? 'contacto' : 'presupuesto';   // 'presupuesto' = formulario único de 3 pasos
 $pagina   = oneline($in['pagina'] ?? '', 300);
 $acepta   = !empty($in['privacidad']);
 $polVer   = oneline($in['politica_version'] ?? '', 20);

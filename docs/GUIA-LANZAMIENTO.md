@@ -49,7 +49,7 @@ Prueba todo en un sitio paralelo antes de reemplazar la web real.
 2. **Protégelo con contraseña** para que Google no lo indexe: Seguridad → *URLs protegidas*.
 3. **Crea el buzón que enviará los correos:** Correo → Cuentas → `web@grupo-urbanisima.com`. (Debe existir; si no, los correos pueden caer en spam.)
 4. **Sube los archivos** de este repositorio a la carpeta del subdominio: Site Tools → Sitio → *Administrador de archivos* (o SFTP). Sube todo salvo `docs/`, `README.md` y `package.json`.
-   - Imprescindibles: `index.html`, `styles.css`, `main.js`, `config.js`, `tracking.js`, `contact.php`, `.htaccess`, `robots.txt`, `sitemap.xml`, y las carpetas `assets/`, `gracias/`, `aviso-legal/`, `ley-proteccion-datos/`, `aviso-ley-cookies/`.
+   - Imprescindibles: `index.html`, `styles.css`, `site.js`, `quote.js`, `pages.js`, `config.js`, `tracking.js`, `contact.php`, `.htaccess`, `robots.txt`, `sitemap.xml`, y las carpetas `assets/`, `gracias/`, `aviso-legal/`, `ley-proteccion-datos/`, `aviso-ley-cookies/`.
    - Para ver el archivo `.htaccess` activa "Mostrar archivos ocultos" en el administrador.
 5. **Prueba el formulario de contacto** (los dos botones):
    - *Enviar por correo*: debe llevarte a `/gracias/` y llegar un correo a `info@`.
@@ -276,7 +276,7 @@ Adapta por campaña: en la de comunidades usa "Rehabilitación de Fachadas", "Co
 
 | Archivo | Para qué sirve |
 |---|---|
-| `index.html`, `styles.css`, `main.js` | La web |
+| `index.html`, `styles.css`, `site.js`, `quote.js`, `pages.js` | La web |
 | `config.js` | **Único archivo que editas al publicar:** IDs de Google, correo, WhatsApp |
 | `tracking.js` | Cookies, Consent Mode, gclid/UTM y conversiones |
 | `contact.php` | Envía el correo de cada solicitud (líneas `$TO` y `$FROM` al principio) |
