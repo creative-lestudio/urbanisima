@@ -16,7 +16,7 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '30'  # versión de CSS/JS (rompe la caché del navegador)
+V = '31'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
 # Lista oficial de servicios facilitada por el dueño (3/11/2026). Los 14 están disponibles para cualquier cliente;
@@ -521,62 +521,45 @@ def write(path, content):
     os.makedirs(os.path.dirname(full), exist_ok=True)
     open(full, 'w', encoding='utf8').write(content)
 
-def home_cards():
+GROUPS = [  # clave, icono, título, descripción, servicios
+ ('tejados', 'roof', 'Tejados y cubiertas', 'Rehabilitación, obra nueva y cerramientos para viviendas, edificios y naves.', ['tejados', 'tejadosnuevos', 'panel']),
+ ('humedad', 'drop', 'Humedades e impermeabilización', 'Solución a goteras, filtraciones y terrazas con humedad.', ['goteras', 'impermeabilizacion', 'terrazas']),
+ ('interior', 'home', 'Reformas interiores', 'Reformas integrales, baños, pladur y pintura para tu vivienda o local.', ['reforma', 'banos', 'pladur', 'pinturainterior']),
+ ('fachadas', 'brush', 'Fachadas y mantenimiento', 'Pintura de fachadas, chimeneas y canalones, para mantener el edificio en buen estado.', ['fachadas', 'chimeneas', 'desatasco', 'canalones']),
+]
+assert sorted(k for g in GROUPS for k in g[4]) == sorted(x['key'] for x in SERVICES)
+
+def options_html(indent='          '):
     out = ''
-    for s in SERVICES:
-        r = s['rank']
-        bits = ''.join(f'<li>{e(b)}</li>' for b in s['bits'])
-        out += f'''      <article class="svc" id="svc-{s["key"]}" data-slug="{s["key"]}" data-particulares="{r[0]}" data-comunidades="{r[1]}" data-empresas="{r[2]}">
-        <span class="tag">Más solicitado</span>
-        <span class="ico"><svg class="i"><use href="#i-{s["icon"]}"/></svg></span>
-        <h3><a class="svc-link" href="servicios/{s["slug"]}/">{e(s["title"])}</a></h3>
-        <p>{e(s["short"])}</p>
-        <ul class="bits">{bits}</ul>
-        <div class="svc-actions">
-          <a href="#contacto" class="link" data-title="{e(s["title"])}">Pedir presupuesto <svg class="i"><use href="#i-arrow"/></svg></a>
-          <a class="more-link" href="servicios/{s["slug"]}/">Ver servicio</a>
-        </div>
-      </article>
-'''
-    return out
-
-def home_problems():
-    tiles = ''.join(f'''
-      <a class="prob" href="servicios/{BY_KEY[k]["slug"]}/"><span class="ico"><svg class="i"><use href="#i-{icn}"/></svg></span><span class="prob-t"><strong>{e(t)}</strong><small>{e(sub)}</small></span><svg class="i go"><use href="#i-arrow"/></svg></a>''' for icn, t, sub, k in PROBLEMS)
-    return f'''<!-- PROBLEMAS-START -->
-<section class="section alt problems" id="problemas">
-  <div class="wrap">
-    <div class="head">
-      <p class="eyebrow">Elige tu caso</p>
-      <h2>¿Qué necesitas resolver?</h2>
-      <p class="sub">Pulsa el que más se parezca a tu problema. Te llevamos al servicio adecuado, con presupuesto gratis y sin compromiso.</p>
-    </div>
-    <div class="prob-grid">{tiles}
-    </div>
-    <p class="prob-help">¿No ves tu caso? <a href="tel:{PHONE_TEL}">Llámanos al {PHONE_TXT}</a> o <a href="https://wa.me/{WA}?text=Hola%2C%20quiero%20pedir%20presupuesto" target="_blank" rel="noopener">escríbenos por WhatsApp</a>.</p>
-  </div>
-</section>
-<!-- PROBLEMAS-END -->
-
-'''
+    for _, _, t, _, keys in GROUPS:
+        out += f'\n{indent}<optgroup label="{e(t)}">' + ''.join(f'\n{indent}  <option>{e(BY_KEY[k]["title"])}</option>' for k in keys) + f'\n{indent}</optgroup>'
+    return out + f'\n{indent}<option>Otro</option>\n'
 
 def home_services():
+    cols = ''
+    for gk, icn, t, d, keys in GROUPS:
+        items = ''.join(f'''
+          <li data-slug="{k}" data-title="{e(BY_KEY[k]["title"])}"><a href="servicios/{BY_KEY[k]["slug"]}/"><span>{e(BY_KEY[k]["title"])}</span><svg class="i"><use href="#i-arrow"/></svg></a></li>''' for k in keys)
+        cols += f'''
+      <article class="grp grp-{gk}">
+        <span class="ico"><svg class="i"><use href="#i-{icn}"/></svg></span>
+        <h3>{e(t)}</h3>
+        <p>{e(d)}</p>
+        <ul class="grp-list">{items}
+        </ul>
+      </article>'''
     return f'''<!-- SERVICIOS-START -->
 <section class="section" id="servicios">
   <div class="wrap">
     <div class="head">
       <p class="eyebrow">Nuestros servicios</p>
-      <h2>Todo lo que tu tejado y tu hogar necesitan</h2>
-      <p class="sub">Todos los servicios están disponibles para cualquier cliente. Los ordenamos según el tipo de cliente que elijas arriba.</p>
+      <h2>Reformas y reparaciones, del tejado al interior</h2>
+      <p class="sub">{len(SERVICES)} servicios para viviendas, comunidades de vecinos y naves industriales. Elige el que necesitas y pide presupuesto gratis.</p>
     </div>
-    <p class="svc-status" id="svc-status" aria-live="polite">Mostrando los {len(SERVICES)} servicios</p>
-    <div class="car" role="region" aria-roledescription="carrusel" aria-label="Servicios de Grupo Urbanísima">
-      <button class="car-btn prev" type="button" aria-label="Servicios anteriores" disabled><svg class="i"><use href="#i-arrow"/></svg></button>
-      <div class="car-track" id="service-grid" data-cat="all" tabindex="0">
-{home_cards()}      </div>
-      <button class="car-btn next" type="button" aria-label="Servicios siguientes"><svg class="i"><use href="#i-arrow"/></svg></button>
+    <div class="grp-grid">{cols}
     </div>
-    <div class="car-more"><a href="servicios/" class="btn btn-lg">Ver todos los servicios <svg class="i"><use href="#i-arrow"/></svg></a></div>
+    <div class="car-more"><a href="servicios/" class="btn btn-lg">Ver todos los servicios <svg class="i"><use href="#i-arrow"/></svg></a>
+      <a href="#hero-form" class="btn btn-ghost-dark btn-lg">Pedir presupuesto gratis</a></div>
   </div>
 </section>
 <!-- SERVICIOS-END -->
@@ -592,45 +575,38 @@ def patch_home():
     else:
         i = s.index('<!-- SERVICIOS -->'); j = s.index('</section>', i) + len('</section>\n')
     s = s[:i] + home_services() + s[j:]
+    # la sección "¿Qué necesitas resolver?" ya no existe (se unificó con los servicios)
     if '<!-- PROBLEMAS-START -->' in s:
         i = s.index('<!-- PROBLEMAS-START -->'); j = s.index('<!-- PROBLEMAS-END -->') + len('<!-- PROBLEMAS-END -->\n\n')
-        s = s[:i] + home_problems() + s[j:]
-    else:
-        s = s.replace('<!-- SERVICIOS-START -->', home_problems() + '<!-- SERVICIOS-START -->', 1)
+        s = s[:i] + s[j:]
 
-    # 2) Desplegable del formulario de contacto con los servicios actuales
-    opts = ''.join(f'\n          <option>{e(x["title"])}</option>' for x in SERVICES)
-    s = re.sub(r'(<select id="servicio-select" name="servicio">\s*<option value="">Selecciona un servicio</option>).*?(</select>)',
-               lambda m: m.group(1) + opts + '\n          <option>Otro</option>\n        ' + m.group(2), s, count=1, flags=re.S)
+    # 2) Desplegables de servicios (hero y contacto), agrupados
+    for sid in ('servicio-select', 'hero-servicio'):
+        s = re.sub(r'(<select id="%s" name="servicio">\s*<option value="">Selecciona un servicio</option>).*?(</select>)' % sid,
+                   lambda m: m.group(1) + options_html() + '        ' + m.group(2), s, count=1, flags=re.S)
 
     # 3) Pie: enlaces por tipo de cliente y servicios principales
     def foot_links(*keys):
         return ''.join(f'\n      <a href="servicios/{BY_KEY[k]["slug"]}/">{e(lbl)}</a>' for k, lbl in keys)
     s = re.sub(r'<h4>Según quién seas</h4>.*?</nav>', '''<h4>Según quién seas</h4>
-      <a href="#servicios" data-cat="particulares">Viviendas particulares</a>
-      <a href="#servicios" data-cat="comunidades">Comunidades de vecinos</a>
-      <a href="#servicios" data-cat="empresas">Naves industriales</a>
+      <a href="servicios/?perfil=particulares">Viviendas particulares</a>
+      <a href="servicios/?perfil=comunidades">Comunidades de vecinos</a>
+      <a href="servicios/?perfil=empresas">Naves industriales</a>
       <a href="servicios/">Ver todos los servicios</a>
     </nav>''', s, count=1, flags=re.S)
     s = re.sub(r'<h4>Más solicitados</h4>.*?</nav>', '<h4>Más solicitados</h4>' + foot_links(
         ('goteras', 'Reparación de goteras'), ('tejados', 'Tejados'), ('impermeabilizacion', 'Impermeabilización'), ('fachadas', 'Pintura de fachadas'))
         + '\n      <a href="servicios/">Todos los servicios</a>\n    </nav>', s, count=1, flags=re.S)
 
-    # 4) Etiquetas de perfil del formulario del hero
-    for old, new in [('<strong>Particulares</strong><small>Casa, chalet o piso</small>', '<strong>Viviendas particulares</strong><small>Casa, chalet o piso</small>'),
-                     ('<strong>Comunidades de vecinos</strong><small>Edificios, garajes y patios</small>', '<strong>Comunidades de vecinos</strong><small>Edificios, azoteas y fachadas</small>'),
-                     ('<strong>Empresas y naves</strong><small>Naves, locales y comercios</small>', '<strong>Naves industriales</strong><small>Cubiertas y cerramientos</small>')]:
-        s = s.replace(old, new)
-
-    # 5) Título del hero: abarca todos los servicios, sin encasillar en uno solo
-    s = re.sub(r'<h1>.*?</h1>', '<h1>Tu tejado, tu terraza y tu hogar, <em>de arriba abajo</em></h1>', s, count=1, flags=re.S)
-    s = re.sub(r'<p class="lead">Reparamos e impermeabilizamos.*?</p>',
-               '<p class="lead">Rehabilitamos y construimos tejados, terrazas y cubiertas, reparamos goteras y hacemos reformas, chimeneas, canalones y pintura. Vamos a tu domicilio, vemos el trabajo y te damos presupuesto <strong>gratis y sin compromiso</strong>.</p>', s, count=1, flags=re.S)
-    title = 'Grupo Urbanísima | Tejados, terrazas, reformas e impermeabilización en Valencia'
+    # 4) Título y texto del hero: reformas en general, del tejado al interior
+    s = re.sub(r'<h1>.*?</h1>', '<h1>Reformas y reparaciones en Valencia, <em>del tejado al interior</em></h1>', s, count=1, flags=re.S)
+    s = re.sub(r'<p class="lead">.*?</p>',
+               '<p class="lead">Tejados, terrazas, goteras, reformas, baños, pintura y mantenimiento para viviendas, comunidades de vecinos y naves industriales. Vamos a tu domicilio, vemos el trabajo y te damos presupuesto <strong>gratis y sin compromiso</strong>.</p>', s, count=1, flags=re.S)
+    title = 'Grupo Urbanísima | Reformas, tejados e impermeabilización en Valencia'
     desc = 'Tejados, terrazas y cubiertas, reparación de goteras, reformas, chimeneas, canalones y pintura en toda la provincia de Valencia. Presupuesto gratis y sin compromiso.'
     s = re.sub(r'<title>.*?</title>', f'<title>{title}</title>', s, count=1)
     s = re.sub(r'(<meta name="description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), s, count=1)
-    s = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + 'Tejados, terrazas, reformas e impermeabilización en Valencia | Grupo Urbanísima' + m.group(2), s, count=1)
+    s = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + 'Reformas, tejados e impermeabilización en Valencia | Grupo Urbanísima' + m.group(2), s, count=1)
     s = re.sub(r'(<meta property="og:description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), s, count=1)
     open(path, 'w', encoding='utf8').write(s)
 

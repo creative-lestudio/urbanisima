@@ -598,3 +598,71 @@ textarea{resize:vertical;min-height:112px;line-height:1.5}
 .svc-actions{flex-wrap:wrap;gap:6px 14px}
 .svc-actions a{white-space:nowrap}
 .car-track{scroll-padding-inline:4px}
+
+/* ===== v31: dirección sobria y arquitectónica (menos brillo, más aire, líneas finas) ===== */
+:root{--r:10px;--r-sm:8px;--muted:#44525f;--alt:#f4f6f9;--line:#d9e0e8;
+  --shadow:0 1px 2px rgba(2,36,64,.05),0 8px 24px -14px rgba(2,36,64,.16)}
+.btn{border-radius:8px;box-shadow:none}
+.btn::after{display:none!important}
+.btn-lg{min-height:54px}
+.btn-wa,.btn-mail{box-shadow:none}
+.hero h1{text-shadow:none;font-size:clamp(2.2rem,5.2vw,3.8rem);line-height:1.08;letter-spacing:-.01em}
+.hero h1 em{background:none;color:var(--yellow)}
+.pill{border-radius:6px}
+.hero-form{border-radius:14px;padding:28px;box-shadow:0 24px 50px -24px rgba(2,36,64,.55)}
+.hero-form h2{font-size:1.5rem;margin:0 0 .2em}
+.hero-form .hf-sub{margin-bottom:18px}
+.hero-form select{width:100%}
+.stats{border-radius:14px 14px 0 0;box-shadow:none;border:1px solid var(--line);border-bottom:0}
+.section{padding:96px 0}
+.head{margin-bottom:48px}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;letter-spacing:.16em}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--yellow)}
+.head h2{letter-spacing:-.01em}
+
+/* Servicios en 4 grupos */
+.grp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch}
+.grp{position:relative;background:#fff;border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:var(--r);padding:26px 22px 14px;display:flex;flex-direction:column;transition:box-shadow .25s,border-color .25s}
+.grp:hover{box-shadow:var(--shadow);border-top-color:var(--yellow)}
+.grp .ico{width:52px;height:52px;border-radius:10px;background:var(--blue);color:var(--yellow);display:grid;place-items:center;margin:0 0 18px}
+.grp .ico .i{width:26px;height:26px}
+.grp h3{font-size:1.15rem;line-height:1.25;margin:0 0 .4em;color:var(--blue-dark)}
+.grp>p{font-size:.93rem;color:var(--muted);margin:0 0 16px}
+.grp-list{list-style:none;margin:auto 0 0;padding:0}
+.grp-list li{border-top:1px solid var(--line)}
+.grp-list a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 2px;min-height:48px;color:var(--blue);font:700 .9rem/1.3 Montserrat,sans-serif;text-decoration:none}
+.grp-list a:hover{color:var(--blue-mid)}
+.grp-list .i{width:16px;height:16px;flex:none;color:var(--blue-mid);transition:transform .2s}
+.grp-list a:hover .i{transform:translateX(3px)}
+.car-more{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:40px}
+
+/* Cómo trabajamos */
+.steps-sec{background:var(--blue-deep);color:#fff}
+.steps-sec .head h2{color:#fff}.steps-sec .eyebrow{color:var(--yellow)}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.steps li{padding:8px 28px 8px 0;margin-right:28px;border-right:1px solid rgba(255,255,255,.16);display:flex;flex-direction:column;gap:8px}
+.steps li:last-child{border-right:0;margin-right:0}
+.steps .n{font:800 2.6rem/1 Montserrat,sans-serif;color:var(--yellow);margin-bottom:6px}
+.steps strong{font:700 1.08rem Montserrat,sans-serif}
+.steps li span:not(.n){color:rgba(255,255,255,.82);font-size:.95rem}
+
+/* Garantías: 4, sobrias */
+.benefits{grid-template-columns:repeat(4,1fr);gap:20px}
+.benefits li{border-radius:var(--r);box-shadow:none;border-top:3px solid var(--blue)}
+.benefits li:hover{box-shadow:var(--shadow)}
+
+/* Fondos más limpios */
+.contact{background:var(--blue-deep)}
+.contact::before,.section.dark::before{display:none}
+
+@media (max-width:1100px){.grp-grid{grid-template-columns:repeat(2,1fr)}.benefits{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr);row-gap:32px}.steps li:nth-child(2){border-right:0;margin-right:0}}
+@media (max-width:760px){
+  .section{padding:64px 0}.head{margin-bottom:32px}
+  .grp-grid{grid-template-columns:1fr;gap:16px}
+  .steps{grid-template-columns:1fr;row-gap:24px}
+  .steps li{border-right:0;margin-right:0;padding:0 0 24px;border-bottom:1px solid rgba(255,255,255,.16)}
+  .steps li:last-child{border-bottom:0;padding-bottom:0}
+  .benefits{grid-template-columns:1fr}
+  .car-more .btn{width:100%}
+  .hero-form{padding:22px 18px}
+}
