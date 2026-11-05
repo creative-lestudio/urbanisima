@@ -12,7 +12,7 @@ window.URBANISIMA_CONFIG = {
   CONVERSIONS: {
     lead_email: 'AW-758981388/eSzDCJ6kh7AdEIzG9OkC',      // solicitud enviada por correo (formulario). Se dispara en /gracias/?c=email
     lead_whatsapp: 'AW-758981388/M-wxCLDwibAdEIzG9OkC',   // solicitud enviada por WhatsApp (se abre el chat). Se dispara en /gracias/?c=whatsapp
-    click_call: '',      // clic en un teléfono
+    click_phone: '',      // clic en un teléfono
     click_whatsapp: ''   // clic directo en los botones de WhatsApp (flotante, barra móvil, contacto)
   },
   ENDPOINT: 'contact.php',               // script PHP que envía el correo (ver contact.php)

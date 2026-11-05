@@ -103,7 +103,7 @@ Para la última: al crear los anuncios añade el *asset de llamada* y activa "Co
    CONVERSIONS: {
      lead_email:     'AW-1234567890/AbCdEf...',   // Solicitud por correo
      lead_whatsapp:  'AW-1234567890/XyZaBc...',   // Solicitud por WhatsApp
-     click_call:     'AW-1234567890/GhIjKl...',   // Clic en teléfono
+     click_phone:    'AW-1234567890/GhIjKl...',   // Clic en teléfono
      click_whatsapp: 'AW-1234567890/MnOpQr...'    // Clic en WhatsApp
    },
    ```

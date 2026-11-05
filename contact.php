@@ -12,6 +12,12 @@ declare(strict_types=1);
 $TO   = ['creative.lestudio@gmail.com']; // ⚠ SOLO PARA PRUEBAS. Antes de publicar, cambiar por ['info@grupo-urbanisima.com'] (npm run check:legal avisa si se olvida)
 $FROM = 'web@grupo-urbanisima.com';
 
+/* AUTOMATIZACIÓN (opcional): si rellenas estas dos líneas, cada solicitud también se envía a un webhook (n8n, Make, CRM...).
+ * La clave nunca va en la web pública: solo vive en este archivo del servidor. Vacío = desactivado.
+ * Cada envío lleva la cabecera X-Urbanisima-Signature: sha256=<HMAC del cuerpo con esta clave> para comprobar que viene de la web. */
+$WEBHOOK_URL    = '';   // p. ej. https://n8n.tudominio.com/webhook/urbanisima-leads
+$WEBHOOK_SECRET = '';   // una clave larga y aleatoria; la misma que se configura en n8n para verificar la firma
+
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store');
@@ -26,10 +32,16 @@ function oneline($v, int $max): string { return trim((string)preg_replace('/\s+/
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') out(405, ['ok' => false, 'error' => 'method']);
 
-$raw = file_get_contents('php://input');
-if ($raw === false || strlen($raw) > 20000) out(413, ['ok' => false, 'error' => 'size']);
-$in = json_decode($raw, true);
-if (!is_array($in)) $in = $_POST;
+$isMultipart = stripos((string)($_SERVER['CONTENT_TYPE'] ?? ''), 'multipart/form-data') === 0;
+if ($isMultipart) {                      // formulario con fotos: los datos van en el campo "data" (JSON) y las fotos en "fotos[]"
+    $in = json_decode((string)($_POST['data'] ?? ''), true);
+    if (!is_array($in)) out(400, ['ok' => false, 'error' => 'data']);
+} else {
+    $raw = file_get_contents('php://input');
+    if ($raw === false || strlen($raw) > 20000) out(413, ['ok' => false, 'error' => 'size']);
+    $in = json_decode($raw, true);
+    if (!is_array($in)) $in = $_POST;
+}
 
 /* Trampa para bots: el campo "web" está oculto, una persona nunca lo rellena */
 if (!empty($in['web'])) out(200, ['ok' => true]);
@@ -39,6 +51,10 @@ $telefono = oneline($in['telefono'] ?? '', 30);
 $email    = oneline($in['email'] ?? '', 120);
 $servicio = oneline($in['servicio'] ?? '', 120);
 $perfil   = oneline($in['perfil'] ?? '', 60);
+$localidad = oneline($in['localidad'] ?? '', 80);
+$urgencia  = oneline($in['urgencia'] ?? '', 40);
+$leadId    = 'UR-' . date('ymd') . '-' . strtoupper(bin2hex(random_bytes(3)));   // identificador único del lead
+$estado    = 'Nuevo';                                                              // Nuevo > Contactado > Visita pendiente > Presupuesto enviado > Aceptado > Perdido
 $mensaje  = clean($in['mensaje'] ?? '', 3000);
 $canal    = ($in['canal'] ?? '') === 'email' ? 'email' : 'whatsapp';
 $origen   = ($in['origen'] ?? '') === 'hero' ? 'hero' : 'contacto';
@@ -77,7 +93,23 @@ elseif ($A)         $origenTxt = $extRef !== '' ? 'Visita desde ' . $extRef : 'V
 else                $origenTxt = 'No disponible (el visitante no aceptó las cookies de publicidad)';
 
 /* Pista automática de urgencia, para priorizar a quién llamar primero */
-$urgente = (bool)preg_match('/urgen|cuanto antes|lo antes posible|inmediat|inund|se cae|desprend|peligro|hoy mismo|ya mismo/iu', $mensaje);
+$urgente = stripos($urgencia, 'urgente') !== false || (bool)preg_match('/urgen|cuanto antes|lo antes posible|inmediat|inund|se cae|desprend|peligro|hoy mismo|ya mismo/iu', $mensaje);
+
+/* ---------- Fotos adjuntas (opcionales): máx. 3, 5 MB cada una, solo JPG/PNG/WebP reales ---------- */
+$adjuntos = [];
+if ($isMultipart && !empty($_FILES['fotos']) && is_array($_FILES['fotos']['tmp_name'])) {
+    $fi = function_exists('finfo_open') ? finfo_open(FILEINFO_MIME_TYPE) : null;
+    $exts = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+    foreach ($_FILES['fotos']['tmp_name'] as $i => $tmp) {
+        if (count($adjuntos) >= 3) break;
+        if (($_FILES['fotos']['error'][$i] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file($tmp)) continue;
+        if (($_FILES['fotos']['size'][$i] ?? 0) > 5 * 1024 * 1024) continue;
+        $mime = $fi ? (string)finfo_file($fi, $tmp) : (string)(@getimagesize($tmp)['mime'] ?? '');
+        if (!isset($exts[$mime]) || @getimagesize($tmp) === false) continue;
+        $adjuntos[] = ['name' => 'foto-' . (count($adjuntos) + 1) . '.' . $exts[$mime], 'mime' => $mime, 'data' => (string)file_get_contents($tmp)];
+    }
+}
+$nFotos = count($adjuntos);
 
 /* Teléfono para WhatsApp (España por defecto) */
 $digits = (string)preg_replace('/\D/', '', $telefono);
@@ -95,6 +127,10 @@ $cuerpo .= "Teléfono:   $telefono\n";
 $cuerpo .= 'Correo:     ' . ($email !== '' ? $email : '(no indicado)') . "\n";
 $cuerpo .= 'Perfil:     ' . ($perfil !== '' ? $perfil : '(no indicado)') . "\n";
 $cuerpo .= 'Servicio:   ' . ($servicio !== '' ? $servicio : '(no indicado)') . "\n";
+$cuerpo .= 'Localidad:  ' . ($localidad !== '' ? $localidad : '(no indicada)') . "\n";
+$cuerpo .= 'Urgencia:   ' . ($urgencia !== '' ? $urgencia : '(no indicada)') . "\n";
+$cuerpo .= "Lead:       $leadId  (estado: $estado)\n";
+$cuerpo .= 'Fotos:      ' . ($nFotos > 0 ? "$nFotos adjunta(s) a este correo" : 'ninguna') . "\n";
 $cuerpo .= "Enviado:    $canalTxt\n\n";
 $cuerpo .= "DESCRIPCIÓN DEL CLIENTE\n" . str_repeat('-', 40) . "\n";
 $cuerpo .= ($mensaje !== '' ? $mensaje : '(sin descripción)') . "\n\n";
@@ -137,6 +173,11 @@ $datos .= $row('Teléfono', '<a href="tel:+' . hx($digits) . '" style="color:#01
 $datos .= $row('Correo', $email !== '' ? '<a href="mailto:' . hx($email) . '" style="color:#01477f">' . hx($email) . '</a>' : '<span style="color:#8a97a5">No indicado</span>');
 $datos .= $row('Soy', $perfil !== '' ? hx($perfil) : '<span style="color:#8a97a5">No indicado</span>');
 $datos .= $row('Servicio', $servicio !== '' ? '<strong>' . hx($servicio) . '</strong>' : '<span style="color:#8a97a5">No indicado</span>');
+
+$datos .= $row('Localidad', $localidad !== '' ? hx($localidad) : '<span style="color:#8a97a5">No indicada</span>');
+$datos .= $row('Urgencia', $urgencia !== '' ? hx($urgencia) : '<span style="color:#8a97a5">No indicada</span>');
+$datos .= $row('Fotos', $nFotos > 0 ? $nFotos . ' adjunta(s) a este correo' : '<span style="color:#8a97a5">Ninguna</span>');
+$datos .= $row('Lead', '<span style="font-family:Consolas,Menlo,monospace;font-size:13px">' . hx($leadId) . '</span> &middot; ' . hx($estado));
 
 $origenRows = $row('Origen', '<strong>' . hx($origenTxt) . '</strong>');
 if (isset($A['utm_campaign'])) $origenRows .= $row('Campaña', hx($A['utm_campaign']));
@@ -192,10 +233,20 @@ $cuerpoMime .= "--$bAlt\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Tra
 $cuerpoMime .= "--$bAlt--\r\n";
 if ($logoB64 !== '') $cuerpoMime .= "--$bRel\r\nContent-Type: image/png; name=\"logo.png\"\r\nContent-Transfer-Encoding: base64\r\nContent-ID: <logo@grupo-urbanisima>\r\nContent-Disposition: inline; filename=\"logo.png\"\r\n\r\n" . $logoB64 . "\r\n";
 $cuerpoMime .= "--$bRel--\r\n";
+$tipoCab = "multipart/related; boundary=\"$bRel\"; type=\"multipart/alternative\"";
+if ($adjuntos) {   // el cuerpo anterior se envuelve en multipart/mixed junto a las fotos
+    $bMix = '=_mix_' . md5(uniqid('', true));
+    $mix = "--$bMix\r\nContent-Type: $tipoCab\r\n\r\n" . $cuerpoMime . "\r\n";
+    foreach ($adjuntos as $a) {
+        $mix .= "--$bMix\r\nContent-Type: {$a['mime']}; name=\"{$a['name']}\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"{$a['name']}\"\r\n\r\n" . chunk_split(base64_encode($a['data'])) . "\r\n";
+    }
+    $cuerpoMime = $mix . "--$bMix--\r\n";
+    $tipoCab = "multipart/mixed; boundary=\"$bMix\"";
+}
 
 $h  = "From: Web Grupo Urbanísima <$FROM>\r\n";
 if ($email !== '') $h .= "Reply-To: $nombre <$email>\r\n";
-$h .= "MIME-Version: 1.0\r\nContent-Type: multipart/related; boundary=\"$bRel\"; type=\"multipart/alternative\"\r\n";
+$h .= "MIME-Version: 1.0\r\nContent-Type: $tipoCab\r\n";
 
 $subjectEnc = mb_encode_mimeheader($asunto, 'UTF-8', 'B', "\r\n");
 $ok = false;
@@ -206,4 +257,22 @@ foreach ($TO as $dest) {
 }
 
 if (!$ok) { error_log('contact.php: mail() falló para ' . $nombre); out(500, ['ok' => false, 'error' => 'mail']); }
-out(200, ['ok' => true]);
+/* ---------- Webhook opcional (CRM / n8n). Un fallo aquí nunca impide que la solicitud llegue por correo ---------- */
+if ($WEBHOOK_URL !== '' && function_exists('curl_init')) {
+    $evento = json_encode([
+        'lead_id' => $leadId, 'fecha' => date('c'), 'estado' => $estado,
+        'canal' => $canal, 'formulario' => $origen, 'origen_captacion' => $origenTxt,
+        'pagina_entrada' => $A['landing'] ?? $pagina, 'pagina_envio' => $pagina,
+        'servicio' => $servicio, 'tipo_cliente' => $perfil, 'localidad' => $localidad, 'urgencia' => $urgencia, 'urgente' => $urgente,
+        'nombre' => $nombre, 'telefono' => $telefono, 'email' => $email, 'mensaje' => $mensaje,
+        'fotos_adjuntas' => $nFotos, 'utm' => array_intersect_key($A, array_flip(['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'gbraid', 'wbraid'])),
+        'politica_version' => $polVer,
+    ], JSON_UNESCAPED_UNICODE);
+    $ch = curl_init($WEBHOOK_URL);
+    curl_setopt_array($ch, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => $evento, CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 4, CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'X-Urbanisima-Signature: sha256=' . hash_hmac('sha256', (string)$evento, $WEBHOOK_SECRET)]]);
+    $res = curl_exec($ch); $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+    if ($res === false || $code >= 300) error_log("contact.php: webhook falló ($code) para $leadId");
+}
+
+out(200, ['ok' => true, 'lead_id' => $leadId]);

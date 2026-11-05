@@ -16,7 +16,7 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '31'  # versión de CSS/JS (rompe la caché del navegador)
+V = '32'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
 # Lista oficial de servicios facilitada por el dueño (3/11/2026). Los 14 están disponibles para cualquier cliente;
@@ -272,7 +272,7 @@ def header(root):
       <a href="{root}servicios/">Servicios</a>
       <a href="#contacto">Contacto</a>
       <a href="tel:{PHONE_TEL}" class="menu-phone">{ic('phone',root)}722 115 251</a>
-      <a href="#contacto" class="btn btn-sm">Pedir presupuesto</a>
+      <a href="#contacto" class="btn btn-sm" data-cta="header">Presupuesto gratuito</a>
     </nav>
     <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
   </div>
@@ -426,7 +426,7 @@ def service_page(s):
         <h1>{e(h1)}</h1>
         <p class="lead">{e(s["intro"])}</p>
         <div class="cta-row">
-          <a href="#contacto" class="btn btn-lg">Pedir presupuesto gratis {ic("arrow",root)}</a>
+          <a href="#contacto" class="btn btn-lg" data-cta="servicio">Solicitar presupuesto para {CTA[s["key"]]} {ic("arrow",root)}</a>
           <a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a>
         </div>
         <ul class="trust"><li>{ic("check",root)} Visita a domicilio sin coste</li><li>{ic("check",root)} Presupuesto sin compromiso</li><li>{ic("check",root)} Para viviendas, comunidades y naves industriales</li></ul>
@@ -459,7 +459,7 @@ def service_page(s):
       <div class="aside-card">
         <h3>¿Hablamos?</h3>
         <p>Cuéntanos tu caso. Visita y presupuesto sin compromiso en toda la provincia de Valencia.</p>
-        <a href="#contacto" class="btn btn-block">Pedir presupuesto</a>
+        <a href="#contacto" class="btn btn-block" data-cta="servicio-lateral">Pedir presupuesto</a>
         <a href="tel:{PHONE_TEL}" class="btn btn-ghost-dark btn-block">{ic("phone",root)} {PHONE_TXT}</a>
         <a href="https://wa.me/{WA}?text=Hola%2C%20me%20interesa%3A%20{s["title"].replace(" ","%20")}" class="btn btn-wa btn-block" target="_blank" rel="noopener">{ic("chat",root)} WhatsApp</a>
         <small>Lunes a viernes, de 9:00 a 19:00</small>
@@ -498,7 +498,7 @@ def hub_page():
     <nav class="crumbs" aria-label="Migas de pan"><a href="{root}">Inicio</a><span>›</span><span aria-current="page">Servicios</span></nav>
     <h1>Servicios en Valencia para viviendas, comunidades y naves industriales</h1>
     <p class="lead">Tejados, terrazas y cubiertas, reparación de goteras, impermeabilización, reformas, chimeneas, canalones y pintura en toda la provincia de Valencia. Todos los servicios están disponibles para cualquier cliente: elige tu perfil y los ordenamos de más a menos solicitados.</p>
-    <div class="cta-row"><a href="#contacto" class="btn btn-lg">Pedir presupuesto gratis {ic("arrow",root)}</a><a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a></div>
+    <div class="cta-row"><a href="#contacto" class="btn btn-lg" data-cta="hub">Solicitar presupuesto gratuito {ic("arrow",root)}</a><a href="tel:{PHONE_TEL}" class="btn btn-ghost btn-lg">{ic("phone",root)} 722 115 251</a></div>
   </div>
 </section>
 <section class="section">
@@ -520,6 +520,13 @@ def write(path, content):
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     open(full, 'w', encoding='utf8').write(content)
+
+CTA = {  # texto del botón principal de cada página de servicio: "Solicitar presupuesto para ..."
+ 'tejados': 'reparar mi tejado', 'tejadosnuevos': 'un tejado nuevo', 'panel': 'mi cubierta o cerramiento', 'goteras': 'arreglar mis goteras',
+ 'terrazas': 'mi terraza', 'impermeabilizacion': 'impermeabilizar', 'reforma': 'mi reforma integral', 'pladur': 'trabajos de pladur',
+ 'banos': 'reformar mi baño', 'chimeneas': 'limpiar mi chimenea', 'desatasco': 'desatascar mi chimenea', 'canalones': 'limpiar mis canalones',
+ 'pinturainterior': 'pintar mi vivienda', 'fachadas': 'pintar mi fachada',
+}
 
 GROUPS = [  # clave, icono, título, descripción, servicios
  ('tejados', 'roof', 'Tejados y cubiertas', 'Rehabilitación, obra nueva y cerramientos para viviendas, edificios y naves.', ['tejados', 'tejadosnuevos', 'panel']),

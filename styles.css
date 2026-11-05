@@ -666,3 +666,72 @@ textarea{resize:vertical;min-height:112px;line-height:1.5}
   .car-more .btn{width:100%}
   .hero-form{padding:22px 18px}
 }
+
+/* ===== v32: tokens de diseño, escala tipográfica fluida y formulario de 3 pasos ===== */
+:root{
+  /* color (identidad corporativa conservada) */
+  --c-primary:#01477f; --c-primary-dark:#022440; --c-secondary:#0069be; --c-accent:#fec200;
+  --c-bg:#ffffff; --c-surface:#f4f6f9; --c-text:#16202b; --c-text-2:#44525f; --c-border:#d9e0e8;
+  --c-success:#1fa855; --c-error:#b3261e;
+  /* tipografía fluida */
+  --fs-h1:clamp(2.1rem,1.4rem + 3.2vw,3.7rem); --fs-h2:clamp(1.6rem,1.2rem + 1.7vw,2.5rem); --fs-h3:clamp(1.1rem,1rem + .5vw,1.3rem);
+  --fs-body:clamp(1rem,.96rem + .2vw,1.0625rem); --fs-small:.875rem; --fs-label:.78rem;
+  /* movimiento */
+  --t:220ms; --ease:cubic-bezier(.2,.7,.2,1);
+}
+h1{font-size:var(--fs-h1)}.head h2,.section h2{font-size:var(--fs-h2)}h3{font-size:var(--fs-h3)}
+body{font-size:var(--fs-body)}
+.btn,.grp,.grp-list a,.cat,.photo-add,.hf-chip span{transition-duration:var(--t);transition-timing-function:var(--ease)}
+:focus-visible{outline:3px solid var(--c-accent);outline-offset:2px}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:3px solid var(--c-accent);outline-offset:0}
+.is-invalid{border-color:var(--c-error)!important;box-shadow:0 0 0 3px rgba(179,38,30,.15)}
+.form-msg{color:var(--c-error)}.form-msg.ok{color:var(--c-success)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.hero-call{margin:14px 0 0;color:rgba(255,255,255,.85);font-size:.95rem}
+.hero-call a{color:#fff;font-weight:800;text-underline-offset:3px}
+
+/* formulario del hero en 3 pasos */
+.hero-form .hf-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.hero-form .hf-step{font:800 var(--fs-label) Montserrat,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--c-secondary);white-space:nowrap}
+.hero-form .hf-bar{flex:1;height:5px;background:var(--c-surface);border-radius:99px;overflow:hidden}
+.hero-form .hf-bar i{display:block;height:100%;width:33%;background:var(--c-accent);border-radius:99px;transition:width var(--t) var(--ease)}
+.hero-form .hf-pane{display:none}.hero-form .hf-pane.is-on{display:block;animation:fade .25s}
+.hero-form .hf-cats{display:grid;gap:10px}
+.cat.is-sel{border-color:var(--c-primary);box-shadow:0 0 0 2px var(--c-primary) inset}
+.hf-urg{border:0;padding:0;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.hf-urg legend{font:700 .82rem Montserrat,sans-serif;color:var(--c-primary);margin-bottom:6px;padding:0;width:100%}
+.hf-urg .hf-chip span{padding:.55em .9em}
+.hf-urg input:checked+span{background:var(--c-primary);border-color:var(--c-primary);color:#fff}
+.photo-add{display:flex;align-items:center;gap:10px;min-height:48px;padding:10px 14px;border:1.5px dashed var(--c-border);border-radius:10px;color:var(--c-primary);font:700 .9rem Montserrat,sans-serif;cursor:pointer;background:#fff}
+.photo-add:hover{border-color:var(--c-secondary)}
+#h-fotos:focus-visible+*,.photo-add:focus-within{outline:3px solid var(--c-accent)}
+.hf-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.hf-nav .back{margin:0;padding:12px 6px;min-height:44px}
+.btn-next{background:var(--c-primary);color:#fff;min-height:48px;padding:.7em 1.4em;font-size:.95rem}
+.btn-next:hover{background:var(--c-primary-dark)}
+.hero-form .hf-pane[data-pane="3"] .hf-nav{justify-content:flex-start;margin-top:4px}
+
+/* FAQ */
+.faq-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+.head.left{text-align:left;margin:0}
+.faq-list{border-top:1px solid var(--c-border)}
+.faq-i{border-bottom:1px solid var(--c-border)}
+.faq-i summary{cursor:pointer;list-style:none;padding:20px 40px 20px 0;font:700 1.02rem/1.35 Montserrat,sans-serif;color:var(--c-primary-dark);position:relative;min-height:56px}
+.faq-i summary::-webkit-details-marker{display:none}
+.faq-i summary::after{content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:1.5rem;font-weight:400;color:var(--c-secondary);transition:transform var(--t) var(--ease)}
+.faq-i[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq-i p{margin:0 0 20px;color:var(--c-text-2);max-width:62ch}
+.faq-i summary:hover{color:var(--c-secondary)}
+
+/* proyectos y opiniones (ocultos hasta que haya material real) */
+.proj-grid,.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.proj,.rev{background:#fff;border:1px solid var(--c-border);border-radius:var(--r);overflow:hidden;margin:0}
+.proj-img{margin:0;aspect-ratio:16/11;background:var(--c-surface)}.proj-img img{width:100%;height:100%;object-fit:cover}
+.proj-b,.rev{padding:20px}.proj-tag{font:800 var(--fs-label) Montserrat,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--c-secondary)}
+.proj-cta{text-align:center;margin-top:32px}
+
+@media (max-width:1020px){.faq-wrap{grid-template-columns:1fr;gap:24px}.proj-grid,.rev-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.proj-grid,.rev-grid{grid-template-columns:1fr}.faq-i summary{padding-right:34px}.hero-call{text-align:center}.hero-form .send-row{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+.hero-call{margin:14px 0 22px}
+.field .photo-add{display:flex;align-items:center;gap:10px;margin:0;font:700 .9rem Montserrat,sans-serif;color:var(--c-primary)}

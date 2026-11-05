@@ -97,9 +97,15 @@
 
   /* ---------- Clics en teléfono y WhatsApp (medición) ---------- */
   document.addEventListener('click', function (e) {
+    var q = e.target.closest && e.target.closest('[data-cta]');
+    if (q && window.UrbTrack) window.UrbTrack('click_quote_cta', { ubicacion: q.getAttribute('data-cta') });
     var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"]');
-    if (a && window.UrbTrack) window.UrbTrack(a.href.indexOf('tel:') === 0 ? 'click_call' : 'click_whatsapp');
+    if (a && window.UrbTrack) window.UrbTrack(a.href.indexOf('tel:') === 0 ? 'click_phone' : 'click_whatsapp');
   });
 
   var yr = document.getElementById('year'); if (yr) yr.textContent = new Date().getFullYear();
+
+  /* Medición: vista de una página de servicio (solo se registra si el visitante aceptó cookies de medición) */
+  var svName = document.body.getAttribute('data-servicio');
+  if (svName) setTimeout(function () { if (window.UrbTrack) window.UrbTrack('service_view', { servicio: svName }); }, 800);
 })();

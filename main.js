@@ -105,7 +105,7 @@
   function payload(origen, canal, d, v) {
     var p = {
       origen: origen, canal: canal, nombre: v.nombre, telefono: v.tel, email: v.email,
-      servicio: d.get('servicio') || '', perfil: currentCat !== 'all' ? WHO[currentCat] : '',
+      servicio: d.get('servicio') || '', localidad: (d.get('localidad') || '').trim(), urgencia: d.get('urgencia') || '', perfil: currentCat !== 'all' ? WHO[currentCat] : '',
       mensaje: v.msg, pagina: location.href, web: d.get('web') || '',
       privacidad: true, politica_version: '2026-11-01'
     };
@@ -113,12 +113,18 @@
     Object.keys(a).forEach(function (k) { p[k] = a[k]; });
     return p;
   }
-  function postLead(p) { // devuelve una promesa con true/false; nunca lanza error
+  function multipart(p, files) { // con fotos: datos en JSON + archivos
+    var fd = new FormData(); fd.append('data', JSON.stringify(p));
+    files.forEach(function (f, i) { fd.append('fotos[]', f, 'foto-' + (i + 1) + '.jpg'); });
+    return fd;
+  }
+  function postLead(p, files) { // devuelve una promesa con true/false; nunca lanza error
     if (!window.fetch) return Promise.resolve(false);
     var ctl = window.AbortController ? new AbortController() : null;
-    var t = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+    var t = setTimeout(function () { if (ctl) ctl.abort(); }, files && files.length ? 30000 : 8000);
     return fetch(CFG.ENDPOINT || 'contact.php', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(p), keepalive: true, signal: ctl ? ctl.signal : undefined
+      method: 'POST', headers: files && files.length ? {} : { 'Content-Type': 'application/json' },
+      body: files && files.length ? multipart(p, files) : JSON.stringify(p), keepalive: !(files && files.length), signal: ctl ? ctl.signal : undefined
     }).then(function (r) { return r.ok ? r.json() : { ok: false }; })
       .then(function (r) { clearTimeout(t); return !!(r && r.ok); })
       .catch(function () { clearTimeout(t); return false; });
@@ -127,9 +133,10 @@
   function lines(v, d, p) {
     return ['Hola, soy ' + v.nombre + '.', 'Teléfono: ' + v.tel + (v.email ? '\nCorreo: ' + v.email : ''),
       p.perfil ? 'Soy: ' + p.perfil : '', d.get('servicio') ? 'Necesito: ' + d.get('servicio') : '',
+      p.localidad ? 'Localidad: ' + p.localidad : '', p.urgencia ? 'Urgencia: ' + p.urgencia : '',
       v.msg ? '\n' + v.msg : '', '\nQuiero un presupuesto gratuito.'].filter(Boolean).join('\n');
   }
-  function submitLead(form, origen, needMessage, canal) {
+  function submitLead(form, origen, needMessage, canal, files) {
     var d = new FormData(form);
     if (d.get('web')) return; // trampa anti-bots
     var v = validContact(form, d, needMessage);
@@ -141,10 +148,10 @@
       var w = window.open(waLink(text), '_blank'); if (w) w.opener = null;
       say(form, 'Abriendo WhatsApp… y enviando copia al correo.');
       var done = false, go = function () { if (done) return; done = true; if (!w) location.href = waLink(text); else thanks('whatsapp'); };
-      postLead(p).then(go); setTimeout(go, 3500);
+      postLead(p, files).then(go); setTimeout(go, files && files.length ? 31000 : 3500);
     } else {
       say(form, 'Enviando…');
-      postLead(p).then(function (ok) {
+      postLead(p, files).then(function (ok) {
         if (ok) { thanks('email'); return; }
         // plan B: si el servidor no responde, se abre el correo del usuario con el mensaje ya redactado
         busy(form, false);
@@ -174,13 +181,69 @@
     a.addEventListener('click', function () { selectService(a.getAttribute('data-title')); });
   });
 
-  /* Formulario del hero (arriba): un solo paso */
+  /* Formulario del hero (arriba): 3 pasos (tipo de cliente > trabajo, urgencia, localidad y fotos > contacto) */
   var hero = document.getElementById('hero-form');
   var heroSel = document.getElementById('hero-servicio');
+  var panes = hero.querySelectorAll('.hf-pane'), hfStep = document.getElementById('hf-step'), hfFill = document.getElementById('hf-fill');
+  var heroStep = 1, started = false, photos = [];
+  function track(n, p) { if (window.UrbTrack) window.UrbTrack(n, p); }
+  function heroGo(n, focus) {
+    heroStep = n;
+    panes.forEach(function (p) { p.classList.toggle('is-on', +p.dataset.pane === n); });
+    hfStep.textContent = 'Paso ' + n + ' de 3'; hfFill.style.width = Math.round(n * 100 / 3) + '%';
+    hero.querySelector('.form-msg').textContent = '';
+    if (focus !== false) {
+      var f = hero.querySelector('.hf-pane.is-on input:not([type=radio]):not([type=file]):not([type=hidden]), .hf-pane.is-on select');
+      if (f && n > 1) f.focus({ preventScroll: true });
+      if (mobileMq.matches) { var r = hero.getBoundingClientRect(); if (r.top < 70 || r.bottom > innerHeight - 70) scrollTo({ top: scrollY + r.top - 76, behavior: reduce ? 'auto' : 'smooth' }); }
+    }
+  }
+  function startOnce() { if (!started) { started = true; track('form_start', { form: 'hero' }); } }
+  hfFill.style.width = '33%';
+  hero.addEventListener('focusin', startOnce);
+  hero.querySelectorAll('.cat').forEach(function (b) {
+    b.addEventListener('click', function () {
+      startOnce(); currentCat = b.dataset.cat;
+      hero.querySelectorAll('.cat').forEach(function (x) { x.classList.toggle('is-sel', x === b); });
+      track('form_step_complete', { form: 'hero', step: 1 }); heroGo(2);
+    });
+  });
+  hero.querySelectorAll('[data-back]').forEach(function (b) { b.addEventListener('click', function () { heroGo(+b.dataset.back); }); });
+  hero.querySelector('[data-next]').addEventListener('click', function () {
+    var loc = hero.querySelector('#h-loc');
+    if (!heroSel.value) { fail(hero, 'Elige qué trabajo necesitas.', heroSel); return; }
+    if (loc.value.trim().length < 3) { fail(hero, 'Indica tu localidad o código postal.', loc); return; }
+    track('form_step_complete', { form: 'hero', step: 2 }); heroGo(3);
+  });
+  // Fotos: se reducen en el propio navegador (máx. 1600 px) para que el envío sea rápido y ligero
+  var fileIn = document.getElementById('h-fotos'), fileTxt = document.getElementById('h-fotos-txt');
+  function shrink(file) {
+    return new Promise(function (res) {
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function () {
+        var k = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+        c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+        c.toBlob(function (bl) { res(bl); }, 'image/jpeg', .82);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); res(null); };
+      img.src = url;
+    });
+  }
+  fileIn.addEventListener('change', function () {
+    var list = Array.prototype.slice.call(fileIn.files, 0, 3);
+    fileTxt.textContent = 'Preparando fotos…';
+    Promise.all(list.map(shrink)).then(function (bl) {
+      photos = bl.filter(Boolean);
+      fileTxt.textContent = photos.length ? photos.length + (photos.length === 1 ? ' foto lista' : ' fotos listas') + ' · cambiar' : 'Añadir fotos';
+      if (fileIn.files.length > 3) hero.querySelector('.form-msg').textContent = 'Solo se envían las 3 primeras fotos.';
+    });
+  });
   hero.addEventListener('input', function (e) { e.target.classList.remove('is-invalid'); });
   hero.addEventListener('submit', function (e) {
     e.preventDefault();
-    submitLead(hero, 'hero', true, e.submitter && e.submitter.value === 'email' ? 'email' : 'whatsapp');
+    if (heroStep < 3) return; // Enter en pasos anteriores no envía
+    submitLead(hero, 'hero', false, e.submitter && e.submitter.value === 'email' ? 'email' : 'whatsapp', photos);
   });
   function pickIn(select, t) {
     var ok = false;
@@ -195,7 +258,11 @@
   /* Enlaces desde anuncios: ?perfil=comunidades&servicio=impermeabilizacion (y gclid/utm se guardan en tracking.js) */
   (function fromAds() {
     var q = new URLSearchParams(location.search), perfil = q.get('perfil'), slug = q.get('servicio');
-    if (perfil && NAMES[perfil]) currentCat = perfil;
+    if (perfil && NAMES[perfil]) {
+      currentCat = perfil;
+      var cb = hero.querySelector('.cat[data-cat="' + perfil + '"]'); if (cb) cb.classList.add('is-sel');
+      heroGo(2, false);
+    }
     var a = slug && document.querySelector('[data-slug="' + slug.replace(/[^a-z]/g, '') + '"]');
     if (a) { var t = a.getAttribute('data-title'); pickIn(heroSel, t); selectService(t); }
   })();
@@ -211,8 +278,10 @@
 
   /* Clics en teléfono y WhatsApp (medición de conversiones) */
   document.addEventListener('click', function (e) {
+    var q = e.target.closest && e.target.closest('[data-cta]');
+    if (q && window.UrbTrack) window.UrbTrack('click_quote_cta', { ubicacion: q.getAttribute('data-cta') });
     var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href*="wa.me"]');
-    if (a && window.UrbTrack) window.UrbTrack(a.href.indexOf('tel:') === 0 ? 'click_call' : 'click_whatsapp');
+    if (a && window.UrbTrack) window.UrbTrack(a.href.indexOf('tel:') === 0 ? 'click_phone' : 'click_whatsapp');
   });
 
   /* ---------- Contadores ---------- */
