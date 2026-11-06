@@ -16,7 +16,7 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '34'  # versión de CSS/JS (rompe la caché del navegador)
+V = '35'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
 # Lista oficial de servicios facilitada por el dueño (3/11/2026). Los 14 están disponibles para cualquier cliente;
@@ -270,7 +270,7 @@ def header(root):
     return f'''<a class="skip" href="#contenido">Saltar al contenido</a>
 <header class="header solid" id="top">
   <div class="wrap nav">
-    <a href="{root}" class="brand" aria-label="Grupo Urbanísima, inicio"><img class="logo-color" src="{root}assets/logo.png" alt="" width="268" height="55"></a>
+    <a href="{root}" class="brand" aria-label="Grupo Urbanísima, inicio"><img class="logo-white" src="{root}assets/logo-blanco.png" alt="" width="260" height="51"></a>
     <nav id="menu" class="menu" aria-label="Principal">
       <a href="{root}servicios/">Servicios</a>
       <a href="{root}#proceso">Cómo trabajamos</a>
@@ -517,10 +517,9 @@ IMG = {  # foto ilustrativa de cada servicio (assets/img/<nombre>.webp)
 GROUP_IMG = {'tejados': 'tejados', 'humedad': 'impermeabilizacion', 'interior': 'reforma', 'fachadas': 'fachadas'}
 
 def photo(key, root, cls='ph', eager=False):
-    # Imagen ilustrativa (no es una obra real de la empresa): alt descriptivo y etiqueta visible
     t = BY_KEY[key]['title']
-    return (f'<span class="{cls}"><img src="{root}assets/img/{IMG[key]}.webp" width="275" height="240" alt="Imagen ilustrativa: {e(t)}" '
-            f'{"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async"><i>Ilustrativa</i></span>')
+    return (f'<span class="{cls}"><img src="{root}assets/img/{IMG[key]}.webp" width="512" height="512" alt="{e(t)}" '
+            f'{"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async"></span>')
 
 GROUPS = [  # clave, icono, título, descripción, servicios
  ('tejados', 'roof', 'Tejados y cubiertas', 'Rehabilitación, obra nueva y cubiertas industriales.', ['tejados', 'tejadosnuevos', 'panel']),
@@ -600,7 +599,7 @@ def patch_home():
         + '\n      <a href="servicios/">Todos los servicios</a>\n    </nav>', s, count=1, flags=re.S)
 
     # 4) Título y texto del hero: reformas en general, del tejado al interior
-    s = re.sub(r'<h1>.*?</h1>', '<h1>Reformas y reparaciones en Valencia, <em>del tejado al interior</em></h1>', s, count=1, flags=re.S)
+    s = re.sub(r'<h1>.*?</h1>', '<h1>Reformas y reparaciones. <em>Desde tejados hasta interiores.</em></h1>', s, count=1, flags=re.S)
     s = re.sub(r'<p class="lead">.*?</p>',
                '<p class="lead">Reparamos tejados, solucionamos goteras, impermeabilizamos terrazas y realizamos reformas. Visita gratuita y presupuesto sin compromiso en Valencia y provincia.</p>', s, count=1, flags=re.S)
     title = 'Grupo Urbanísima | Reformas, tejados e impermeabilización en Valencia'

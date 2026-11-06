@@ -940,3 +940,61 @@ p{max-width:68ch}
 .contact .contact-copy .lead{color:rgba(255,255,255,.88)}
 .grp .ph i{top:10px;bottom:auto;left:10px}
 .hub-card .ph i,.sv-photo i{top:10px;bottom:auto}
+
+/* ===================================================================================
+   v35 · Azul y amarillo de la marca, de forma sobria: cabecera y portada en azul profundo plano,
+   amarillo solo en acciones y detalles, fondos claros fríos (sin marfil).
+   =================================================================================== */
+:root{--c-ivory:#f2f6fb;--c-stone:#dfe7f0;--alt:#f2f6fb;--line:#dfe7f0}
+
+/* cabecera azul */
+.header,.header.scrolled,.header.solid{background:var(--c-primary-dark);border-bottom:1px solid rgba(255,255,255,.1);backdrop-filter:none}
+.header.scrolled{box-shadow:0 10px 26px -18px rgba(0,0,0,.6)}
+.header .logo-white{display:block}.header .logo-color{display:none}
+.header .menu a:not(.btn){color:rgba(255,255,255,.9)!important}
+.header .menu a:not(.btn):hover{color:var(--c-accent)!important}
+.header .menu-phone{color:#fff!important}
+.header .menu-phone .i{color:var(--c-accent)}
+.hdr-call{color:#fff}
+.header .burger span{background:#fff}
+.header.menu-open{background:var(--c-primary-dark)}
+@media (max-width:760px){
+  .menu{background:var(--c-primary-dark);border-top:1px solid rgba(255,255,255,.1)}
+  .menu a:not(.btn){color:#fff!important;border-bottom:1px solid rgba(255,255,255,.1)!important}
+  .header.menu-open .logo-white{display:block}.header.menu-open .logo-color{display:none}
+  .header.menu-open .burger span{background:#fff}
+}
+
+/* portada: azul plano con trama arquitectónica muy tenue */
+.hero.hero-l{background:var(--c-primary-dark) repeating-linear-gradient(135deg,transparent 0 46px,rgba(255,255,255,.028) 46px 48px);color:#fff}
+.hero-l h1{color:#fff;max-width:20ch}
+.hero-l h1 em{color:var(--c-accent);box-shadow:none}
+.hero-l .pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);color:#fff}
+.hero-l .pill .i{color:var(--c-accent)}
+.hero-l .lead{color:rgba(255,255,255,.86)}
+.hero-l .btn-ghost-dark{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.hero-l .btn-ghost-dark:hover{background:#fff;color:var(--c-primary-dark)}
+.hero-l .trust{color:#fff}
+.hero-l .trust .i{color:var(--c-accent)}
+
+/* amarillo sobrio: iconos, números y acentos */
+.grp{border-top:3px solid var(--c-primary)}
+.grp:hover{border-top-color:var(--c-accent)}
+.grp-ico{background:var(--c-primary);border:0;color:var(--c-accent)}
+.benefits li{border-top:3px solid var(--c-accent)}
+.benefits .ico{background:var(--c-primary);color:var(--c-accent)}
+.steps .n{color:var(--c-primary)}
+.steps .n::before{content:"";display:block;width:28px;height:3px;background:var(--c-accent);margin-bottom:12px}
+.q-tile:has(input:checked) .q-ico{color:var(--c-accent)}
+.faq-i[open] summary{color:var(--c-primary)}
+.faq-i summary::after{color:var(--c-primary)}
+#proceso.steps-sec,#faq{background:var(--c-ivory)}
+.eyebrow::before{background:var(--c-accent)}
+.q-card{border-color:transparent;box-shadow:0 24px 50px -26px rgba(0,0,0,.55)}
+.contact .q-card{border-color:transparent}
+.header.solid .logo-white,.header .logo-white{display:block}
+.header.solid .logo-color,.header .logo-color{display:none}
+.header.solid .burger span,.header .burger span,.header.menu-open .burger span{background:#fff}
+.header.solid .menu a:not(.btn){color:rgba(255,255,255,.9)!important}
+.header.solid .menu a:not(.btn):hover{color:var(--c-accent)!important}
+.header.solid .menu-phone{color:#fff!important}
