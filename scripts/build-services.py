@@ -16,7 +16,7 @@ PHONE_TXT = '+34 722 115 251'
 PHONE_TEL = '+34722115251'
 WA = '34722115251'
 MAIL = 'info@grupo-urbanisima.com'
-V = '35'  # versión de CSS/JS (rompe la caché del navegador)
+V = '36'  # versión de CSS/JS (rompe la caché del navegador)
 
 # ---------------------------------------------------------------- DATOS
 # Lista oficial de servicios facilitada por el dueño (3/11/2026). Los 14 están disponibles para cualquier cliente;
@@ -518,7 +518,7 @@ GROUP_IMG = {'tejados': 'tejados', 'humedad': 'impermeabilizacion', 'interior': 
 
 def photo(key, root, cls='ph', eager=False):
     t = BY_KEY[key]['title']
-    return (f'<span class="{cls}"><img src="{root}assets/img/{IMG[key]}.webp" width="512" height="512" alt="{e(t)}" '
+    return (f'<span class="{cls}"><img src="{root}assets/img/{IMG[key]}.webp" width="800" height="800" alt="{e(t)}" '
             f'{"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async"></span>')
 
 GROUPS = [  # clave, icono, título, descripción, servicios
