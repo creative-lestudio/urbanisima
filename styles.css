@@ -998,3 +998,8 @@ p{max-width:68ch}
 .header.solid .menu a:not(.btn){color:rgba(255,255,255,.9)!important}
 .header.solid .menu a:not(.btn):hover{color:var(--c-accent)!important}
 .header.solid .menu-phone{color:#fff!important}
+
+/* Botón "Continuar por WhatsApp": verde WhatsApp con texto blanco, siempre visible */
+.q-card .q .q-wa,.hero-l .q .q-wa{background:#1fa855;border:1.5px solid #1fa855;color:#fff}
+.q-card .q .q-wa:hover,.hero-l .q .q-wa:hover{background:#188f48;border-color:#188f48;color:#fff}
+.q-card .q .q-wa .i{color:#fff}
