@@ -4,12 +4,14 @@
  * Se usa tanto para "Enviar por correo" como para la copia que se manda cuando el cliente elige WhatsApp.
  *
  * CONFIGURACIÓN (solo estas dos líneas):
- *   $TO   → correos que reciben las solicitudes.
+ *   $TO    → correo de la empresa que recibe las solicitudes.
+ *   $COPIA → correos que reciben una copia idéntica de cada solicitud (correo y WhatsApp).
  *   $FROM → remitente. Debe ser un buzón o alias del propio dominio (SiteGround > Correo) para que no caiga en spam.
  */
 declare(strict_types=1);
 
-$TO   = ['creative.lestudio@gmail.com']; // ⚠ SOLO PARA PRUEBAS. Antes de publicar, cambiar por ['info@grupo-urbanisima.com'] (npm run check:legal avisa si se olvida)
+$TO   = ['info@grupo-urbanisima.com'];                   // empresa: recibe cada solicitud
+$COPIA = ['creative.lestudio@gmail.com'];                   // copia de cada solicitud (para medir leads). Dejar [] para desactivarla
 $FROM = 'web@grupo-urbanisima.com';
 
 /* AUTOMATIZACIÓN (opcional): si rellenas estas dos líneas, cada solicitud también se envía a un webhook (n8n, Make, CRM...).
@@ -250,10 +252,11 @@ $h .= "MIME-Version: 1.0\r\nContent-Type: $tipoCab\r\n";
 
 $subjectEnc = mb_encode_mimeheader($asunto, 'UTF-8', 'B', "\r\n");
 $ok = false;
-foreach ($TO as $dest) {
+foreach (array_merge($TO, $COPIA) as $dest) {
     $r = @mail($dest, $subjectEnc, $cuerpoMime, $h, '-f' . $FROM);
     if (!$r) $r = @mail($dest, $subjectEnc, $cuerpoMime, $h);
-    $ok = $ok || $r;
+    if (in_array($dest, $TO, true)) $ok = $ok || $r;      // la solicitud cuenta como enviada solo si llegó al correo de la empresa
+    elseif (!$r) error_log("contact.php: la copia a $dest falló");
 }
 
 if (!$ok) { error_log('contact.php: mail() falló para ' . $nombre); out(500, ['ok' => false, 'error' => 'mail']); }

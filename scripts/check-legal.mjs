@@ -11,7 +11,7 @@ let bad = 0;
 for (const [k, label] of Object.entries(required)) if (!String(L[k] || '').trim()) { console.error(`✗ Falta ${label} (LEGAL.${k} en config.js)`); bad++; }
 const php = readFileSync(new URL('../contact.php', import.meta.url), 'utf8');
 const to = (php.match(/^\$TO\s*=\s*\[(.*?)\]/m) || [,''])[1];
-if (/creative\.lestudio@gmail\.com/.test(to)) { console.error('✗ contact.php sigue enviando las solicitudes al correo de PRUEBAS (creative.lestudio@gmail.com). Cámbialo por el de la empresa antes de publicar.'); bad++; }
+if (!/info@grupo-urbanisima\.com/i.test(to)) { console.error('✗ contact.php no envía las solicitudes a info@grupo-urbanisima.com. Revísalo antes de publicar.'); bad++; }
 const wa = String((ctx.window.URBANISIMA_CONFIG || {}).WHATSAPP || '');
 if (wa !== '34722115251') { console.error(`✗ config.js tiene un WhatsApp de PRUEBAS (${wa}). El del cliente es 34722115251. Cámbialo antes de publicar.`); bad++; }
 const cp = String(L.CODIGO_POSTAL || '');
