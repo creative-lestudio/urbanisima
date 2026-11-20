@@ -286,7 +286,7 @@ def header(root):
 
 RGPD = '''<details class="rgpd"><summary>Información básica sobre protección de datos</summary>
         <dl>
-          <dt>Responsable</dt><dd>Grupo Urbanisima S.L.</dd>
+          <dt>Responsable</dt><dd>Grupo Urbanisima S.L.U.</dd>
           <dt>Finalidad</dt><dd>Atender tu solicitud de presupuesto o consulta.</dd>
           <dt>Legitimación</dt><dd>Tu consentimiento y las medidas precontractuales que nos pides.</dd>
           <dt>Destinatarios</dt><dd>No cedemos datos a terceros salvo obligación legal. Usamos proveedores de alojamiento y correo y, si eliges WhatsApp, esa plataforma (Meta). Con WhatsApp también recibimos una copia por correo.</dd>

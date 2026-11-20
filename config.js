@@ -22,7 +22,7 @@ window.URBANISIMA_CONFIG = {
   /* DATOS LEGALES. Aparecen en el Aviso legal y la Política de privacidad (LSSI-CE art. 10, RGPD art. 13).
      RELLENAR ANTES DE PUBLICAR. Se comprueba con:  npm run check:legal  */
   LEGAL: {
-    RAZON_SOCIAL: 'Grupo Urbanisima S.L.',
+    RAZON_SOCIAL: 'Grupo Urbanisima S.L.U.',
     CIF: 'B40565921',                          // fuente: DatosCIF (confirmar con una factura)
     REGISTRO_MERCANTIL: '',                    // p. ej. Registro Mercantil de Valencia, Tomo X, Folio Y, Hoja V-ZZZZZ
     DOMICILIO: 'Calle Jacinto Labaila 8b',
