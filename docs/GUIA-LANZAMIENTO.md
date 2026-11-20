@@ -35,7 +35,7 @@ Objetivo: publicar la web nueva en el dominio del cliente (SiteGround), dejar el
 |---|---|
 | **Aire acondicionado** | La web antigua tiene 4 páginas (recarga, reparación, montaje). No está en los 14 servicios. ¿Lo siguen ofreciendo? Si sí, hay que añadirlo como servicio 15. Ahora esas URLs redirigen a la portada. |
 | **Chimeneas en Alicante y Castellón** | La web nueva dice "provincia de Valencia". ¿Atienden también esas provincias? |
-| **Textos legales** | Se han reescrito (ver `docs/CUMPLIMIENTO-LEGAL.md`). Faltan el **CIF y el Registro Mercantil**, y hay que confirmar el **código postal** (45007 no es de Valencia). Que los revise su gestoría o abogado. |
+| **Textos legales** | Se han reescrito (ver `docs/CUMPLIMIENTO-LEGAL.md`). Faltan el **CIF y el Registro Mercantil**, y hay que confirmar el **código postal** (46007 no es de Valencia). Que los revise su gestoría o abogado. |
 | **Correo de recepción** | ¿Todo a `info@`? En la web antigua también aparece `admin@`. Se cambia en `contact.php` (línea `$TO`). |
 | **Quién edita la web a partir de ahora** | La web nueva es estática (rápida y sin plugins que se rompan), pero **ya no se edita desde WordPress**. Los cambios se hacen sobre los archivos. |
 

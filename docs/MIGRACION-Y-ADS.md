@@ -17,8 +17,15 @@ Antes de empezar: copia de seguridad completa (SiteGround > Copias de seguridad)
 8. **Entorno de pruebas**: deja `nueva.grupo-urbanisima.com` con contraseña (o bórralo) para que no compita en Google.
 9. **Medición**: con Tag Assistant, acepta cookies y envía una solicitud: deben verse `lead_email` o `lead_whatsapp` en `/gracias/`.
 
-**Antes de publicar (obligatorio por ley):** rellenar `LEGAL.CIF` y `LEGAL.REGISTRO_MERCANTIL` y confirmar el código postal en `config.js` (45007 parece incorrecto). Comprobar con `npm run check:legal`.
+**Antes de publicar (obligatorio por ley):** falta solo `LEGAL.REGISTRO_MERCANTIL` en `config.js` (tomo, folio y hoja; sale de la escritura o de una nota simple). Ya están el CIF B40565921 y el código postal 46007 (fuente: DatosCIF; confirmar con una factura, y revisar si el nombre es "S.L." o "S.L.U." y si el domicilio es "8" u "8b"). Comprobar con `npm run check:legal`.
 **Privacidad:** las copias a `creative.lestudio@gmail.com` hacen que Le Studio reciba datos personales de los clientes. Hay que reflejarlo en la política de privacidad (destinatarios/encargado del tratamiento) y firmar un contrato de encargo de tratamiento con la empresa.
+
+## Conservar el posicionamiento en Google (SEO)
+Comprobado en la web actual: el dominio canónico es `https://grupo-urbanisima.com` (sin www; `www` ya redirige), igual que la web nueva. Las 43 URLs del sitemap antiguo de WordPress tienen una redirección 301 a su página nueva equivalente (conservan `gclid` y `utm`). Además:
+- Los sitemaps antiguos (`/wp-sitemap.xml`, `/sitemap_index.xml`…) redirigen al nuevo `/sitemap.xml`.
+- El título y la descripción de la portada mantienen las palabras clave actuales (reparación de tejados, impermeabilización, reformas, Valencia).
+- Las páginas de servicio conservan el contenido y las palabras de las páginas antiguas equivalentes.
+**Qué hacer el día del cambio:** hacerlo en horario tranquilo, probar 5 URLs antiguas (deben dar 301, no 404), enviar el sitemap en Search Console, y **no tocar** títulos, URLs ni textos de las páginas durante las 2–3 primeras semanas. Es normal ver pequeñas oscilaciones unos días; revisar en Search Console > Rendimiento las consultas "tejado valencia", "reparación de tejados valencia" y "goteras valencia" antes y después.
 
 ## 2. Google Ads: estructura recomendada
 Cuenta con seguimiento automático (gclid) activado. Plantilla de seguimiento a nivel de cuenta:

@@ -286,7 +286,7 @@ def header(root):
 
 RGPD = '''<details class="rgpd"><summary>Información básica sobre protección de datos</summary>
         <dl>
-          <dt>Responsable</dt><dd>Grupo Urbanisima S.L.U.</dd>
+          <dt>Responsable</dt><dd>Grupo Urbanisima S.L.</dd>
           <dt>Finalidad</dt><dd>Atender tu solicitud de presupuesto o consulta.</dd>
           <dt>Legitimación</dt><dd>Tu consentimiento y las medidas precontractuales que nos pides.</dd>
           <dt>Destinatarios</dt><dd>No cedemos datos a terceros salvo obligación legal. Usamos proveedores de alojamiento y correo y, si eliges WhatsApp, esa plataforma (Meta). Con WhatsApp también recibimos una copia por correo.</dd>
@@ -602,11 +602,11 @@ def patch_home():
     s = re.sub(r'<h1>.*?</h1>', '<h1>Reformas y reparaciones. <em>Desde tejados hasta interiores.</em></h1>', s, count=1, flags=re.S)
     s = re.sub(r'<p class="lead">.*?</p>',
                '<p class="lead">Reparamos tejados, solucionamos goteras, impermeabilizamos terrazas y realizamos reformas. Visita gratuita y presupuesto sin compromiso en Valencia y provincia.</p>', s, count=1, flags=re.S)
-    title = 'Grupo Urbanísima | Reformas, tejados e impermeabilización en Valencia'
-    desc = 'Tejados, terrazas y cubiertas, reparación de goteras, reformas, chimeneas, canalones y pintura en toda la provincia de Valencia. Presupuesto gratis y sin compromiso.'
+    title = 'Grupo Urbanísima | Reparación de tejados, impermeabilización y reformas en Valencia'
+    desc = 'Reparación de tejados, goteras e impermeabilización de terrazas y cubiertas, reformas, chimeneas, canalones y pintura en Valencia y provincia. Visita gratuita y presupuesto sin compromiso.'
     s = re.sub(r'<title>.*?</title>', f'<title>{title}</title>', s, count=1)
     s = re.sub(r'(<meta name="description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), s, count=1)
-    s = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + 'Reformas, tejados e impermeabilización en Valencia | Grupo Urbanísima' + m.group(2), s, count=1)
+    s = re.sub(r'(<meta property="og:title" content=")[^"]*(")', lambda m: m.group(1) + 'Reparación de tejados, impermeabilización y reformas en Valencia | Grupo Urbanísima' + m.group(2), s, count=1)
     s = re.sub(r'(<meta property="og:description" content=")[^"]*(")', lambda m: m.group(1) + desc + m.group(2), s, count=1)
     open(path, 'w', encoding='utf8').write(s)
 
@@ -642,6 +642,7 @@ def build():
         for o in olds: allr.append((o, f'/servicios/{BY_KEY[key]["slug"]}/'))
     allr += list(OTHER_REDIRECTS.items()) + [(o, '/') for o in OLD_AC]
     for o, d in sorted(allr): rules += f'RewriteRule ^{o}/?$ {d} [R=301,L,QSA]\n'
+    rules += '# Sitemaps antiguos de WordPress -> sitemap nuevo (Search Console)\nRewriteRule ^(sitemap_index|wp-sitemap|page-sitemap|post-sitemap)\\.xml$ /sitemap.xml [R=301,L]\nRewriteRule ^wp-sitemap-.*\\.xml$ /sitemap.xml [R=301,L]\n'
     write('.htaccess', ht[:a] + rules + '\n' + ht[b:])
     return allr
 

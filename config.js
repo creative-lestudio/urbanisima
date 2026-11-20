@@ -22,11 +22,11 @@ window.URBANISIMA_CONFIG = {
   /* DATOS LEGALES. Aparecen en el Aviso legal y la Política de privacidad (LSSI-CE art. 10, RGPD art. 13).
      RELLENAR ANTES DE PUBLICAR. Se comprueba con:  npm run check:legal  */
   LEGAL: {
-    RAZON_SOCIAL: 'Grupo Urbanisima S.L.U.',
-    CIF: '',                                   // p. ej. B12345678  (el de la factura de la empresa)
+    RAZON_SOCIAL: 'Grupo Urbanisima S.L.',
+    CIF: 'B40565921',                          // fuente: DatosCIF (confirmar con una factura)
     REGISTRO_MERCANTIL: '',                    // p. ej. Registro Mercantil de Valencia, Tomo X, Folio Y, Hoja V-ZZZZZ
     DOMICILIO: 'Calle Jacinto Labaila 8b',
-    CODIGO_POSTAL: '45007',                    // ¡VERIFICAR! Los códigos postales de Valencia empiezan por 46
+    CODIGO_POSTAL: '46007',                    // confirmado en DatosCIF
     MUNICIPIO: 'Valencia',
     TELEFONO: '+34 722 115 251',
     FECHA_ACTUALIZACION: '1 de noviembre de 2026'

@@ -61,6 +61,9 @@ RewriteRule ^servicios-grupo-urbanisima/servicios-de-pintores-de-fachadas-y-pati
 RewriteRule ^servicios-grupo-urbanisima/servicios-de-reformas/?$ /servicios/reforma-integral-valencia/ [R=301,L,QSA]
 RewriteRule ^servicios-grupo-urbanisima/servicios-de-rehabilitacion-y-limpieza-de-piscinas-en-valencia/?$ /servicios/ [R=301,L,QSA]
 RewriteRule ^servicios-grupo-urbanisima/servicios-de-reparacion-de-tejados/?$ /servicios/rehabilitacion-reparacion-tejados-valencia/ [R=301,L,QSA]
+# Sitemaps antiguos de WordPress -> sitemap nuevo (Search Console)
+RewriteRule ^(sitemap_index|wp-sitemap|page-sitemap|post-sitemap)\.xml$ /sitemap.xml [R=301,L]
+RewriteRule ^wp-sitemap-.*\.xml$ /sitemap.xml [R=301,L]
 
 # --- Archivos antiguos de WordPress que ya no existen
 RewriteRule ^(wp-login\.php|xmlrpc\.php)$ - [R=404,L]
